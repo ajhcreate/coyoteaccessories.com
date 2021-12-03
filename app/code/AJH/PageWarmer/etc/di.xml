@@ -1,0 +1,15 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ajh_pagemaker_dashboard_index_data_source" xsi:type="string">AJH\PageWarmer\Model\ResourceModel\Status\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="AJH\PageWarmer\Model\ResourceModel\Status\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ajh_pagewarmer_status</argument>
+            <argument name="resourceModel" xsi:type="string">AJH\PageWarmer\Model\ResourceModel\Status</argument>
+        </arguments>
+    </virtualType>
+</config>

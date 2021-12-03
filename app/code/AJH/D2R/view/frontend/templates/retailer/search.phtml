@@ -1,0 +1,168 @@
+<?php
+$retailers = $block->getRetailers();
+
+//var_dump($retailers);
+?>
+<div id="d2rRS" class="d2rRS">
+    <h1>Find a PDQ Retailer</h1>
+    <div class="d2rRS-header">Click on a pin in your area to find one of our retailers. If there are no retailers in
+        your area please <a href="<?php echo $block->getUrl('contact_us') ?>">contact us</a>. If you wish to become one
+        of retailers please register <a href="<?php echo $block->getUrl('d2r/retailer/register') ?>">here</a>.</div>
+    <div id="map" class="d2rRS-map"></div>
+    <div id="d2rRS-info" class="d2rRS-info"></div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "https://maps.googleapis.com/maps/api/js?key=<?php echo $block->getGMapsAPIKey(); ?>&callback=map.initMap": {}
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    require(["jquery"], function ($) {
+        Map = function () {
+            return function ($) {
+                return {
+                    config: {
+                        baseURL: '',
+                        markers: [],
+                        selectors: {
+                            self: '#d2rRS',
+                            map: 'map',
+                            infoBlock: '#d2rRS-info'
+                        },
+                        templates: {
+                            marker: {
+                                title: '%COMPANY%\n\
+%ADDRESS1%, %CITY%, %STATE%\n\
+%PHONE%'
+                            },
+                            infoWindow: '<div class="d2rRS-map-infoWindow d2rRS-map-info">'
+                                    + '<div class="d2rRS-info-name">%COMPANY%</div>'
+                                    + '<div class="d2rRS-info-address">%ADDRESS2% %ADDRESS1%, %CITY%</div>'
+                                    + '<div class="d2rRS-info-address">%STATE% %ZIP%, %COUNTRY%</div>'
+                                    + '<div class="d2rRS-info-select"><button type="button" onclick="map.selectRetailer(%ID%)">Select</button></div>'
+                                    + '</div>',
+                            infoBlock: '<div class="d2rRS-info">'
+                                    + '<div class="d2rRS-info-name"><span>Company:</span> %COMPANY%</div>'
+                                    + '<div class="d2rRS-info-address"><span>Address:</span>%ADDRESS2% %ADDRESS1%, %CITY%, %STATE% %ZIP%, %COUNTRY%</div>'
+                                    + '<div class="d2rDS-info-phone"><span>Phone:</span> <a href="call:%PHONE%">%PHONE%</a></div>'
+                                    + '<div class="d2rRS-info-fax"><span>Fax:</span> %FAX%</div>'
+                                    + '<div class="d2rDS-info-email"><span>Email:</span> <a href="mailto:%EMAIL%">%EMAIL%</a></div>'
+                                    + '<div class="d2rDS-info-email"><span>Website:</span> <a href="%WEBSITE%">%WEBSITE%</a></div>'
+                                    + '</div>'
+                        }
+                    },
+                    map: null,
+                    infoWindows: [],
+                    init: function (configValues) {
+                        $.extend(true, this.config, configValues); //Uncaught TypeError: Cannot read property 'extend' of undefined
+                    },
+                    inform: function (message, delayed) {
+                        if (window.hasOwnProperty('informer')) {
+                            if ('undefined' == typeof (delayed)) {
+                                delayed = true;
+                            }
+                            if (delayed)
+                                window.informer.appear(message, this.config.messageTimeoutInterval);
+                            else
+                                window.informer.show(message);
+                        } else
+                            alert(message);
+                    },
+                    closeInfoWindows: function () {
+                        for (var i = 0; i < this.infoWindows.length; i++) {
+                            this.infoWindows[i].close();
+                        }
+                    },
+                    initMap: function () {
+                        this.map = new google.maps.Map(document.getElementById(this.config.selectors.map), {
+                            zoom: 4,
+                            center: {lat: 39.8283, lng: -98.5795}
+                        });
+
+                        console.log('this.config.markers.length');
+                        console.log(this.config.markers.length);
+                        
+                        for (var i = 0; i < this.config.markers.length; i++) {
+                            var coords = this.config.markers[i].latlng;
+                            
+                            console.log(coords);
+                            if (!coords)
+                                continue;
+                            var latLng = JSON.parse('{"lat":' + coords.replace(',', ',"lng":') + '}');
+                            var title = this.config.templates.marker.title
+                                    .replace('%COMPANY%', this.config.markers[i].company)
+                                    .replace('%ADDRESS1%', this.config.markers[i].street1)
+                                    .replace('%PHONE%', this.config.markers[i].telephone)
+                                    .replace('%STATE%', this.config.markers[i].state)
+                                    .replace('%CITY%', this.config.markers[i].city);
+
+                            var marker = new google.maps.Marker({
+                                position: latLng,
+                                title: title,
+                                map: this.map
+                            });
+
+                            marker.controlObject = this;
+                            marker.info = new google.maps.InfoWindow({
+                                content: this.config.templates.infoWindow
+                                        .replace(/%COMPANY%/g, this.config.markers[i].company)
+                                        .replace(/%ADDRESS1%/g, this.config.markers[i].street1)
+                                        .replace(/%ADDRESS2%/g, this.config.markers[i].street2)
+                                        .replace(/%PHONE%/g, this.config.markers[i].telephone)
+                                        .replace(/%FAX%/g, this.config.markers[i].fax)
+                                        .replace(/%COUNTRY%/g, this.config.markers[i].country)
+                                        .replace(/%STATE%/g, this.config.markers[i].state)
+                                        .replace(/%CITY%/g, this.config.markers[i].city)
+                                        .replace(/%ZIP%/g, this.config.markers[i].postcode)
+                                        .replace(/%EMAIL%/g, this.config.markers[i].email)
+                                        .replace(/%WEBSITE%/g, this.config.markers[i].website)
+                                        .replace(/%ID%/g, this.config.markers[i].id)
+                            });
+
+                            google.maps.event.addListener(marker, 'click', this._markerClick);
+                            this.infoWindows.push(marker.info);
+                        }
+                    },
+                    _markerClick(event) {
+                        $(this.controlObject.config.selectors.infoBlock).html('');
+                        this.controlObject.closeInfoWindows();
+                        this.info.open(this.getMap(), this);
+                    },
+                    selectRetailer: function (id) {
+                        for (var i = 0; i < this.config.markers.length; i++) {
+                            if (this.config.markers[i].id == id) {
+                                var html = this.config.templates.infoBlock
+                                        .replace(/%COMPANY%/g, this.config.markers[i].company)
+                                        .replace(/%ADDRESS1%/g, this.config.markers[i].street1)
+                                        .replace(/%ADDRESS2%/g, this.config.markers[i].street2)
+                                        .replace(/%PHONE%/g, this.config.markers[i].telephone)
+                                        .replace(/%FAX%/g, this.config.markers[i].fax)
+                                        .replace(/%COUNTRY%/g, this.config.markers[i].country)
+                                        .replace(/%STATE%/g, this.config.markers[i].state)
+                                        .replace(/%CITY%/g, this.config.markers[i].city)
+                                        .replace(/%ZIP%/g, this.config.markers[i].postcode)
+                                        .replace(/%EMAIL%/g, this.config.markers[i].email)
+                                        .replace(/%WEBSITE%/g, this.config.markers[i].website)
+                                        .replace(/%ID%/g, this.config.markers[i].id)
+                                $(this.config.selectors.infoBlock).html(html);
+                                return;
+                            }
+                        }
+                        $(this.config.selectors.infoBlock).html('');
+                    }
+                };
+            }($);
+        };
+
+        map = new Map();
+        map.init({
+            baseURL: '<?php echo $block->getUrl('d2r/retailer/selectRetailer') ?>',
+            markers: <?php echo json_encode($retailers) ?>
+        });
+    });
+</script>
+<?php /* <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $block->getGMapsAPIKey(); ?>&callback=map.initMap"></script> */ ?>

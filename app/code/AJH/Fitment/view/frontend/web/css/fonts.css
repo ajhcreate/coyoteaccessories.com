@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'MaisonNeueBold';
+    src:url('./fonts/Maison/MaisonNeue-Bold.ttf');	
+}
+@font-face {
+    font-family: 'MaisonNeueMedium';
+    src:url('./fonts/Maison/MaisonNeue-Medium.ttf');	
+}
+@font-face {
+    font-family: 'MaisonNeueLight';
+    src:url('./fonts/Maison/MaisonNeue-Light.ttf');	
+}
+@font-face {
+    font-family: 'MaisonNeueBook';
+    src:url('./fonts/Maison/MaisonNeue-Book.ttf');	
+}
+@font-face {
+    font-family: 'TrumpGothicWestBold';
+    src:url('./fonts/Trump/TrumpGothicWestBold.ttf');	
+}
+@font-face {
+    font-family: 'TrumpGothicEastBold';
+    src:url('./fonts/Trump/TrumpGothicEastBold.ttf');	
+}

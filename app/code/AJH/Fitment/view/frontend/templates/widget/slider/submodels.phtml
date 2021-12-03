@@ -1,0 +1,22 @@
+<?php
+$fitment_submodels = $block->getFitmentSubModels();
+$submodels = $fitment_submodels;
+?>
+<?php foreach ($submodels as $key => $submodel): ?>
+    <?php array_shift($fitment_submodels); ?>
+    <?php $submodel_image = $block->getSubModelImage(trim($submodel['ID'])); ?>
+    <div class="fitment-selection">
+        <div class="product-item-info">
+            <div class="product-img">
+                <a href="#" class="fitment-slider-submodel fitment-slider-item" data-url="<?php echo $block->getUrl("fitment/index/categories"); ?>" data-year="<?php echo $block->year; ?>" data-makeid="<?php echo $block->make; ?>" data-modelid="<?php echo $block->model; ?>" data-submodelid="<?php echo $submodel['ID']; ?>">
+                    <img class="fitment-submodel-img-thumb img-fluid" src="<?php echo $submodel_image; ?>" alt="<?php echo $submodel['Name']; ?>" />                                                
+                </a>
+            </div>
+            <div class="fitment-selection-title text-uppercase text-center">
+                <a href="#" class="fitment-slider-submodel fitment-slider-item" data-url="<?php echo $block->getUrl("fitment/index/categories"); ?>" data-year="<?php echo $block->year; ?>" data-makeid="<?php echo $block->make; ?>" data-modelid="<?php echo $block->model; ?>" data-submodelid="<?php echo $submodel['ID']; ?>"><?php echo $submodel['Name']; ?></a>
+                <i class="fa fa-caret-right"></i>
+            </div>
+        </div>
+    </div>
+    <?php
+endforeach;

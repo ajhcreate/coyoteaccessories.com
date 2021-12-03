@@ -1,0 +1,9 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+
+    <router id="standard">
+        <route id="ajh_customer" frontName="ajhcustomer">
+            <module name="AJH_Customer" before="Magento_Customer" />
+        </route>
+    </router>
+
+</config>

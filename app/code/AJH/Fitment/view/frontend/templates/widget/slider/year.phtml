@@ -1,0 +1,345 @@
+<?php
+$fitment_years = Mage::getModel('fitment/fitment_api')->fitmentYears();
+$_fitment_years = array();
+
+$_fitment_years_start_end = array();
+
+$_fitment_years['start'] = 0;
+$_fitment_years['end'] = 0;
+
+$_fitment_years2 = array();
+$_fitment_years_mobile = array();
+$counter = 1;
+foreach ($fitment_years as $key => $year):
+
+    if ($counter === 1 && $_fitment_years['start'] === 0) {
+        $_fitment_years['start'] = $year;
+    } else if ($counter === 5) {
+        $_fitment_years['end'] = $year;
+    }
+
+    if ((intval($key) + 1) === count($fitment_years)) {
+        $_fitment_years['end'] = $year;
+    }
+
+    if ($_fitment_years['end'] !== 0) {
+        $_fitment_years2[] = $_fitment_years['start'] . ' - ' . $_fitment_years['end'];
+        $_fitment_years_mobile[] = $_fitment_years['start'] . ' - ' . $_fitment_years['end'];
+
+        $_fitment_years_start_end[] = array(
+            'start' => $_fitment_years['start'],
+            'end' => $_fitment_years['end']
+        );
+
+        $_fitment_years['start'] = 0;
+        $_fitment_years['end'] = 0;
+    }
+
+    if ($counter > 4) {
+        $counter = 1;
+    } else {
+        $counter++;
+    }
+
+endforeach;
+
+
+//number of visible elements
+$desktop = 5;
+$mobile = 2;
+
+$_years_groups = ceil(count($_fitment_years2) / intval($desktop));
+$_years_groups_m = ceil(count($_fitment_years_mobile) / intval($mobile));
+?>
+
+<div class="container-fluid p-0">
+    <div class="row no-gutters">
+        <div class="col-12 no-gutters position-relative banner-fitment-wrapper" style="background-image: url(<?php echo $this->getSkinUrl('images/banner-bg.jpg'); ?>)">
+            <?php /* <img class="img-fuid w-100 d-none" src="" alt="" />              */ ?>
+
+            <div class="row no-gutters d-block d-lg-none">
+                <div class="col-12">
+                    <div class="select-your-car-wrap text-center">
+                        <button class="btn select-your-car-btn" type="button">Select Your Car</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row no-gutters justify-content-md-center p-5 w-100 fitment-slider-row position-absolute justify-content-center">                
+                <div class="col-10 col-lg-9 p-0 position-ralative">
+                    
+                    <div class="carousel-control w-100 position-absolute d-none d-md-block ">
+                        <a class="left carousel-control" href="#carouselFitment" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carouselFitment" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    <div class="carousel-control carousel-control-mobile w-100 position-absolute  d-block d-md-none">
+                        <a class="left carousel-control" href="#carouselFitmentMobile" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carouselFitmentMobile" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    
+                    <div class="fitment-slider-container">
+                        <div class="fitment-slider position-relative">
+                            <div class="fitment-title py-4 position-relative">
+                                <h1 class="text-uppercase text-center">Choose your vehicle</h1>
+                                <div class="fitment-subtitle text-uppercase text-center">Select your vehicle Year<!--for a custom shopping experience --></div>                                
+                            </div>
+
+                            <div id="carouselFitment" class="d-none d-md-block carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <?php for ($x = 0; $x < $_years_groups; $x++): ?>
+                                        <div class="item <?php if ($x === 0): ?>active<?php endif; ?>">
+                                            <div class="fitment-selection-wrap d-flex">
+                                                <?php $_years = $_fitment_years2; ?>
+                                                <?php $y = 1; ?>
+                                                <?php foreach ($_years as $key => $fitment_year): ?>
+                                                    <?php array_shift($_fitment_years2); ?>
+                                                    <div class="fitment-selection">
+                                                        <div class="fitment-selection-inner <?php echo $y === count($_years)?'last':''; ?>">
+                                                            <div class="fitment-selection-img">
+                                                                <a href="#" class="fitment-slider-year" data-toggle="modal" data-startyear="<?php echo $_fitment_years_start_end[$key]['start']; ?>" data-endyear="<?php echo $_fitment_years_start_end[$key]['end']; ?>" data-target="#fitmentHomeSlide">
+                                                                    <img class="img-fuid" src="<?php echo $this->getSkinUrl('images/catalog/mustang.jpg'); ?>" alt="" />
+                                                                </a>
+                                                            </div>
+                                                            <div class="fitment-selection-title text-uppercase text-center">
+                                                                <a href="#" class="fitment-slider-year" data-toggle="modal" data-startyear="<?php echo $_fitment_years_start_end[$key]['start']; ?>" data-endyear="<?php echo $_fitment_years_start_end[$key]['end']; ?>" data-target="#fitmentHomeSlide"><?php echo $fitment_year; ?></a>
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                                    if ($y === intval($desktop)):
+                                                        break;
+                                                    else:
+                                                        $y++;
+                                                    endif;
+                                                    ?>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    <?php endfor; ?>   
+                                </div>   
+                            </div>
+                            <div id="carouselFitmentMobile" class="carousel slide d-block d-md-none" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <?php for ($xx = 0; $xx < $_years_groups_m; $xx++): ?>
+                                        <div class="item <?php if ($xx === 0): ?>active<?php endif; ?>">
+                                            <div class="fitment-selection-wrap d-flex">
+                                                <?php $_years_m = $_fitment_years_mobile; ?>
+                                                <?php $yy = 1; ?>
+                                                <?php foreach ($_years_m as $key => $fitment_year): ?>
+                                                    <?php array_shift($_fitment_years_mobile); ?>
+                                                    <div class="fitment-selection">
+                                                        <div class="fitment-selection-inner">
+                                                            <div class="fitment-selection-img">
+                                                                <a href="#" class="fitment-slider-year" data-toggle="modal" data-startyear="<?php echo $_fitment_years_start_end[$key]['start']; ?>" data-endyear="<?php echo $_fitment_years_start_end[$key]['end']; ?>" data-target="#fitmentHomeSlide">
+                                                                    <img class="img-fuid" src="<?php echo $this->getSkinUrl('images/catalog/mustang.jpg'); ?>" alt="" />
+                                                                </a>
+                                                            </div>
+                                                            <div class="fitment-selection-title text-uppercase text-center">
+                                                                <a href="#" class="fitment-slider-year" data-toggle="modal" data-startyear="<?php echo $_fitment_years_start_end[$key]['start']; ?>" data-endyear="<?php echo $_fitment_years_start_end[$key]['end']; ?>" data-target="#fitmentHomeSlide"><?php echo $fitment_year; ?></a>
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                                    if ($yy === 2):
+                                                        break;
+                                                    else:
+                                                        $yy++;
+                                                    endif;
+                                                    ?>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+
+                                    <?php endfor; ?>  
+                                </div> 
+                            </div>
+                        </div>    
+                    </div>    
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade centered-modal" id="fitmentHomeSlide" tabindex="-1" role="dialog" aria-labelledby="fitmentHomeSlideLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-inner-content">
+                <div class="modal-header">
+                    <?php /* <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      </button> */ ?>
+                    <h4 class="modal-title" id="modalLabel">Please select vehicle's year</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="fitment_wrapper text-center">
+                        <?php foreach ($fitment_years as $year): ?>
+                            <button type="button" class="fitment-year-selection" onclick="fitmentSlider.loadMake(<?php echo intval($year); ?>)" data-yearbtn="<?php echo intval($year); ?>"><span class="fitment-value"><?php echo $year; ?></span></button>
+                        <?php endforeach; ?>                    
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fitment-back-btn" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var fitmentSlider = (function ($) {
+        return {
+            year: 0,
+            make: 0,
+            _make: '',
+            model: 0,
+            _model: '',
+            submodel: 0,
+            start: function () {
+                $('.carousel').carousel({
+                    interval: 120000
+                });
+            },
+            showModal: function () {
+                $('#fitmentHomeSlide').on('show.bs.modal', function (event) {
+                    var link = $(event.relatedTarget);
+                    var startYear = parseInt(link.data('startyear'));
+                    var endYear = parseInt(link.data('endyear'));
+                    var x;
+
+                    $(".fitment-year-selection").css({display: 'none'});
+
+                    for (x = startYear; x >= endYear; x--) {
+                        $('[data-yearbtn="' + x + '"]').css({display: 'inline-block'});
+                    }
+                });
+            },
+//            loadModel: function () {
+//                $.ajax({
+//                    url: '<?php echo $this->getUrl('coyote_fitment/index/models') ?>',
+//                    data: {
+//                        year: $('#fitment_year').val(),
+//                        make: $('#fitment_make').val()
+//                    },
+//                    beforeSend: function () {
+//                        $('#fitment_submodel').prop('selectedIndex', 0).attr('disabled', true);
+//                        $('#fitment_parts').attr('disabled', true);
+//                        $('#qualifier_wrap').html('');
+//                    },
+//                    success: function (resp) {
+//                        fitment.setModels(resp);
+//                    },
+//                    error: function (jqXHR, error, status) {
+//
+//                    }
+//                });
+//            },
+            loadMake: function (year) {
+                fitmentSlider.year = parseInt(year);
+                $.ajax({
+                    url: '<?php echo $this->getUrl('coyote_fitment/slider/makes') ?>',
+                    data: {
+                        year: parseInt(year)
+                    },
+                    beforeSend: function () {
+
+                    },
+                    success: function (resp) {
+                        fitmentSlider.setMakes(resp);
+                    },
+                    error: function (jqXHR, error, status) {
+
+                    }
+                });
+            },
+            setMakes: function (resp) {
+                $(".fitment-slider-row").html(resp);
+                $("#fitmentHomeSlide").modal('hide');
+            },
+            loadModel: function (make, makeName) {
+                var year = fitmentSlider.year;
+
+                fitmentSlider.make = make;
+
+
+                $.ajax({
+                    url: '<?php echo $this->getUrl('coyote_fitment/slider/models') ?>',
+                    dataType: '',
+                    data: {
+                        year: parseInt(year),
+                        make: parseInt(make)
+                    },
+                    beforeSend: function () {
+
+                    },
+                    success: function (resp) {
+                        fitmentSlider.setModels(resp);
+                    },
+                    error: function (jqXHR, error, status) {
+
+                    }
+                });
+            },
+            setModels: function (resp) {
+                $(".fitment-slider-row").html(resp);
+            },
+            loadSubModel: function (model) {
+                var year = fitmentSlider.year;
+                var make = fitmentSlider.make;
+
+                fitmentSlider.model = model;
+
+                $.ajax({
+                    url: '<?php echo $this->getUrl('coyote_fitment/slider/submodels') ?>',
+                    data: {
+                        year: parseInt(year),
+                        make: parseInt(make),
+                        model: parseInt(model)
+                    },
+                    beforeSend: function () {
+
+                    },
+                    success: function (resp) {
+                        fitmentSlider.setSubModels(resp);
+                    },
+                    error: function (jqXHR, error, status) {
+
+                    }
+                });
+            },
+            setSubModels: function (resp) {
+                $(".fitment-slider-row").html(resp);
+            },
+            loadParts: function (submodel) {
+                var year = fitmentSlider.year;
+                var make = fitmentSlider.make;
+                var model = fitmentSlider.model;
+
+                window.location = '<?php echo $this->getUrl('lugs-locks/') ?>?year=' + year + '&make=' + make + '&model=' + model + '&submodel=' + submodel;
+            }
+        };
+
+    })(jQuery);
+
+    fitmentSlider.start();
+    fitmentSlider.showModal();
+
+
+
+</script>

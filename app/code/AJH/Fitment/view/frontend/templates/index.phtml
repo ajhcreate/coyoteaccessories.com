@@ -1,0 +1,340 @@
+<?php /**
+ * @category    Ajh
+ * @package     Ajh_Fitment
+ * @copyright   Copyright (c) 2018-2019
+ */ ?>
+
+<?php
+$fitment_years = $block->getFitmentYears();
+
+$overview = null; //$block->getFitmentOverview();
+$filters = null; //$block->getFitmentParams();
+
+$categories = null; //$block->getCategories();
+
+$skus = null; //$block->getProductSkus();
+
+$current_vehicle = $overview['year'] . '-' . $overview['make']['ID'] . '-' . $overview['model']['ID'] . '-' . $overview['submodel']['ID'];
+$filterData = null; //$block->_getCategories();
+$garage = null; //Mage::getSingleton('core/session')->getFitmentGarage2();
+
+$fitmentData = null; //$block->fitmentData();
+?>
+
+
+<div class="fitment_wrapper container" style="<?php echo count($garage) ? 'display: none' : ''; ?>">
+    <h3>Select Your Vehicle</h3>
+    <div class="fitment-main-wrap">
+        <div class="yemamosu-wrap">
+            <span class="year-wrapper">
+                <select name="year" id="fitment_year">
+                    <option>Year</option>
+                    <?php foreach ($fitment_years as $year): ?>
+                        <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </span>
+            <span class="make-wrapper">
+                <select name="make" id="fitment_make" disabled="disabled">
+                    <option>Make</option>
+                    <option>-</option>
+                </select>
+            </span>
+            <span class="model-wrapper">
+                <select name="model" id="fitment_model" disabled="disabled">
+                    <option>Model</option>
+                    <option>-</option>
+                </select>
+            </span>
+            <span class="submodel-wrapper">
+                <select name="submodel" id="fitment_submodel" disabled="disabled">
+                    <option>SubModel</option>
+                    <option>-</option>
+                </select>
+            </span>
+        </div>
+        <div id="qualifier_wrap"></div>
+        <div class="fitment-action">
+            <button type="button" class="button btn-success" id="fitment_parts">Search</button>
+        </div>
+    </div>
+</div>
+
+<?php if (count($garage)): ?>
+    <div class="your-garage">
+        <select id="your-garage-select">
+            <option>Your Garage (<?php echo count($garage); ?>)</option>
+            <?php foreach ($garage as $vehicle): ?>
+                <option value="<?php echo $vehicle['url']; ?>"><?php echo $vehicle['name']; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+<?php endif; ?>
+<div class="clearer">&nbsp;</div>
+<?php if ($overview): ?>
+    <div class="fitment-summary" style="clear: both;">
+        <div class="leftSection">        
+            <h2><?php echo $overview['year'] . "&nbsp;" . $overview['make']['Name'] . "&nbsp;" . $overview['model']['Name'] . "&nbsp;" . $overview['submodel']['Name']; ?></h2>
+            <div class="prodTxtBlock">
+                <h6>We have <?php echo count($skus); ?> Products that fit the <?php echo $overview['year'] . "&nbsp;" . $overview['make']['Name'] . "&nbsp;" . $overview['model']['Name'] . "&nbsp;" . $overview['submodel']['Name']; ?>, In These Categories.</h6> 
+                <ul>
+                    <?php foreach ($categories as $category): ?>
+                        <?php if (strtolower($category['label']) !== 'label2'): //see category attribute under Category Menu tab ?>
+                            <li><a href="<?php echo Mage::getBaseUrl() . 'fitment/index/parts/?cat=' . $category['id'] . '&' . $filters['params']; ?>"><?php echo $category['name']; ?>  <span>(<?php echo count($category['products']); ?>)</span></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>        
+                </ul>
+            </div>
+        </div>
+        <div class="rightSection">
+            <h2>About This Vehicle</h2>
+            <div class="rightTxt">
+                <?php
+                if (!empty($filterData)) {
+                    foreach ($filterData as $key => $data) {
+                        if (isset($fitmentData[$key])) {
+                            echo '<p>' . $fitmentData[$key] . ' : ' . $data . '</p>';
+                        }
+                    }
+                } else {
+                    echo 'No Vehicle Found';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php
+$ajaxurl = $block->getUrl('fitment/index/makes');
+?>
+
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "AJH_Fitment/js/fitmentajax": {
+                    "AjaxUrl": "<?php echo $ajaxurl; ?>",
+                    "StoreUrl": "<?php echo $block->getBaseUrl(); ?>"
+                },
+                "garagejs":{
+
+                }
+            }
+        }
+</script>
+<script type="text/javascript">
+//    var fitment = (function ($) {
+//        return {
+//            loadMake: function () {
+//                $.ajax({
+//                    url: '<?php echo $block->getUrl('fitment/index/makes') ?>',
+//                    data: {
+//                        year: $('#fitment_year').val()
+//                    },
+//                    beforeSend: function () {
+//                        $('.make-wrapper').prepend("<img src=\"<?php echo $block->getSkinUrl('images/opc-ajax-loader.gif'); ?>\" class=\"fitment-loader\" width=\"36px\" height=\"36px;\" alt=\"Loading ...\" />");
+//                        $('#fitment_make').prop('selectedIndex', 0).attr('disabled', true);
+//                        $('#fitment_model').prop('selectedIndex', 0).attr('disabled', true);
+//                        $('#fitment_submodel').prop('selectedIndex', 0).attr('disabled', true);
+//                        $('#fitment_parts').attr('disabled', true);
+//                        $('#qualifier_wrap').html('');
+//                    },
+//                    success: function (resp) {
+//                        console.log(resp);
+//                        fitment.setMakes(resp);
+//                        $('.make-wrapper').find(".fitment-loader").remove();
+//                    },
+//                    error: function (jqXHR, error, status) {
+//
+//                    }
+//                });
+//            },
+//            setMakes: function (makes) {
+//                $('#fitment_make').html(makes);
+//                $('#fitment_make').attr('disabled', false);
+//            },
+//            loadModel: function () {
+//                $.ajax({
+//                    url: '<?php echo $block->getUrl('fitment/index/models') ?>',
+//                    data: {
+//                        year: $('#fitment_year').val(),
+//                        make: $('#fitment_make').val()
+//                    },
+//                    beforeSend: function () {
+//                        $('.model-wrapper').prepend("<img src=\"<?php echo $block->getSkinUrl('images/opc-ajax-loader.gif'); ?>\" class=\"fitment-loader\" width=\"36px\" height=\"36px;\" alt=\"Loading ...\" />");
+//                        $('#fitment_submodel').prop('selectedIndex', 0).attr('disabled', true);
+//                        $('#fitment_parts').attr('disabled', true);
+//                        $('#qualifier_wrap').html('');
+//                    },
+//                    success: function (resp) {
+//                        fitment.setModels(resp);
+//                        $('.model-wrapper').find(".fitment-loader").remove();
+//                    },
+//                    error: function (jqXHR, error, status) {
+//
+//                    }
+//                });
+//            },
+//            setModels: function (models) {
+//                if (models.trim() === "") {
+//                    $('#fitment_model').fadeOut("fast");
+//                    $('#fitment_model').attr('disabled', false);
+//                    $('#fitment_submodel').fadeOut("fast");
+//                    $('#fitment_submodel').attr('disabled', false);
+//                    $(".fitment-action").css({display: 'inline-block'});
+//                    $('#fitment_parts').attr('disabled', false);
+//                } else {
+//                    $('#fitment_model').html(models);
+//                    $('#fitment_model').attr('disabled', false);
+//                }
+//            },
+//            loadSubModel: function () {
+//                $.ajax({
+//                    url: '<?php echo $block->getUrl('fitment/index/submodels') ?>',
+//                    data: {
+//                        year: $('#fitment_year').val(),
+//                        make: $('#fitment_make').val(),
+//                        model: $('#fitment_model').val(),
+//                    },
+//                    beforeSend: function () {
+//                        $('.submodel-wrapper').prepend("<img src=\"<?php echo $block->getSkinUrl('images/opc-ajax-loader.gif'); ?>\" class=\"fitment-loader\" width=\"36px\" height=\"36px;\" alt=\"Loading ...\" />");
+//                        $('#fitment_parts').attr('disabled', true);
+//                        $('#qualifier_wrap').html('');
+//                    },
+//                    success: function (resp) {
+//                        fitment.setSubModels(resp);
+//                        $('.submodel-wrapper').find(".fitment-loader").remove();
+//                    },
+//                    error: function (jqXHR, error, status) {
+//
+//                    }
+//                });
+//            },
+//            setSubModels: function (submodels) {
+//                if (submodels.trim() === "") {
+//                    $('#fitment_submodel').fadeOut("fast");
+//                    $(".fitment-action").css({display: 'inline-block'});
+//                    $('#fitment_parts').attr('disabled', false);
+//                } else {
+//                    $('#fitment_submodel').html(submodels);
+//                    $('#fitment_submodel').attr('disabled', false);
+//                }
+//            },
+//            setQualifiers: function (qualifiers) {
+//                $('#qualifier_wrap').html(qualifiers);
+//            },
+//            loadPartInfo: function () {
+//                var newurl = window.location.protocol + "//" + window.location.host + '/fitment/index/partByVehicleId/?year=' + $('#fitment_year').val() + '&make=' + $('#fitment_make').val() + '&model=' + $('#fitment_model').val() + '&submodel=' + $('#fitment_submodel').val();
+//                window.location = newurl;
+//            },
+//            loadQualifiers: function () {
+//                $.ajax({
+//                    url: '<?php echo $block->getUrl('fitment/index/qualifiers') ?>',
+//                    dataType: 'html',
+//                    data: {
+//                        year: $('#fitment_year').val(),
+//                        make: $('#fitment_make').val(),
+//                        model: $('#fitment_model').val(),
+//                        submodel: $('#fitment_submodel').val()
+//                    },
+//                    beforeSend: function () {
+//                        $('#qualifier_wrap').prepend("<img src=\"<?php echo $block->getSkinUrl('images/opc-ajax-loader.gif'); ?>\" class=\"fitment-loader\" width=\"36px\" height=\"36px;\" alt=\"Loading ...\" />");
+//                        $('#fitment_parts').attr('disabled', false);
+//                    },
+//                    success: function (resp) {
+//                        fitment.setQualifiers(resp);
+//                        $(".fitment-action").css({display: 'inline-block'});
+//                        $('#qualifier_wrap').find(".fitment-loader").remove();
+//                    },
+//                    error: function (jqXHR, error, status) {
+//
+//                    }
+//                });
+//            },
+//            loadVehicleParts: function () {
+//                var qualifiers = [];
+//                var _qualifiers = [];
+//
+//
+//                $('select[name="qualifiers[]"]').each(function (index) {
+//                    qualifiers.push($(this).val());
+//                    _qualifiers.push($(this).children("option:selected").data('title'));
+//                });
+//
+//                var newurl = window.location.protocol + "//" + window.location.host + '/fitment/index/categories/?year=' + $('#fitment_year').val() + '&make=' + $('#fitment_make').val() + '&model=' + $('#fitment_model').val() + '&submodel=' + $('#fitment_submodel').val() + '&qualifiers[]=' + qualifiers + '&_qualifiers[]=' + _qualifiers;
+//                window.location = newurl;
+//            }
+//        };
+//    })(jQuery);
+//
+//
+//    jQuery(document).ready(function ($) {
+//        $("#fitment_year").on('change', function () {
+//            fitment.loadMake();
+//        });
+//        $("#fitment_make").on('change', function () {
+//            fitment.loadModel();
+//        });
+//        $("#fitment_model").on('change', function () {
+//            fitment.loadSubModel();
+//        });
+//        $("#fitment_submodel").on('change', function () {
+//            fitment.loadQualifiers();
+//        });
+//
+//        $("#fitment_parts").on('click', function () {
+//            fitment.loadVehicleParts();
+//        });
+//
+//        $("select#your-vehicle-select").on('change', function () {
+//            if ($(this).val() === 'new') {
+//                $(".your-vehicle-wrapper").fadeOut("fast", function () {
+//                    $(".fitment_wrapper").fadeIn("fast");
+//                });
+//            }
+//        });
+//        $("select#your-garage-select, select#your-vehicle-select").on('change', function () {
+//            if ($(this).val() !== '' && $(this).val() !== 'new') {
+//                window.location = $(this).val();
+//            }
+//        });
+//    });
+
+
+    function setAjaxData(data, iframe) {
+        if (data.status == 'ERROR') {
+            // alert(data.message);
+        } else {
+            if (jQuery('.block-cart')) {
+                jQuery('.block-cart').replaceWith(data.sidebar);
+            }
+            if (jQuery('.header .links')) {
+                jQuery('.header .links').replaceWith(data.toplink);
+            }
+            jQuery.fancybox.close();
+        }
+    }
+    function setLocationAjax(url, id) {
+        url += 'isAjax/1';
+        url = url.replace("checkout/cart", "ajaxcart/index");
+
+        jQuery('#ajax_loader').show();
+        try {
+            jQuery.ajax({
+                cache: false,
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    jQuery('#ajax_loader').hide();
+                    if (jQuery('.mini-cart')) {
+                        jQuery('.mini-cart').replaceWith(data.sidebar);
+                    }
+                    if (jQuery('.header .links')) {
+                        jQuery('.header .links').replaceWith(data.toplink);
+                    }
+                }
+            });
+        } catch (e) {
+        }
+    }
+</script>

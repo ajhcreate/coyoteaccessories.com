@@ -1,0 +1,701 @@
+<?php
+//$isAccessAllowed = Mage::getSingleton('customer/session')->isLoggedIn();
+$isAccessAllowed = TRUE; //$block->isActiveRetailer();
+
+if ($isAccessAllowed):
+    $customer = $block->getCurrentCustomer();
+    $email = $customer->getEmail();
+    $firstname = $customer->getFirstname();
+    $middlename = $customer->getMiddlename();
+    $lastname = $customer->getLastname();
+    $address_id = $customer->getDefaultBilling();
+    if ($address_id) {
+        $address = $block->getAddress()->load($address_id);
+        $phone = $address->getTelephone();
+        $fax = $address->getFax();
+    }
+    $distributors = $block->getDistributor()->getDistributorsOptions();
+    $currentDistributor = $customer->getData(\AJH\D2R\Helper\Distributor::ATTR_DISTRIBUTOR_ID);
+    $years = $block->getVehicle()->getYears();
+    ?>
+    <div class="tpms-form">
+
+
+        <h1>TPMS Challenges Worksheet</h1>
+        <form id="tpms-help-form" action="<?php echo $block->getUrl('d2r/tpms/post') ?>" data-mage-init='{"validation": {}}' class="form" method="post" autocomplete="off">
+            <?php echo $block->getBlockHtml('formkey') ?>
+            <p>If the problem persists or you are experiencing difficulty with a sensor other than PDQ's, then use our worksheet
+                below. This worksheet will identify and troubleshoot situations that sometimes occur during TPMS replacement and
+                Re-learn for all sensors. If our handy form doesn't solve the problem before your done filling it out then just
+                click "Help me troubleshoot" and one of our technicians will get back to you shortly.<br/>
+                <b>All questions below must be answered in order for PDQ to research the problem.</b>
+            </p>            
+            <div class="date-post"><span>Date:</span><?php echo $date = date('m/d/Y'); ?> </div>
+            <div class="date-post"><span>Time:</span> <?php echo $time = date('H:i A'); ?> </div>
+
+            <div class="tpms-field">
+                <label for="TPMSResetToolUsed">What programming/Re-Learn tool was used?</label>
+                <div class="field">
+                    <input type="text" id="TPMSResetToolUsed" name="TPMSResetToolUsed" required="true" />
+                </div>
+            </div>
+
+            <div class="tpms-step">
+                <div class="tpms-field">
+                    <label for="softwareVersion">What software version?</label>
+                    <div class="field">
+                        <input type="text" class="" id="softwareVersion" name="softwareVersion" required="true" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="tpms-step">
+                <h2><strong>STEP ONE:</strong> Details</h2>
+
+                <div class="tpms-tireSwitch tpms-field">
+                    <div class="tpms-fieldName">Tire System</div>
+                    <div class="tpms-fields">
+                        <div class="tpms-miniField">
+                            <input  type="radio" id="tpms_tires_4" name="tires" value="4" />
+                            <label class="" for="tpms_tires_4">4 Tire</label>
+                        </div>
+                        <div class="tpms-miniField">
+                            <input  type="radio" id="tpms_tires_5" name="tires" value="5" />
+                            <label class="" for="tpms_tires_5">5 Tire</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <div class="tpms-fieldName">Tire Pressure on Tire Placard:</div>
+                    <div class="tpms-fields">
+                        <div class="tpms-miniField">
+                            <label for="PlacardFRONT">Front</label>
+                            <input type="text" class="TPMSIssue" id="PlacardFRONT" name="PlacardFRONT" required="true" />
+                        </div>
+                        <div class="tpms-miniField">
+                            <label for="PlacardREAR" >Rear</label>
+                            <input type="text" class="TPMSIssue" id="PlacardREAR" name="PlacardREAR" required="true" />
+                        </div>
+                        <div class="tpms-spare tpms-miniField">
+                            <label for="PlacardSPARE">Spare</label>
+                            <input type="text" class="TPMSIssue" id="PlacardSPARE" name="PlacardSPARE" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <div class="tpms-fieldName">Tire Pressures:</div>
+                    <div class="tpms-fields">
+                        <div class="tpms-fields-left">
+                            <div class="tpms-miniField">
+                                <label for="TireLF">LF</label>
+                                <input type="text" class="TPMSIssue" id="TireLF" name="TireLF" required="true">
+                            </div>
+                            <div class="tpms-miniField">
+                                <label for="TireRF">RF</label>
+                                <input type="text" class="TPMSIssue" id="TireRF" name="TireRF" required="true">
+                            </div>
+                        </div>
+                        <div class="tpms-fields-left">
+                            <div class="tpms-miniField">
+                                <label for="TireLR">LR</label>
+                                <input type="text" class="TPMSIssue" id="TireLR" name="TireLR" required="true">
+                            </div>
+                            <div class="tpms-miniField">
+                                <label for="TireRR">RR</label>
+                                <input type="text" class="TPMSIssue" id="TireRR" name="TireRR" required="true">
+                            </div>
+                        </div>
+                        <div class="tpms-spare tpms-miniField">
+                            <label for="TireSpare">Spare</label>
+                            <input type="text" class="TPMSIssue" id="TireSpare" name="TireSpare">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="TPMS_VIN">What is the vehicle <strong>VIN</strong> # ?</label>
+                    <div class="field">
+                        <input type="text" class="TPMSIssue infiled" id="TPMS_VIN" name="TPMS_VIN" />
+                        <div id="vehicleYear-msg"></div>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="vehicleYear">What <strong>year</strong> is the vehicle?</label>
+                    <div class="field">
+                        <select id="vehicleYear" name="vehicleYear">
+                            <option value="">Year</option>
+                            <?php foreach ($years as $year): ?>
+                                <option value="<?php echo (int) $year ?>"><?php echo (int) $year ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="vehicleMake">What <strong>make</strong> is the vehicle?</label>
+                    <div class="field">
+                        <select id="vehicleMake" name="vehicleMake"></select>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="vehicleModel">What <strong>model</strong> is the vehicle?</label>
+                    <div class="field">
+                        <select id="vehicleModel" name="vehicleModel"></select>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="vehicleSubmodel">What <strong>sub-model</strong> is the vehicle?</label>
+                    <div class="field">
+                        <select id="vehicleSubmodel" name="vehicleSubmodel"></select>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <div class="tpms-fieldName">Recommended sensors:
+                        <p>These are the recommended sensors for your vehicle:</p>
+                    </div>
+                    <div id="recommendedSensorsResult" class="tpms-recommendedSensorsResult field">
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="TPMSRelearnProc">What re-learn procedure was used?</label>
+                    <div class="field">
+                        <select class="" id="TPMSRelearnProc" name="TPMSRelearnProc">
+                            <option value="" selected="selected"></option>
+                            <option value="PDQ Site">PDQ Site</option>
+                            <option value="Mitchel 1 Guide">Mitchel 1 Guide</option>
+                            <option value="TIA Chart">TIA Chart</option>
+                            <option value="Owner Manual">Owner Manual</option>
+                            <option value="None">None</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="RelearnOther">If &quot;Other&quot; selected above please enter a relearn procedure source</label>
+                    <div class="field">
+                        <input type="text" id="RelearnOther" name="RelearnOther" />
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="TPMSPartNo">What sensor part# was purchased?</label>
+                    <div class="field">
+                        <input type="text" id="TPMSPartNo" name="TPMSPartNo" />
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <div class="tpms-fieldName">Wheel Type</div>
+                    <div class="tpms-fields">
+                        <div class="tpms-miniField">
+                            <input type="radio" id="wheeltype-OE" name="wheeltype" value="2" title="OE" checked="checked" />
+                            <label for="wheeltype-OE">OE</label>
+                        </div>
+                        <div class="tpms-miniField">
+                            <input type="radio" id="wheeltype-AM" name="wheeltype" value="3" title="After Market" />
+                            <label for="wheeltype-AM">After Market</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="TPMSProximity">What is the proximity of the original sensors to the vehicle?</label>
+                    <div class="field">
+                        <select class="" id="TPMSProximity" name="TPMSProximity">
+                            <option value=""></option>
+                            <option value="More than 100 ft from vehicle">More than 100 ft from vehicle</option>
+                            <option value="Inside Vehicle">Inside Vehicle</option>
+                            <option value="In vehicle trunk">In vehicle trunk</option>
+                            <option value="In garage">In garage</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="TPMSNotes">Notes</label>
+                    <div class="field">
+                        <textarea rows="4" cols="53" id="tpmsNotes" name="tpmsNotes"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="tpms-step">
+                <h2><strong>STEP TWO:</strong> Customer Information</h2>
+
+                <div class="tpms-field">
+                    <label for="TPMSCustName">Customer Name</label>
+                    <div class="field">
+                        <input type="text" class="" id="TPMSCustName" name="TPMSCustName" />
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="TPMSPhone">Customer Phone</label>
+                    <div class="field">
+                        <input type="text" class="" id="TPMSPhone" name="TPMSPhone" />
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="TPMSEmail">Email</label>
+                    <div class="field">
+                        <input type="text" class="" id="TPMSEmail" name="TPMSEmail" data-validate="{required:true, 'validate-email':true}" />
+                    </div>
+                </div>
+            </div>
+            <div class="tpms-step">
+                <h2><strong>STEP THREE:</strong> Installer Information</h2>
+
+                <div class="tpms-field">
+                    <label for="distributorName">Distributor Name</label>
+                    <div class="field">
+                        <select class="" name="distributorName" id="distributorName">
+                            <option value="">-- Select a distributor --</option>
+                            <?php foreach ($distributors as $id => $name): ?>
+                                <option value="<?php echo $id ?>"
+                                <?php echo $id == $currentDistributor ? ' selected="selected"' : '' ?>
+                                        ><?php echo htmlspecialchars($name) ?></option>
+                                    <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="InstallerShop">Name of Installer's Shop</label>
+                    <div class="field">
+                        <input type="text" class="" id="InstallerShop" name="InstallerShop">
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="InstallerName">Installer's Name</label>
+                    <div class="field">
+                        <input type="text" value="<?php echo htmlspecialchars($firstname . ' ' . $middlename . ' ' . $lastname) ?>" 
+                               id="InstallerName" name="InstallerName" />
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="InstallerPhone">Installer's Phone #</label>
+                    <div class="field">
+                        <input type="text" value="<?php
+                        if (isset($phone)) {
+                            echo htmlspecialchars($phone);
+                        }
+                        ?>" 
+                               id="InstallerPhone" name="InstallerPhone" />
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="InstallerFax">Installer's Fax #</label>
+                    <div class="field">
+                        <input type="text" value="<?php
+                        if (isset($fax)) {
+                            echo htmlspecialchars($fax);
+                        }
+                        ?>" 
+                               id="InstallerFax" name="InstallerFax" />
+                    </div>
+                </div>
+
+                <div class="tpms-field">
+                    <label for="InstallerEmail">Installer's/Shop's E-Mail Address</label>
+                    <div class="field">
+                        <input type="text" value="<?php
+                        if (isset($email)) {
+                            echo htmlspecialchars($email);
+                        }
+                        ?>" 
+                               id="InstallerEmail" name="InstallerEmail" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="tpms-step">
+                <h2><strong>STEP FIVE:</strong> Submit Form</h2>
+                <button type="submit" class="send_button action submit primary" id="btnSend">Help me troubleshoot</button>
+            </div>
+        </form>
+        <div id="tpms-result"></div>
+    </div>
+
+    <script type="text/javascript">
+        var TPMS_SETTINGS = {
+            vehicleURLs: {
+                make: "<?php echo $block->getUrl('_search/index/getMake') ?>".replace('http:', location.protocol),
+                model: "<?php echo $block->getUrl('_search/index/getModel') ?>".replace('http:', location.protocol),
+                submodel: "<?php echo $block->getUrl('_search/index/getSubmodel') ?>".replace('http:', location.protocol),
+                search: "<?php echo $block->getUrl('d2r/tpms/search') ?>".replace('http:', location.protocol)
+            },
+            submitURL: "<?php echo $block->getUrl('d2r/tpms/post') ?>".replace('http:', location.protocol)
+        };
+    </script>   
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'mage/validation'
+        ], function ($) {
+            var form = $('form#tpms-help-form');
+            
+            $("form#tpms-help-form").on("submit", function () {
+                if (!form.valid())
+                    return;
+                var ob = objectifyForm(form.serializeArray());
+                var data = {
+                    form_key: ob.form_key,
+                    customerName: ob.TPMSCustName,
+                    customerPhone: ob.TPMSPhone,
+                    customerEmail: ob.TPMSEmail,
+                    distributorName: $('#distributorName option:selected').text(),
+                    distributorId: $('#distributorName').val(),
+                    installerShop: ob.InstallerShop,
+                    installerName: ob.InstallerName,
+                    installerPhone: ob.InstallerPhone,
+                    installerFax: ob.InstallerFax,
+                    installerEmail: ob.InstallerEmail,
+                    tireSystem: $("input[name='tires']:checked").val(),
+                    placardFront: ob.PlacardFRONT,
+                    placardRear: ob.PlacardREAR,
+                    placardSpare: ob.PlacardSPARE,
+                    tireLF: ob.TireLF,
+                    tireRF: ob.TireRF,
+                    tireLR: ob.TireLR,
+                    tireRR: ob.TireRR,
+                    tireSpare: ob.TireSpare,
+                    vin: ob.TPMS_VIN,
+                    vehicleYear: $('#vehicleYear option:selected').text(),
+                    vehicleMake: $('#vehicleMake option:selected').text(),
+                    vehicleModel: $('#vehicleModel option:selected').text(),
+                    vehicleSubmodel: $('#vehicleSubmodel option:selected').text(),
+                    relearnProc: $('#TPMSRelearnProc option:selected').text(),
+                    relearnProcOther: ob.RelearnOther,
+                    sensorPartNo: ob.TPMSPartNo,
+                    resetToolUsed: ob.TPMSResetToolUsed,
+                    relearnToolUsed: ob.relearnToolUsed,
+                    softwareVersion: ob.softwareVersion,
+                    wheelType: $("input[name='wheeltype']:checked").attr('title'),
+                    sensorProximity: $('#TPMSProximity option:selected').val(),
+                    tpmsNotes: $('#tpmsNotes').val(),
+                    vehicleYearId: $('#vehicleYear option:selected').val(),
+                    vehicleMakeId: $('#vehicleMake option:selected').val(),
+                    vehicleModelId: $('#vehicleModel option:selected').val(),
+                    vehicleSubmodelId: $('#vehicleSubmodel option:selected').val()
+                };
+
+                $.ajax({
+                    url: TPMS_SETTINGS.submitURL,
+                    type: "POST",
+                    data: data,
+                    success: function (response) {
+                        form.hide();
+                        $('#tpms-result').html(response);
+                    }
+                });
+            });
+
+            function vinYearCheck() {
+                $('#vehicleYear-msg').text('');
+                var year = parseInt($("#vehicleYear").val());
+                var vin = $("#TPMS_VIN").val();
+                var ten = vin.charAt(9).toUpperCase();
+                var map = {
+                    "A": [1980, 2010],
+                    "B": [1981, 2011],
+                    "C": [1982, 2012],
+                    "D": [1983, 2013],
+                    "E": [1984, 2014],
+                    "F": [1985, 2015],
+                    "G": [1986, 2016],
+                    "H": [1987, 2017],
+                    "J": [1988, 2018],
+                    "K": [1989, 2019],
+                    "L": [1990],
+                    "M": [1991],
+                    "N": [1992],
+                    "P": [1993],
+                    "R": [1994],
+                    "S": [1995],
+                    "T": [1996],
+                    "V": [1997],
+                    "W": [1998],
+                    "X": [1999],
+                    "Y": [2000],
+                    "1": [2001],
+                    "2": [2002],
+                    "3": [2003],
+                    "4": [2004],
+                    "5": [2005],
+                    "6": [2006],
+                    "7": [2007],
+                    "8": [2008],
+                    "9": [2009]
+                };
+
+                if ($.inArray(year, map[ten]) !== -1) {
+                    $('#vehicleYear-msg').text('');
+                } else {
+                    $('#vehicleYear-msg').text('WARNING! - Selected year does not match VIN');
+                }
+            }
+
+            function objectifyForm(formArray) {//serialize data function
+                var res = {};
+                for (var i = 0; i < formArray.length; i++) {
+                    res[formArray[i]['name']] = formArray[i]['value'];
+                }
+                return res;
+            }
+
+            function resetDropdown(type) {
+                switch (type) {
+                    case 'make':
+                        $('#vehicleMake').html('<option value="">Make</option>');
+
+                    case 'model':
+                        $('#vehicleModel').html('<option value="">Model</option>');
+
+                    case 'submodel':
+                        $('#vehicleSubmodel').html('<option value="">Sub Model</option>');
+
+                    default:
+                        $('#recommendedSensorsResult').html('');
+                }
+            }
+
+            //vehicle make
+            $.validator.addMethod("notEqual", function (value, element, param) {
+                return this.optional(element) || value !== param;
+            }, "Select the make of vehicle");
+
+            //Sensor proximity 100ft
+            $.validator.addMethod("isEqual", function (value, element, param) {
+                return this.optional(element) || value == param;
+            }, "Original sensors must be more than 100 feet from vehicle during relearn procedure");
+
+            //Front Tire Pressure 25%
+            $.validator.addMethod("isFrontPressure", function (value, element, param) {
+                var p = parseInt($('#PlacardFRONT').val());
+                return (value >= 0.75 * p && value <= 1.25 * p);
+            }, "Front tire pressure must be within 25% +/- of front placard pressure");
+
+            //Rear Tire Pressure 25%
+            $.validator.addMethod("isRearPressure", function (value, element, param) {
+                var p = parseInt($('#PlacardREAR').val());
+                return (value >= 0.75 * p && value <= 1.25 * p);
+            }, "Rear tire pressure must be within 25% +/- of rear placard pressure");
+
+            //Spare Tire Pressure 25%
+            $.validator.addMethod("isSparePressure", function (value, element, param) {
+                var p = parseInt($('#PlacardSPARE').val());
+                return (value >= 0.75 * p && value <= 1.25 * p);
+            }, "Spare tire pressure must be within 25% +/- of spare placard pressure");
+
+            //VIN check
+            $.validator.addMethod('vinNum', function (value) {
+                if (value.length != 17)
+                    return false;
+                return /[0-9A-Z]{17}/g.test(value.toUpperCase());
+            }, 'The VIN number is not correct');
+
+            // Purchased part is one of the recommended
+            $.validator.addMethod('isRecommendedSensor', function (value, element, param) {
+                var v = value.toUpperCase(); // $('#TPMSPartNo').val()
+                var sensors = $('#recommendedSensorsResult .tpms-sensor');
+                if (!sensors.length) {
+                    return true;
+                }
+                for (var i = 0; i < sensors.length; i++) {
+                    if ($.trim(sensors[i].innerHTML).toUpperCase() == v) {
+                        return true;
+                    }
+                }
+                return false;
+            }, 'You should have used one of the recommended sensors');
+
+            // If other is picked from "What relearn procedure is was used" Make Other Required
+            $.validator.addMethod('relearnOtherProc', function (value, element, param) {
+                return ('Other' != $('#TPMSRelearnProc option:selected').val())
+                        || $.trim(value);
+            }, 'Describe the relearn procedure you used');
+
+            $('.tpms-tireSwitch input').on('change', function (e) {
+                if (e.target.value == 4) {
+                    $(e.target).closest('.tpms-step').addClass('tpms-wheels-4');
+                } else {
+                    $(e.target).closest('.tpms-step').removeClass('tpms-wheels-4');
+                }
+            });
+
+            $('#tpms_tires_4').click();
+
+            $('#vehicleYear').on("change", function () {
+                resetDropdown('make');
+                var year = $(this).val();
+                if (year) {
+                    $.ajax({
+                        url: TPMS_SETTINGS.vehicleURLs.make,
+                        data: {year: year},
+                        success: function (data) {
+                            $('#vehicleMake').html(data);
+                        }
+                    });
+                }
+            });
+
+            $('#vehicleMake').on("change", function () {
+                resetDropdown('model');
+                var year = $('#vehicleYear').val();
+                var make = $('#vehicleMake').val();
+                var img = $("#vehicleMake option:selected").text();
+                if (year && make) {
+                    $.ajax({
+                        url: TPMS_SETTINGS.vehicleURLs.model,
+                        data: {year: year, make: make},
+                        success: function (data) {
+                            $('#vehicleModel').html(data);
+                        }
+                    });
+                }
+            });
+
+            $('#vehicleModel').on("change", function () {
+                resetDropdown('submodel');
+                var year = $('#vehicleYear').val();
+                var make = $('#vehicleMake').val();
+                var model = $('#vehicleModel').val();
+                if (year && make && model) {
+                    $.ajax({
+                        url: TPMS_SETTINGS.vehicleURLs.submodel,
+                        data: {year: year, make: make, model: model},
+                        success: function (data) {
+                            $('#vehicleSubmodel').html(data);
+                        }
+                    });
+                }
+            });
+
+            $('#vehicleSubmodel').on("change", function () {
+                resetDropdown();
+                var year = $('#vehicleYear').val();
+                var make = $('#vehicleMake').val();
+                var model = $('#vehicleModel').val();
+                var submodel = $('#vehicleSubmodel').val();
+                if (year && make && model && submodel) {
+                    $.ajax({
+                        url: TPMS_SETTINGS.vehicleURLs.search,
+                        data: {year: year, make: make, model: model, submodel: submodel},
+                        success: function (response) {
+                            $('#recommendedSensorsResult').html(response);
+                        }
+                    });
+                }
+            });
+
+            $("#TPMSProximity").on("change", function (e) {
+                var prox = document.getElementsByName("TPMSProximity")[0].value;
+                if (prox !== 'More than 100 ft from vehicle') {
+                    $('#TPMSProximity-msg').text('Original sensors must be more than 100 feet from vehicle during relearn procedure');
+                } else {
+                    $('#TPMSProximity-msg').text('');
+                }
+            });
+
+            $("#vehicleYear").on("change", function (e) {
+                if (parseInt($('#vehicleYear option:selected').val()) >= 1980) {
+                    vinYearCheck();
+                } else {
+                    $('#vehicleYear-msg').text('');
+                }
+            });
+
+            $("#TPMS_VIN").on('input', function () { // 1FMHK7F89CGA19141
+                var v = parseInt($('#vehicleYear option:selected').val());
+                if (v && v >= 1980) {
+                    vinYearCheck();
+                }
+            });
+
+            $("#TPMSPhone, #InstallerPhone, #InstallerFax").on('change blur keypress', function () {
+                var number = $(this).val().replace(/[^\d]/g, '');
+                if (number.length) {
+                    number = '(' + number.substr(0, 3) + ') ' + number.substr(3, 3) + '-' + number.substr(6);
+                }
+                $(this).val(number);
+            });
+
+            $('#tpms-help-form').mage('validation', {
+                rules: {
+                    softwareVersion: {required: true},
+                    tires: {required: true},
+                    PlacardFRONT: {required: true},
+                    PlacardREAR: {required: true},
+                    PlacardSPARE: {required: '#tpms_tires_5:checked'},
+                    TireLF: {required: true, isFrontPressure: true},
+                    TireRF: {required: true, isFrontPressure: true},
+                    TireLR: {required: true, isRearPressure: true},
+                    TireRR: {required: true, isRearPressure: true},
+                    TireSpare: {required: '#tpms_tires_5:checked', isSparePressure: true},
+                    TPMS_VIN: {required: true, vinNum: true},
+                    vehicleYear: {required: true},
+                    vehicleMake: {required: true},
+                    vehicleModel: {required: true},
+                    vehicleSubmodel: {required: true},
+                    TPMSRelearnProc: {required: true},
+                    RelearnOther: {relearnOtherProc: true},
+                    TPMSPartNo: {isRecommendedSensor: true},
+                    TPMSReset: {required: true, minlength: 1},
+                    TPMSResetToolUsed: {required: true},
+                    wheeltype: {required: true},
+                    TPMSProximity: {required: true, isEqual: "More than 100 ft from vehicle"},
+                    TPMSCustName: {required: true, minlength: 1},
+                    TPMSPhone: {required: true, phoneUS: true},
+                    TPMSEmail: {required: true, email: true},
+                    distributorName: {required: true},
+                    InstallerShop: {required: true, minlength: 1},
+                    InstallerName: {required: true, minlength: 1},
+                    InstallerPhone: {required: true, phoneUS: true},
+                    InstallerFax: {},
+                    InstallerEmail: {required: true, email: true}
+                },
+                messages: {
+                    distributorName: {required: "Distributor name required"},
+                    InstallerName: {required: "Name of the person who installed"},
+                    TPMS_tires: {required: "Select either 4 tire or 5 tire system"},
+                    TPMSReset: {required: "Reset tool, use NA if not applicable"},
+                    wheeltype: {required: "Select a wheel type"},
+                    tires: {required: "Select either 4 tire or 5 tire system"},
+                    make: {required: "Select make of vehicle"}
+                },
+                errorPlacement: function (error, element) {
+                    if (element.is(":radio") && element.attr('name') === 'wheeltype') {
+                        error.appendTo(element.parents('.oe-after'));
+                    } else if (element.is(":radio") && element.attr('name') === 'tires') {
+                        error.appendTo(element.parents('.tire-list'));
+                    } else { // This is the default behavior 
+                        error.insertAfter(element);
+                    }
+                }
+            });
+        });
+
+    </script>
+
+<?php else: ?>
+    <div class="tpms-loginRequired">
+        <h1>Login Required</h1>
+        <p>You must have a PDQ website account and be logged in to access this feature.</p>
+        <p><a href="<?php echo $block->getUrl('customer/account/login') ?>">Click here</a> to login.</p>
+        <p>If you need to establish an account, <a href="<?php echo $block->getUrl('customer/account/create') ?>">click here</a>
+            to register, otherwise <a href="javascript:history.back()">click here</a> to go back to the previous page.
+        </p>
+    </div>
+<?php endif ?>

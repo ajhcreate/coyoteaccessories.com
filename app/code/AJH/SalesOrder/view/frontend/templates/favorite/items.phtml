@@ -1,0 +1,288 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_orders = $this->getOrders(); ?>
+<?php ?>
+<div class="page-title">
+    <h1><?php echo __('My Favorite Items') ?></h1>
+</div>
+<?php // echo $this->getChildHtml('top-pager')  ?>
+<?php // echo $this->getPagerHtml(); ?>
+<?php if ($_orders->getSize()): ?>     
+
+
+    <form method="post" action="<?php echo $this->getUrl('salesorder/orders/multiple') ?>" id="reorder-validate-detail">
+        <?php echo $this->getBlockHtml('formkey'); ?>
+
+        <div id="my-orders-table_filter" class="dataTables_filter">
+            <label>Search:</label>
+            <input type="text" class="" id="favorite-filter-box" placeholder="" aria-controls="my-orders-table" />
+        </div>
+
+        <div class="actions addtocart" style="float:right;">
+            <button type="submit" title="<?php echo __('Add to Cart') ?>" class="button btn-cart reorder">
+                <span><span><?php echo __('Add to Cart') ?></span></span>
+            </button>
+        </div>        
+        <table id="my-orders-table" class="dataTable no-footer">
+            <col width="1" />
+            <col width="1" />
+            <col />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
+            <thead>
+                <tr>
+                    <th id="cat-main"><?php echo __('Category') ?></th>
+                    <th><?php echo __('Part #') ?></th>	
+                    <th><?php echo __('Description') ?></th>
+                    <th><?php echo __('Inner') ?></th>
+                    <th><?php echo __('Master') ?></th>
+                    <th><?php echo __('Qty') ?></th>
+                    <th><span class="nobr"><?php echo __('Unit Price') ?></span></th>
+                    <th><span class="nobr"><?php echo __('Order Status') ?></span></th>
+                    <th><span class="nobr"><?php echo __('Available') ?></span></th>
+                    <th><?php echo __('Order') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $_odd = ''; ?>
+                <?php $getAllOrders = array(); ?>
+                <?php /** @var Mage_Sales_Model_Order $_order */ ?>
+                <?php
+                foreach ($_orders as $_order) {
+                    $order = $_order;
+                    $ordered_items = $order->getAllItems();
+                    $totalCount = count($ordered_items);
+//                    echo 'totalCount' . ' - ' . $totalCount;
+                    /** @var Mage_Sales_Model_Order_Item $item */
+                    foreach ($ordered_items as $item) {
+                        if ($_product = $item->getProduct()) {
+                            $_product = $item->getProduct();
+                            $product_id = $_product->getId();
+                            $cats = $_product->getCategoryIds();
+
+                            $category_name = 'no-category';
+
+                            if (isset($cats[0])) {
+                                $category_id = $cats[0];
+
+                                $category = $block->getProductCategoriesList($category_id);
+                                $category_name = implode(", ", $category);
+                            }
+
+                            $url = $_product->getProductUrl();
+                            $getPrice = $item->getPrice() - $item->getDiscountAmount();
+                            $getAllOrders[$category_name][] = array(
+                                'itemId' => $item->getItemId(),
+                                'cat_id' => $category_id,
+                                'sku' => $item->getSku(),
+                                'price' => $getPrice,
+                                'order_id' => $_order->getRealOrderId(),
+                                'product_id' => $product_id,
+                                'item_name' => $item->getName(),
+                                'category_name' => $category_name,
+                                'order_status' => $_order->getStatusLabel(),
+                                'qty' => $item->getQtyOrdered(),
+                                'url' => $url
+                            );
+                        }
+                    }
+                    ?>
+                <?php } ?>                
+                <?php ksort($getAllOrders); ?>
+                <?php
+                $key = 0;
+                foreach ($getAllOrders as $_orders) :
+                    $getAllFilterOrders = $block->unique_multidimensional_array($_orders, 'sku');
+                    $totalCount = count($getAllFilterOrders);
+                    $i = 1;
+                    foreach ($getAllFilterOrders as $orders) {
+                        /** @var Mage_Catalog_Model_Product $_product */
+                        $_product = $block->getProductById($orders['product_id']);
+
+//                        var_dump($_product->getAttributeText('visibility')) . "<br/>";
+//                        echo $_product->getAttributeText('visibility')->getText() . "<br/>";
+//                        echo $_product->getVisibility() . "<br/>";
+//                        echo $_product->getId() . "<br/>";
+//                        echo $_product->getName() . "<br/>";
+                        
+                        if (intval($_product->getVisibility()) === 4):
+
+                            /** to filter the actual product sku, for products like Bundle Products * */
+                            $real_sku = $_product->getSku();
+
+                            $itemImage = $this->getUrl("pub/media/catalog/") . "product/" . $_product->getData('small_image');
+                            ?>
+                            <tr <?php echo $i == $totalCount ? 'class="td-final-row"' : ''; ?>>
+                                <td <?php echo $i != 1 ? 'class="td-no-color"' : ''; ?>>
+                                    <span class="nobr"><?php echo $orders['category_name'] ?></span>
+                                </td>
+                                <td>
+                                    <a id="<?php echo $real_sku ?>-12" class="fav-order-item product-sku" href="<?php echo $orders['url'] ?>" title="<?php echo $real_sku ?>" ><?php echo $real_sku ?></a>
+                                    <div class="odr-img-w d-none" id="<?php echo $orders['sku'] ?>-13"><img src="<?php echo $itemImage; ?>" /></div>
+                                </td>				
+                                <td>                                
+                                    <a id="<?php echo $orders['sku'] ?>-14" class="nobr fav-order-item product-name" href="<?php echo $orders['url'] ?>" title="<?php echo $orders['item_name'] ?>">
+                                        <?php echo (strlen(strip_tags($orders['item_name'])) > 50 ? substr(strip_tags($orders['item_name']), 0, 50) . '...' : strip_tags($orders['item_name'])); ?>
+                                    </a>                                
+                                    <div class="odr-img-w d-none" id="<?php echo $real_sku ?>-15">
+                                        <img src="<?php echo $itemImage; ?>" />                                
+                                    </div>
+                                </td>
+                                <!-- Display custom attribute inner and master -->
+
+                                <td><?php echo $_product->getData("web_level_1_qty"); ?></td>
+                                <td><?php echo $_product->getData("web_level_2_qty"); ?></td>
+
+                                <!-- Display custom attribute inner and master -->
+                                <td>
+                                    <input type="text" maxlength="6" class="input-text qty fabqty" title="Qty" size="6" value="<?php echo (int) $orders['qty']; ?>"  name="qty[<?php echo $key; ?>]"></td>
+                                <td>
+                                    <?php
+// without currency sign
+                                    $productFinalPrice = $_product->getFinalPrice();
+// with currency sign
+                                    $_formattedSpecialPrice = $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($productFinalPrice, true, false);
+                                    echo $_formattedSpecialPrice;
+                                    ?>
+                                </td>
+                                <td><em><?php echo $orders['order_status'] ?></em></td>
+                                <td><em><?php echo $_product->isSaleable() ? __('In Stock') : __('Out of Stock') ?></em></td>
+                                <td>
+                                    <span class="nobr">
+                                        <input type="checkbox" name="skus[<?php echo $key; ?>]" id="reorder-item-<?php echo $real_sku; ?>" value="<?php echo $real_sku; ?>" title="<?php echo __('Add to Cart') ?>" class="selected-product-addtocart checkbox validate-one-required-by-name" />
+                                    </span>
+                                </td>
+                            </tr>	
+                            <tr>
+                                <td colspan="9"><div id="cart-sidebar-reorder-advice-container"></div></td>
+                            </tr>                    
+                            <?php
+                        endif;
+                        $i++;
+                        $key++;
+                    } endforeach;
+                ?>
+
+            </tbody>
+        </table>
+
+        <div class="actions addtocart" style="float:right;">
+            <button type="submit" title="<?php echo __('Add to Cart') ?>" class="button btn-cart reorder"><span><span><?php echo __('Add to Cart') ?></span></span></button>
+        </div>
+    </form>    
+    <?php // echo $this->getPagerHtml();    ?>
+    <script>
+        require([
+            'Magento_Ui/js/modal/alert',
+            'jquery'
+        ], function (alert, $) {
+
+    //            var dataForm = $('#form-validate');
+    //            var ignore = null;            
+
+            $(".fav-order-item").hover(function () {
+                $(this).next("div").removeClass("d-none");
+            }, function () {
+                $(this).next("div").addClass("d-none");
+            });
+
+            $(".btn-cart.reorder").on("click", function (evnt) {
+                evnt.preventDefault();
+
+                if ($(".selected-product-addtocart:checked").length > 0) {
+                    $("form#reorder-validate-detail").submit();
+                } else {
+                    alert({
+                        type: 'popup',
+                        responsive: true,
+                        title: $.mage.__(''),
+                        content: $.mage.__('<div class="select-product-alert">Select a product(s) that you want to add to cart.</div>'),
+                        buttons: []
+                    });
+                }
+
+            });
+
+            $('#reorder-validate-detail').keypress(function (e) {
+                var key = e.which;
+                if (key == 13)  // the enter key code
+                {
+                    return false;
+                }
+            });
+
+            $("#favorite-filter-box").keyup(function () {
+                console.log('triggered');
+                var input, filter, table, tr, td, td1, td2, i, ii, txtValue, tdx;
+                input = document.getElementById("favorite-filter-box");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("my-orders-table");
+                tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    tdx = tr[i].getElementsByTagName("td").length;
+
+                    td = tr[i].getElementsByTagName("td")[0];
+                    td1 = tr[i].getElementsByTagName("td")[1];
+                    td2 = tr[i].getElementsByTagName("td")[2];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                    if (td1) {
+                        txtValue = td1.textContent || td1.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                    if (td2) {
+                        txtValue = td2.textContent || td2.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+
+                }
+
+            });
+
+        });
+    </script>    
+<?php else: ?>
+    <p><?php echo __('You have placed no orders.'); ?></p>
+<?php endif;

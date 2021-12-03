@@ -1,0 +1,172 @@
+<?php
+$init_rows = 5;
+?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<form class="form-inline" method="post" action="<?php echo $block->getUrl('orderbysku/index/addcart', array('_secure' => true)); ?>" name="orderbyskuform" id="orderbyskuform">
+    <div id="TextBoxesGroup">
+        <?php for ($x = 1; $x <= $init_rows; $x++): ?>
+            <div class="form-group p-3" id="TextBoxDiv<?php echo $x; ?>">	
+                <label for="TextBox<?php echo $x; ?>" class="font-weight-bold text-uppercase">Sku #<?php echo $x; ?> : </label>
+                <input type="text" id="TextBox<?php echo $x; ?>" name="sku[]" required="true" placeholder="Enter Sku" class="ordersku form-control" value="" autocomplete="off" />		
+                <label for="qty<?php echo $x; ?>" class="font-weight-bold text-uppercase">Qty #<?php echo $x; ?> : </label>
+                <input type="text" id="qty<?php echo $x; ?>" name="qty[]" required="true" placeholder="Enter Qty" class="product_qty form-control" />
+                <?php if ($x > 1): ?><a href="#" class="removeid" id="<?php echo $x; ?>"><i class="fa fa-trash"></i></a><?php endif; ?>
+                <div class="resultdata"></div>
+                <div class="product-name"></div>
+            </div>
+        <?php endfor; ?>                
+    </div>
+    <div id="muliSelect6" class="list-group multipleCheckbox" data-mage-init='{"loader": {"texts":"Loading products ..."}}'>
+        <div class="loader list-group-item list-group-item-action lead">Loading products ...</div>
+        <h4 class="header-wrap list-group-item list-group-item-action disabled">
+            <span class="title font-weight-bold text-uppercase">Please select product from the list</span>
+            <span class="close-product-list">&times;</span>
+        </h4>
+    </div>
+    <div class="form-actions w-100">
+        <input type="submit" name="submit" value="Add To Cart" class="bulk-order-btn button btn-continue btn-inline" />
+        <input type="button" value="Add New" id="addButton" class="bulk-order-btn button btn-continue btn-inline" />
+        <input type="button" value="Remove" id="removeButton" class="bulk-order-btn button btn-continue btn-inline" />
+    </div>
+
+</form>
+<div class="error"></div>
+<script type="text/x-magento-init">
+    {
+    "*": {            
+    "orderbyskujs":{                
+    "fechtAttrUrl": "<?php echo $block->getUrl("orderbysku/index/fetchattr", array('_secure' => true)); ?>",
+    "orderDataUrl": "<?php echo $block->getUrl("orderbysku/index/orderdata", array('_secure' => true)); ?>"
+    }
+    }
+    }
+</script>
+<script>
+    require([
+        "jquery",
+        "loader",
+        "domReady!"
+    ], function ($) {
+        var counter = 6;
+        var current_field;
+        $(".product_qty").on("keypress", function (event) {
+            if ((event.which != 8 && isNaN(String.fromCharCode(event.which))) || event.which == 32) {
+                event.preventDefault(); //stop character from entering input
+            }
+        });
+
+        $("#addButton").click(function () {
+            $("#muliSelect6").css("display", "none");
+            var newTextBoxDiv = $("#TextBoxesGroup").append("<div class=\"form-group p-3\" id=\"TextBoxDiv" + counter + "\" />");
+            $("#TextBoxDiv" + counter).html('<label for="TextBox' + counter + '" class="font-weight-bold text-uppercase">Sku #' + counter + ' : </label>' +
+                    '<input autocomplete="off" type="text" id="TextBox' + counter + '" class="ordersku form-control" required="true" placeholder="Enter Sku" name="sku[]' +
+                    '" id="textbox' + counter + '" >' + '<label for=\"qty' + counter + '\" class="font-weight-bold text-uppercase">Qty #' + counter + ' : </label>' +
+                    '<input type="text" required="true" placeholder="Enter Qty" onkeypress="return isNumberKey(event)" name="qty[]' +
+                    '" id="qty' + counter + '" class="product_qty form-control" >' +
+                    '<a href="#" class="removeid" id="' + counter + '"><i class="fa fa-trash"></i></a>' +
+                    '<div class ="resultdata" style="display:none"></div><div class="product-name"></div>');
+
+
+            newTextBoxDiv.appendTo("#TextBoxesGroup");
+            $("#removeButton").fadeIn("fast");
+            counter++;
+        });
+
+        $(".removeid").on("click", function (event) {
+            var currentremoveid = $(this).attr("id");
+            $("#TextBoxDiv" + currentremoveid).remove();
+        });
+
+        $("#removeButton").click(function () {
+            var field_rows = $("#TextBoxesGroup").children(".form-group").length;
+
+            $("#muliSelect6").val("");
+
+            if (field_rows <= 2) {
+                $("#removeButton").fadeOut("fast");
+            }
+            counter--;
+            $("#TextBoxDiv" + counter).remove();
+        });
+
+        var xhr;
+
+        $(".ordersku").on('keyup', function (event) {
+            var data = $(this).val();
+
+            if (data === '') {
+                return false;
+            }
+
+            current_field = $(this);
+
+
+            if (xhr && xhr.readyState !== 4) {
+                xhr.abort();
+//                console.log(xhr.readyState);
+            }
+
+            xhr = $.ajax({
+//                showLoader: true,
+                type: "POST",
+                url: "<?php echo $block->getUrl("orderbysku/index/orderdata", array('_secure' => true)); ?>",
+                data: {ordersku: data},
+                dataType: "json",
+                context: $("#muliSelect6"),
+                beforeSend: function () {
+                    $("#muliSelect6").css("display", "block");
+                    $("#muliSelect6 a.product-item").remove();
+                    $("#muliSelect6 span.product-name").remove();
+                    $("#muliSelect6 .header-wrap").hide();
+                    $("#muliSelect6 .loader").show();
+                    current_field.parent().append($("#muliSelect6"));
+                },
+                success: function (response) {
+                    $("#muliSelect6").append(response.outputHtml.data);
+                    $(".error").css("display", "none");
+
+                    var length = $('#muliSelect6 > a').length;
+
+                    if (length > 1) {
+                        $("#muliSelect6 .title").text('Please select product from the list');
+                    } else {
+                        $("#muliSelect6 .title").text('No item found with the given SKU');
+                    }
+
+                    $("#muliSelect6 a").on("click", function (event) {
+                        event.preventDefault();
+
+                        var selectedOption = $(this);
+                        var divId = current_field.parent();
+                        var productId = $(this).attr("id");
+                        var productName = $("#" + productId + "-name").html();
+
+                        $("#muliSelect6 a.item-selected").removeClass("item-selected");
+                        $(this).addClass("item-selected");
+
+                        current_field.val(selectedOption.data("sku"));
+                        current_field.parent().find("input[name=\"qty\[\]\"]").val(selectedOption.data("qtyincrement"));
+                        current_field.parent().find(".product-name").html(productName);
+
+                        $(divId).find(".resultdata").css('display', 'inline-block');
+                        $(divId).find(".resultdata").html("Inner: " + selectedOption.data("inner") + " | Master: " + selectedOption.data("master"));
+
+                        $("#muliSelect6").slideUp("slow");
+                    });
+
+                    $(".close-product-list").on("click", function () {
+                        $("#muliSelect6").slideUp("fast");
+                    });
+
+                },
+                complete: function (jqXHR, textStatus) {
+                    $("#muliSelect6 .header-wrap").show();
+                    $("#muliSelect6 .loader").hide();
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,41 @@
+<?php
+$retailerStatus = $block->getRetailerStatus();
+$appBlockHtml = $block->hasApplication() ? $block->setTemplate('AJH_D2R::retailer/application.phtml')->toHtml() : '';
+?>
+<div class="d2rRC d2r">
+
+    <div class="page-title">
+        <h1><?php echo $block->__('Retailer Home') ?></h1>
+    </div>
+
+    <?php if (AJH_D2R_Helper_Retailer::isApplicationSent()): ?>
+
+        <div class="d2rRC-retailer">
+            <h3><?php echo __('Retailer Information') ?></h3>
+            <div class="d2rRC-tablecontainer">
+                <table class="d2rRC-fields">
+                    <tr>
+                        <th><?php echo $block->__('Retailer status') ?></th>
+                        <td><?php // echo htmlspecialchars(Mage::getModel('d2r/source_retailer_status')->getOptionText($retailerStatus)) ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <?php echo $appBlockHtml ?>
+
+    <?php else: ?>
+
+        <p><?php echo __('In order to become a retailer, you need to submit a Retailer Application.') ?></p>
+        <div class="d2rRC-button-container">
+            <a class="d2rRC-button" href="<?php echo $block->getUrl('d2r/retailer/register') ?>"><?php echo __('Apply to become a retailer') ?></a>
+        </div>
+
+    <?php endif ?>
+
+    <div class="buttons-set">
+        <p class="back-link"><a href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>"
+                                ><small>&laquo; </small><?php echo __('Back') ?></a></p>
+    </div>
+
+</div>

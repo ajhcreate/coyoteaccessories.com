@@ -1,0 +1,45 @@
+<?php $collection = $block->getCategories(); ?>
+
+<div class="categories-list-wrapper">
+    <div class="category-list-header">
+        <i class="fa fa-align-justify" aria-hidden="true"></i>
+        <h2 class="header-title d-inline">Featured Categories</h2>
+    </div>
+
+    <?php if (count($collection) > 0): ?>        
+        <ul class="categories-list" >
+            <?php foreach ($collection as $_category): ?>
+                <li class='category-item'>
+                    <a href="<?php echo $_category->getUrl(); ?>">
+                        <?php echo $_category->getName(); ?>
+                    </a>
+                </li>
+                <?php /* $subcategories = $block->_category->load($_category->getId())->getChildrenCategories(); ?>
+                  <li class='category-item'>
+                  <a href="<?php echo $block->_catalogCategory->getCategoryUrl($_category) ?>">
+                  <?php echo $_category->getName() ?>
+                  </a>
+                  <?php if (count($subcategories)): ?>
+                  <ul class="subcategories-list">
+                  <?php foreach ($subcategories as $subcategory): ?>
+                  <li class="subcategory-item">
+                  <a href="<?php echo $block->_catalogCategory->getCategoryUrl($subcategory) ?>">
+                  <?php echo $subcategory->getName() ?>
+                  </a>
+                  </li>
+                  <?php endforeach; ?>
+                  </ul>
+                  <?php endif; ?>
+                  </li>
+                 * */ ?>                 
+            <?php endforeach; ?>
+        </ul>
+    <?php endif;
+    ?>
+</div>
+
+<script>
+    require(['jquery', 'accordion'], function ($) {
+        $("#homepage-categories").accordion("activate", 1);
+    });
+</script>

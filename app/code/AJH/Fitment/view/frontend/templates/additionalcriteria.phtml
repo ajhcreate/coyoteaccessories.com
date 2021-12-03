@@ -1,0 +1,13 @@
+<?php
+$criterionData = $block->getAdditionalCriteria();
+?>
+<?php // if (!empty($criterionData) && isset($criterionData['AdditionalCriteria_Question'])) : ?>        
+    <div class="addl-criteria-question-wrap d-inline-block">
+        <span class="addl-criteria-question"><?php echo $criterionData['AdditionalCriteria_Question'] ?></span>
+        <input type="hidden" id="partMasterIds" value="<?php echo $criterionData['AdditionalCriteria_PartMasterID']; ?>" />
+        <button type="button" class="btn criteria-option criteria-option-yes" onclick="criteria.setValue('yes')"><span>Yes</span></button>
+        <button type="button" class="btn criteria-option criteria-option-no"  onclick="criteria.setValue('no')"><span>No</span></button>
+    </div>    
+    <?php
+
+// endif;

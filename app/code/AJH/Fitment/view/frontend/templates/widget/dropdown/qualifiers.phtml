@@ -1,0 +1,26 @@
+<?php
+/**
+ * AJH\Fitment\Block\Qualifiers $block
+ * 
+ */
+$qualifiers = $block->getQualifiers();
+$html = "";
+
+if (is_array($qualifiers)) {
+    foreach ($qualifiers as $key => $qualifiers) {
+        $label = "";
+        $options = "";
+        
+        foreach($qualifiers as $qualifier){        
+             $label = "<option value=\"\">{$qualifier['label']}</option>";        
+            $options .= "<option value=\"{$qualifier['value']}\">{$qualifier['option']}</option>";
+        }
+
+        $html .= "<select name=\"qualifiers[]\" id=\"{$key}\">";
+        $html .= $label;
+        $html .= $options;
+        $html .= "</select>";
+    }
+}
+
+echo $html;

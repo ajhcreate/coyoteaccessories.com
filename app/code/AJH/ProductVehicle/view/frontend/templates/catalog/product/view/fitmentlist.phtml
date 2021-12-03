@@ -1,0 +1,106 @@
+<?php
+/** @var 
+ * $block AJH\ProductVehicle\Block\Product\View\FitmentList
+ */
+?>
+
+<?php
+$_is_universal = $block->isUniversalSensor();
+$productVehicles = $block->getProductVehicles();
+$the_pdq_array = $block->getPDQ();
+
+
+if ($productVehicles->getSize() > 0):
+
+    echo $this->getLayout()
+            ->createBlock('AJH\ProductVehicle\Block\Search\Header\Form')
+            ->setTemplate('AJH_ProductVehicle::search/form.phtml')
+            ->toHtml();
+    ?>
+
+    <div class="product-vehicle-container">
+        <h3><?php echo __('Available Vehicle'); ?></h3>    
+        <table class="data-table" id="product-vehicle-table">
+            <col width="14%" />
+            <col width="14%" />
+            <col width="14%" />
+            <col width="13%" />
+            <col width="15%" />
+            <col width="15%" />
+            <col width="15%" />
+            <thead>
+                <tr class="headings">
+                    <th rowspan="2"><?php echo __('Part Number') ?></th>
+                    <th rowspan="2"><?php echo __('Make') ?></th>
+                    <th rowspan="2"><?php echo __('Model') ?></th>
+                    <th rowspan="2"><?php echo __('Sub Model') ?></th>
+                    <th rowspan="2"><?php echo __('Model Year') ?></th>
+                    <?php if ($_is_universal): ?>
+                        <th colspan="3" class="pw" style="color: #e21e24 !important;"><?php echo __('Programmable With:') ?></th>
+                    <?php endif; ?>
+                </tr>
+                <?php if ($_is_universal): ?>
+                    <tr class="headings">
+                        <th><?php echo __('PDQ') ?></th>
+                        <th><?php echo __('ATEQ') ?></th>
+                        <th><?php echo __('BARTEC') ?></th>
+                    </tr>
+                <?php endif; ?>
+            </thead>
+            <tbody>
+                <?php $currentStoreDate = $this->getCurrentStoreDate() ?>
+                <?php foreach ($productVehicles as $productVehicle): ?>                    
+                    <?php $pdq = $productVehicle->getData('Date_PDQ'); ?>
+                    <?php $ateq = $productVehicle->getData('Date_ATEQ'); ?>
+                    <?php $bartec = $productVehicle->getData('Date_Bartec'); ?>
+                    <?php $linkedpdq = $productVehicle->getData('LinkedDate_PDQ'); ?>
+                    <?php $linkedateq = $productVehicle->getData('LinkedDate_ATEQ'); ?>
+                    <?php $linkedbartec = $productVehicle->getData('LinkedDate_Bartec'); ?>
+                    <?php $newpdq = !is_null($pdq) ? $this->getFormatDate($pdq) : !is_null($linkedpdq) ? $this->getFormatDate($linkedpdq) : ''; ?>
+                    <?php $newateq = !is_null($pdq) ? $this->getFormatDate($ateq) : !is_null($linkedateq) ? $this->getFormatDate($linkedateq) : ''; ?>
+                    <?php $newbartec = !is_null($pdq) ? $this->getFormatDate($bartec) : !is_null($linkedbartec) ? $this->getFormatDate($linkedbartec) : ''; ?>
+                    <tr>
+                        <td class="data"><?php echo $productVehicle->getData('partnumber'); ?></td>
+                        <td class="data"><?php echo $productVehicle->getData('MakeName'); ?></td>
+                        <td class="data"><?php echo $productVehicle->getData('ModelName'); ?></td>
+                        <td class="data"><?php echo $productVehicle->getData('SubModelName'); ?></td>
+                        <td class="data"><?php echo $productVehicle->getData('YearID'); ?></td>
+
+                        <?php if ($_is_universal): ?>
+
+                            <td class="data" style="text-align: center;">
+                                <?php if (date("m/d/Y") < date("m/d/Y", strtotime($the_pdq_array[$productVehicle->getData('partnumber')]['pdq']))) { ?>
+                                    <span style="display: block; text-align: left;"><?php echo date("m/d/Y", strtotime($the_pdq_array[$productVehicle->getData('partnumber')]['pdq'])); ?></span>
+                                <?php } else { ?>
+                                    <img src="<?php echo $this->getViewFileUrl("AJH_ProductVehicle::images/checkmark.png") ?>" style="width: 20px;">
+                                <?php } ?>
+                            </td>
+                            <td class="data" style="text-align: center;">
+                                <?php if (date("m/d/Y") < date("m/d/Y", strtotime($the_pdq_array[$productVehicle->getData('partnumber')]['ateq']))) { ?>
+                                    <span style="display: block; text-align: left;"><?php echo date("m/d/Y", strtotime($the_pdq_array[$productVehicle->getData('partnumber')]['ateq'])); ?></span>
+                                <?php } else { ?>
+                                    <img src="<?php echo $this->getViewFileUrl("AJH_ProductVehicle::images/checkmark.png") ?>" style="width: 20px;">
+                                <?php } ?>
+                            </td>
+                            <td class="data" style="text-align: center;">
+                                <?php if (date("m/d/Y") < date("m/d/Y", strtotime($the_pdq_array[$productVehicle->getData('partnumber')]['bartec']))) { ?>
+                                    <span style="display: block; text-align: left;"><?php echo date("m/d/Y", strtotime($the_pdq_array[$productVehicle->getData('partnumber')]['bartec'])); ?></span>
+                                <?php } else { ?>
+                                    <img src="<?php echo $this->getViewFileUrl("AJH_ProductVehicle::images/checkmark.png") ?>" style="width: 20px;">
+                                <?php } ?>
+                            </td>
+                        <?php endif; ?>
+                        <?php //echo $this->getOutputByDate($newpdq, $currentStoreDate); ?>
+                        <?php //echo $this->getOutputByDate($newateq, $currentStoreDate);  ?>
+                        <?php //echo $this->getOutputByDate($newbartec, $currentStoreDate); ?>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php if ($block->getPagerHtml()): ?>
+            <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+        <?php endif ?>        
+    </div>    
+<?php else: ?>
+
+<?php endif; ?>

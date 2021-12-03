@@ -1,0 +1,395 @@
+<?php
+$helper = $this->helper("AJH\D2R\Helper\Data");
+$isLoggedIn = $helper->isCustomerLoggedIn();
+$addressHelper = $this->helper("Magento\Customer\Helper\Address");
+$customer = $block->getCustomer();
+$address = $block->getAddress();
+?>
+<?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 d2rRR d2r-registration-form-wrap">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Retail Registration</h1>                
+                </div>
+            </div>            
+            <form action="<?php echo $block->getUrl("d2r/retailer/registerpost/") ?>" data-mage-init='{"validation":{}}' class="form w-75 retailer-register-form" method="post" id="form-validate">
+                <?php echo $block->getBlockHtml('formkey') ?>
+                <input type="hidden" name="customer_id" value="<?php //echo $customer->getId(); ?>" />
+                <input type="hidden" name="address_id" value="<?php //echo $address->getId(); ?>" />
+                <input type="hidden" name="distributor_id" id="distributorId"value="<?php //echo $customer->getData(\AJH\D2R\Helper\Distributor::ATTR_DISTRIBUTOR_ID);  ?>" />
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="legend">Contact Information</h2>
+                    </div>
+                </div>
+
+                <div class="row">                                                    
+                    <div class="col-12 col-sm-6 name-firstname">                        
+                        <label class="required" for="firstname"><em>*</em>First Name</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text form-control required-entry" maxlength="255" title="First Name"
+                                   value="<?php //echo htmlspecialchars($customer->getFirstname());  ?>" name="firstname" id="firstname" />
+                        </div>                        
+                    </div>
+                    <div class="col-12 col-sm-6 name-lastname">                        
+                        <label class="required" for="lastname"><em>*</em>Last Name</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text form-control required-entry" maxlength="255" title="Last Name"
+                                   value="<?php //echo htmlspecialchars($customer->getLastname());  ?>" name="lastname" id="lastname" />
+                        </div>                        
+                    </div>
+                </div>
+                <?php if (!$isLoggedIn): ?>
+                    <div class="row">                                                                                
+                        <div class="col-12 col-sm-6 field">
+                            <label class="required" for="password"><em>*</em>Password</label>
+                            <div class="input-box">
+                                <input type="password" name="password" id="password" title="Password" 
+                                       class="input-text form-control required-entry validate-password" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 field">
+                            <label class="required" for="confirmation"><em>*</em>Confirm Password</label>
+                            <div class="input-box">
+                                <input type="password" name="confirmation" id="confirmation" title="Confirm Password" 
+                                       class="input-text form-control required-entry validate-cpassword" />
+                            </div>
+                        </div>                            
+                    </div>                            
+                <?php endif ?>
+                <div class="row">
+                    <div class="col-12 field">
+                        <label class="required" for="email"><em>*</em><?php echo __('Email') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="email" id="email" title="<?php echo __('Email') ?>"
+                                   value="<?php //echo htmlspecialchars($customer->getEmail());  ?>"
+                                   class="input-text form-control validate-email required-entry" />
+                        </div>
+                    </div>                       
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="company"><?php echo __('Company Name') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="company" id="company" title="<?php echo __('Company Name') ?>" 
+                                   class="input-text form-control <?php //echo $addressHelper->getAttributeValidationClass('company');  ?>" 
+                                   value="<?php //echo $block->escapeHtml($address->getCompany());  ?>" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="position"><em>*</em>Job Position / Title</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text form-control required-entry" maxlength="255" title="Job Position / Title"
+                                   name="position" id="position" value="<?php //echo htmlspecialchars($customer->getPosition());  ?>" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label for="telephone" class="required"><em>*</em><?php echo __('Telephone Number') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="telephone" value="<?php //echo $block->escapeHtml($address->getTelephone()) ?>" 
+                                   class="input-text form-control  <?php //echo $addressHelper->getAttributeValidationClass('telephone'); ?>"
+                                   id="telephone" title="<?php echo __('Telephone Number') ?>" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 field">
+                        <label for="fax"><?php echo __('Fax Number') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="fax" id="fax" title="<?php echo __('Fax Number') ?>"
+                                   class="input-text form-control <?php //echo $addressHelper->getAttributeValidationClass('fax') ?>" 
+                                   value="<?php //echo $block->escapeHtml($address->getFax());  ?>" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label for="street_1" class="required"><em>*</em>Street Address</label>
+                        <div class="input-box">
+                            <?php $_streetValidationClass = null; //$addressHelper->getAttributeValidationClass('street'); ?>
+                            <input type="text" name="street[]" value="<?php //echo $block->escapeHtml($address->getStreet(1));  ?>"
+                                   title="<?php echo __('Street Address') ?>" id="street_1"
+                                   class="input-text form-control <?php echo $_streetValidationClass ?>" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 field">
+                        <label for="street_2">&nbsp;</label>
+                        <div class="input-box">
+                            <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
+                            <?php for ($_i = 2, $_n = $addressHelper->getStreetLines(); $_i <= $_n; $_i++): ?>
+                                <input type="text" name="street[]" value="<?php //echo $block->escapeHtml($address->getStreet($_i))                                                           ?>"
+                                       title="<?php echo __('Street Address %s', $_i) ?>" id="street_<?php echo $_i ?>" class="input-text form-control <?php echo $_streetValidationClass ?>" />
+                                   <?php endfor; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label for="city" class="required"><em>*</em>City</label>
+                        <div class="input-box">
+                            <input type="text" name="city" value="<?php //echo $block->escapeHtml($address->getCity());  ?>"  
+                                   class="input-text form-control <?php echo $addressHelper->getAttributeValidationClass('city'); ?>"
+                                   id="city" title="<?php echo __('City') ?>" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 field">                        
+                        <div class="input-box region required">
+                            <label for="region_id" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?></span></label>                            
+                            <div class="control">
+                                <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="validate-select region_id" style="display:none;">
+                                    <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
+                                </select>
+                                <?php //phpcs:disable ?>
+                                <input type="text" id="region" name="region" value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region')) ?>" style="display:none;">
+                                <?php //phpcs:enable ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label for="zip" class="required"><em>*</em><?php echo __('Zip/Postal Code') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="postcode" value="<?php //echo $block->escapeHtml($address->getPostcode());                                         ?>"
+                                   class="input-text form-control validate-zip-international <?php //echo $addressHelper->getAttributeValidationClass('postcode')                                                             ?>"
+                                   title="<?php echo __('Zip/Postal Code') ?>" id="zip" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 field">
+                        <label for="country" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?></span></label>
+                        <div class="control">
+                            <?= $block->getCountryHtmlSelect() ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="legend mt-5">Other Information</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="currentSupplier"><em>*</em>Current Supplier</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text form-control required-entry" maxlength="255" title="Current Supplier"
+                                   name="currentSupplier" id="currentSupplier" value="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="businessType"><em>*</em>Business Type</label>
+                        <div class="input-box">
+                            <select name="businessType" id="businessType" class="">
+                                <option value="">-- Select Business Type --</option>
+                                <option value="Distributor / Salesman">Distributor / Salesman</option>
+                                <option value="Fleet">Fleet</option>
+                                <option value="General Auto Repair">General Auto Repair</option>
+                                <option value="Retail Tire Chain">Retail Tire Chain (&gt; 2 locations)</option>
+                                <option value="Retail Tire Store">Retail Tire Store</option>
+                                <option value="Stereo Shop">Stereo Shop</option>
+                                <option value="Tire Distributor (Wholesale)">Tire Distributor (Wholesale)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="annualSales"><em>*</em>Annual Sales</label>
+                        <div class="input-box">
+                            <select name="annualSales" id="annualSales" class="">
+                                <option value="">-- Select Annual Sales Volume --</option>
+                                <option value="less than 1M">1 - 999,999</option>
+                                <option value="1-2.5M">1,000,000 - 2,499,999</option>
+                                <option value="2.5-5M">2,500,000 - 4,999,999</option>
+                                <option value="5-10M">5,000,000 - 9,999,999</option>
+                                <option value="over 10M">&gt;10,000,000</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="employeeCount"><em>*</em>Number of Employees</label>
+                        <div class="input-box">
+                            <select name="employeeCount" id="employeeCount" class="">
+                                <option selected="selected" value="0">-- Select Number of Employees --</option>
+                                <option value="1-3">1-3</option>
+                                <option value="4-9">4 - 9</option>
+                                <option value="10-24">10 - 24</option>
+                                <option value="25-49">24 - 49</option>
+                                <option value="over 50">&gt;50</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="heardFrom"><em>*</em>How did you hear about our site?</label>
+                        <div class="input-box">
+                            <select name="heardFrom" id="heardFrom" class="">
+                                <option value="">-- Make Selection --</option>
+                                <option value="Friends">Friends</option>
+                                <option value="Google">Google</option>
+                                <option value="Newspaper">Newspaper</option>
+                                <option value="Oro-Tek Distributor">Oro-Tek Distributor</option>
+                                <option value="Other">Other</option>
+                                <option value="Yahoo">Yahoo</option>
+                                <option value="Bing">Bing</option>
+                                <option value="Facebook">Facebook</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="required" for="resettooluse"><em>*</em>What re-set tool do you currently use?</label>
+                        <div class="input-box">
+                            <?php
+                            $options = array('pdq' => 'PDQ', 'ateq' => 'ATEQ', 'bartec' => 'Bartec', 'other' => 'Other');
+                            ?>
+                            <select name="reset_tool_use" id="resettooluse" class="" style="height: 38px;">
+                                <option value="">-- Make Selection --</option>
+                                <?php foreach ($options as $key => $option): ?>                                
+                                    <option value="<?php echo $key; ?>"><?php echo $option; ?></option>                                
+                                <?php endforeach; ?>                            
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row fields pdq-serial-number" style="display: none;">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="_required" for="pdqserialnumber"><em>*</em>PDQ Serial Number</label>
+                        <div class="input-box">
+                            <img src="<?php echo $this->getViewFileUrl("AJH_D2R::images/serial-number.jpg")?>" alt="Serial Number" width="50px" />
+                            <input type="text" class="input-text form-control " maxlength="255" title="PDQ Serial Number"
+                                   name="pdqserialnumber" id="pdqserialnumber" value="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row fields other-brand" style="display: none">
+                    <div class="col-12 col-sm-6 field">
+                        <label class="_required" for="otherbrand"><em>*</em>Please enter the brand</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text form-control " maxlength="255" title="Brand"
+                                   name="otherbrand" id="otherbrand" value="" />
+                        </div>
+                    </div>                        
+                </div>                        
+
+                <div class="row fields mt-5">
+                    <div class="col-12 field">
+                        <h2>Select your distributor:</h2>
+                        <?php
+                        echo $block->getLayout()->createBlock('AJH\D2R\Block\Retailer\Distributor\Search')
+                                ->setEmbed(true)
+                                ->toHtml();
+                        ?>
+                    </div>
+                </div>
+                <div class="row d2rRR-buttons">
+                    <div class="col-12 field">
+                        <button type="button" class="d2rRR-submit d2rRR-submit-register" style="display: none;" onclick="_retailerRegForm.submit();">Register</button>
+                        <button type="button" class="d2rRR-submit d2rRR-submit-register-tool" style="display: none;" onclick="_retailerRegForm.submit('<?php echo $block->getStoreUrl() . 'files/WebVT_V811.zip'; ?>');" >Register your tool</button>                        
+                    </div>
+                </div>            
+            </form>
+            <div id="d2rRR-success" class="d2rRR-success"></div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document"  style="max-width:900px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">How to register</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">                
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col col-11">If download doesn't start automatically, click <a href="<?php echo $this->getViewFileUrl("AJH_D2R::files/WebVT_V811.zip"); ?>" id="pqd-download-file">here</a>.</div>
+                        <button type="button" class="btn btn-secondary" onclick="$('.modal-body').html('');" data-dismiss="modal">Close</button>        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+$form = [
+    'rForm' => '#form-validate',
+];
+$serializedForm = $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($form);
+?>
+<script type="text/x-magento-init">
+    {
+        "*":{
+            "registerjs": <?php /* @noEscape */ echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($serializedForm); ?>            
+        }
+    }
+</script>
+<script>
+    require([
+        'jquery',
+        'mage/mage',
+        'registerjs'
+    ], function ($, mage, retailerRegForm) {
+        
+        var dataForm = $('#form-validate');
+        var ignore = null;
+
+        dataForm.mage('validation', {
+            ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+        }).find('input:text').attr('autocomplete', 'off');
+
+        $('button.d2rRR-submit').click(function () { //can be replaced with any event
+            dataForm.validation('isValid'); //validates form and returns boolean
+        });
+
+        _retailerRegForm = retailerRegForm;
+
+        retailerRegForm._init({
+            baseURL: '<?php echo $this->getUrl('d2r/retailer/registerPost') ?>',
+            dataForm: dataForm
+        });
+    });
+</script>
+<?php // if ($block->getShowAddressFields()) :     ?>
+<script type="text/x-magento-init">
+    {
+        "#country": {
+            "regionUpdater": {
+                "optionalRegionAllowed": <?= /* @noEscape */ $block->getConfig('general/region/display_all') ? 'true' : 'false' ?>,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#form-validate",
+<?php //phpcs:disable         ?>
+                "regionJson": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
+<?php //phpcs:enable      ?>
+                "defaultRegion": "<?= (int) $block->getFormData()->getRegionId() ?>",
+<?php //phpcs:disable      ?>
+                "countriesWithOptionalZip": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
+<?php //phpcs:enable      ?>
+            }
+        }
+    }
+</script>
+<?php // endif;     ?>
+
+<script type="text/x-magento-init">
+    {
+        ".field.password": {
+            "passwordStrengthIndicator": {
+                "formSelector": "form.form-create-account"
+            }
+        }
+    }
+</script>
+
+<div id="debug" style="clear:both; margin: 20px 0;"></div>

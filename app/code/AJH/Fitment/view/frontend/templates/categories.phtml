@@ -1,0 +1,105 @@
+<?php
+/**
+ * @var \AJH\Fitment\Block\Categories $block
+ */
+$filters = $block->getFitmentFilters();
+$categories = $block->getCategories();
+$query_str = $block->getFitmentParamsUrl();
+$overview = $block->getFitmentOverview();
+
+echo $block->getSidebar();
+
+$cols = [1 => 'col-sm-12', 2 => 'col-sm-6', 3 => 'col-sm-4', 4 => 'col-sm-3'];
+?>
+<div class="fitment-categories-mainwrap col-12 col-lg-10">
+    <?php
+    if ($overview):
+        $skus = $block->getSkusInCategories();
+        $filterData = $block->getFitmentMetrics();
+        $fitmentData = $block->getFitmentData();
+        ?>
+        <div class="fitment-summary" style="clear: both;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-8">        
+                        <h2><?php echo $block->getFitmentTitle(); ?></h2>
+                        <div class="prodTxtBlock">
+                            <h3>We have <strong><?php echo count($skus); ?> <?php echo count($skus) > 1 ? __('products') : __('product'); ?></strong> that fit the <strong><?php echo $block->getFitmentTitle(); ?></strong><?php echo count($skus) ? __(', in these categories') : ""; ?>.</h3> 
+                            <div class="row">
+                                <?php foreach ($categories as $category): ?>                                                
+                                    <?php if (strtolower($category['label']) !== 'label2'): ?>
+                                        <div class="col-6 <?php echo count($categories)<5?$cols[count($categories)]:$cols[4]; ?> col-lg-auto py-2">
+                                            <a href="<?php echo $this->getBaseUrl() . 'fitment/index/products/?cat=' . $category['id'] . '&' . $query_str; ?>" class="fitment-category-link">
+                                                <?php echo $category['name']; ?>  <span>(<?php echo count($category['products']); ?>)</span>
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 pt-4 pt-md-0">
+                        <h2 class="text-md-right">About This Vehicle</h2>
+                        <div class="text-md-right vehicle-detail-list">
+                            <?php
+                            if ($filterData->count()) {
+                                foreach ($filterData as $key => $_data) {
+
+                                    $data = $_data->getData();
+
+                                    foreach ($data as $key => $value) {
+                                        if (isset($fitmentData[$key])) {
+                                            echo '<p>' . $fitmentData[$key] . ' : ' . $value . '</p>';
+                                        }
+                                    }
+                                }
+                            } else {
+                                echo 'No Vehicle Found';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <div class="fitment-categories-container container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="page-title"><?php echo $block->getPageTitle(); ?></h1>
+            </div>
+        </div>
+        <?php if (count($categories)): ?>    
+            <div class="row">
+                <?php foreach ($categories as $category): ?>
+                    <?php if (strtolower($category['label']) !== 'label2'): //see category attribute under Category Menu tab ?>
+                        <?php
+                        $filters['params']['cat'] = $category['id'];
+                        $queryParams = $filters['params'];
+                        $url_params = [];
+
+                        foreach ($queryParams as $key => $value) {
+                            $url_params[] = $key . "=" . $value;
+                        }
+
+                        $url = $block->getBaseUrl() . "fitment/index/products/?" . implode("&", $url_params);
+                        ?>
+                        <div class="col-12 col-md-4 fitment-categories-content">
+                            <div class="fitment-category-image category_id_<?php echo $category['id']; ?>">
+                                <a href="<?php echo $url; ?>">                        
+                                    <img  width="200" src="<?php echo $category['image'] ? $category['image'] : $block->getViewFileUrl('images/logo.png'); ?>" alt="<?php echo $category['name']; ?>" />                            
+                                </a>
+                            </div>
+                            <div class="fitment-category-name fitment-category-products">                               
+                                <h3><a href="<?php echo $url; ?>"><?php echo $category['name']; ?> <span>(<?php echo count($category['products']); ?>)</span> </a></h3>
+                            </div> 		
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>    
+            </div>
+        <?php else: ?>
+            <div class="fitment-categories-content mx-auto my-5 font-weight-bold">There are no products matching the selection</div>
+        <?php endif; ?>
+    </div>
+</div>

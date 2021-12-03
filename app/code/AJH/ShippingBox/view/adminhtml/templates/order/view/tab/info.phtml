@@ -1,0 +1,86 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+//phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+?>
+<?php /** @var $block \Magento\Shipping\Block\Adminhtml\View */ ?>
+<?php $order = $block->getOrder() ?>
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$connection = $objectManager->create('Magento\Framework\App\ResourceConnection')->getConnection();
+
+foreach ($order->getAllItems() as $item) {
+    $items[] = array(
+        'id' => $order->getIncrementId(),
+        'name' => $item->getName(),
+        'sku' => $item->getSku(),
+        'Price' => $item->getPrice(),
+        'Ordered Qty' => $item->getQtyOrdered(),
+    );
+}
+
+//check if the increment id starts with WP
+$increment_id_prefix = substr($order->getIncrementId(), 0, 2);
+
+
+if ($order->getIsVirtual()) :
+    return '';
+endif;
+?>
+
+<?php /* Shipping Method */ ?>
+<div class="admin__page-section-item order-shipping-method">
+    <div class="admin__page-section-item-title">
+        <span class="title"><?= $block->escapeHtml(__('Shipping &amp; Handling Information')) ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <?php if ($order->getTracksCollection()->count()) : ?>
+            <p><a href="#" id="linkId" onclick="popWin('<?= $block->escapeHtmlAttr($block->escapeJs($block->escapeUrl($this->helper(Magento\Shipping\Helper\Data::class)->getTrackingPopupUrlBySalesModel($order)))) ?>', 'trackorder', 'width=800,height=600,resizable=yes,scrollbars=yes')" title="<?= $block->escapeHtmlAttr(__('Track Order')) ?>"><?= $block->escapeHtml(__('Track Order')) ?></a></p>
+        <?php endif; ?>
+        <?php if ($order->getShippingDescription()) : ?>
+            <strong><?= $block->escapeHtml($order->getShippingDescription()) ?></strong>
+
+            <?php if ($this->helper(Magento\Tax\Helper\Data::class)->displayShippingPriceIncludingTax()) : ?>
+                <?php $_excl = $block->displayShippingPriceInclTax($order); ?>
+            <?php else : ?>
+                <?php $_excl = $block->displayPriceAttribute('shipping_amount', false, ' '); ?>
+            <?php endif; ?>
+            <?php $_incl = $block->displayShippingPriceInclTax($order); ?>
+
+            <?= /** @noEscape */ $_excl ?>
+            <?php if ($this->helper(Magento\Tax\Helper\Data::class)->displayShippingBothPrices() && $_incl != $_excl) :
+                ?>
+                (<?= $block->escapeHtml(__('Incl. Tax')) ?> <?= /** @noEscape */ $_incl ?>)
+            <?php endif; ?>
+        <?php else : ?>
+            <?= $block->escapeHtml(__('No shipping information available')) ?>
+        <?php endif; ?>
+
+        <?php if ($increment_id_prefix === 'WP'): ?>
+            <div class="admin__page-section-item-title"  style="margin-top: 40px;">
+                <span class="title"><?= $block->escapeHtml(__('Shipping Box')) ?></span>
+            </div>
+            <table class="admin__table-secondary">            
+                <tbody>
+                    <?php foreach ($items as $_item): ?>
+                        <?php
+                        $sql = "SELECT `box_sku`, `price` FROM `product_box_sku_price` WHERE `product_sku`='{$_item["sku"]}'";
+                        $boxes = $connection->fetchAll($sql);
+                        ?>
+                        <?php if (count($boxes)): ?>
+                            <?php foreach ($boxes as $box): ?>                        
+                                <tr>
+                                    <th>Shipping Box: <strong><?php echo $box['box_sku'] ?></strong></th>
+                                    <td>Price: <strong>$<?php echo $box['price'] ?></strong></td>
+                                </tr>                        
+                            <?php endforeach; ?> 
+                        <?php endif; ?>                            
+                    <?php endforeach; ?>                
+                </tbody>
+            </table>                
+        <?php endif; ?>                            
+
+    </div>    
+</div>

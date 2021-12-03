@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ajhextensions" translate="label" sortOrder="10">
+            <label>AJH Extensions</label>
+        </tab>
+        <section id="googleAPI" translate="label" sortOrder="1000" type="text" showInDefault="1" showInWebsite="1" showInStore="1">            
+            <label>Google API</label>
+            <tab>ajhextensions</tab>
+            <resource>AJH_D2R::d2r_config</resource>
+            <group id="maps" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Maps</label>
+                <comment>Maps</comment>                
+                <field id="api_key" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Key</label>   
+                </field>                         
+            </group>    
+            <group id="geocode" translate="label" sortOrder="2" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Geocode</label>
+                <comment>Geocode</comment>                
+                <field id="api_key" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Key</label>                            
+                </field>       
+            </group>         
+        </section>
+        
+        <section id="d2r_tpms" translate="label" sortOrder="800" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>TPMS Help</label>
+            <tab>ajhextensions</tab>
+            <resource>AJH_D2R::d2r_config</resource>
+            <group id="general" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">                
+                <label>General</label>                    
+                <field id="customer_groups_allowed" translate="label" sortOrder="120" type="multiselect" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer groups</label>
+                    <comment>Customer groups allowed to use TPMS Help</comment>                            
+                    <source_model>Magento\Customer\Model\Config\Source\Group</source_model>
+                </field>
+                <field id="sensors_category" translate="label" sortOrder="200" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sensors category</label>
+                    <comment>To be shown as recommended sensors</comment>                            
+                    <source_model>AJH\D2R\Model\Source\System\Category</source_model>                            
+                </field>
+            </group>
+                                  
+            <group id="email" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email</label>
+                <group id="sender" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Sender</label>
+                    <field id="from_name" translate="label" sortOrder="40" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>From Name</label>                        
+                    </field>
+                    <field id="from_email" translate="label" sortOrder="50" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>From Email</label>                        
+                    </field>
+                </group>
+                <group id="admin_notification" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Admin Notification</label>
+                    <field id="admin_notify_template" translate="label" sortOrder="100" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Email template</label>                            
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>                        
+                    </field>
+                    <field id="admin_notify_email" translate="label" sortOrder="110" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Send to</label>
+                        <comment>Email of the employee considering the applications</comment>                                                
+                    </field>
+                </group>
+                
+                <group id="customer_notification" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Customer Notification</label>
+                    <field id="customer_notify_template" translate="label" sortOrder="230" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Email template</label>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>                        
+                    </field>
+                </group>                       
+            </group>                       
+        </section>
+                
+        <section id="d2r_retailer" translate="label" sortOrder="900" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Retailers</label>
+            <tab>ajhextensions</tab>
+            <resource>AJH_D2R::d2r_config</resource>                    
+            <group id="reg_emails" translate="label" sortOrder="100" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Emailing</label>                                   
+                <group id="notif_emails_sender" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Notification emails sender</label>
+                    <field id="send_from_name" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Name</label>
+                    </field>
+                    <field id="send_from_email" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Email</label>                        
+                    </field>
+                </group>
+                <group id="notif_sales_department" translate="label" type="text" sortOrder="20" showInDefault="1">                   
+                    <label>Notification to Sales Department</label>
+                    <field id="sales_email" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Sales notification email</label>                        
+                    </field>
+                    <field id="sales_notify_template" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Email template</label>
+                        <comment>Used to send to sales department</comment>                                           
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>                        
+                    </field>
+                </group>                
+                <group id="notif_to_distributor" translate="label" type="text" sortOrder="30" showInDefault="1">                               
+                    <label>Notification to the Distributor</label>
+                    <field id="distributor_notify_template" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Email template</label>
+                        <comment>Used to send to distributor</comment>                        
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>                                                
+                    </field>
+                </group>
+                <group id="retailer_notif_templates" translate="label" type="text" sortOrder="40" showInDefault="1"> 
+                    <label>Retailer notification templates</label>                                                                                          
+                    <field id="retailer_appsent_template" translate="label" type="select" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Application sent</label>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>                                                
+                    </field>
+                    <field id="retailer_approved_template" translate="label" type="select" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Application approved</label>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>                                                
+                    </field>
+                    <field id="retailer_declined_template" translate="label" type="select" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Application declined</label>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    </field>
+                </group>
+            </group>
+        </section>
+        <section id="customer" translate="label" sortOrder="1000" type="text" showInDefault="1" showInWebsite="1" showInStore="1">   
+            <tab>ajhextensions</tab>
+            <label>Customer Address Templates</label>
+            <resource>AJH_D2R::d2r_config</resource>             
+            <group id="address_templates">                        
+                <field id="company" translate="label" sortOrder="10" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Company address</label>                                
+                </field>                       
+            </group>                
+        </section>
+    </system>
+</config>

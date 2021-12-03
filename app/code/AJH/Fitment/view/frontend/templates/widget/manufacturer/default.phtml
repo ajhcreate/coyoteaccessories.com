@@ -1,0 +1,24 @@
+<?php
+$fitment = $block->getFitment();
+?>
+
+<div class="fitment-sidebar">
+    <div class="fitment-widget-wrapper">
+        <div class="fitment-widget-title">
+            <strong><span> <?php echo $fitment['year']; ?> <?php echo isset($fitment['make']['Name'])?$fitment['make']['Name']:''; ?> <?php echo isset($fitment['model']['Name'])?$fitment['model']['Name']:''; ?></span></strong>
+        </div>
+        <div class="fitment-widget-content">
+            <img style="height:auto;width: 100%;border-width:0px;" alt="<?php echo $fitment['make']['Name']; ?>" title="<?php echo $fitment['make']['Name']; ?>" src="<?php echo $fitment['make']['Logo'] ? 'https://' . $fitment['make']['Logo'] : ''; ?>" />
+        </div>
+    </div>
+    <div class="fitment-summary">
+        <ul>
+            <li><strong>Year:</strong> <?php echo $fitment['year']; ?></li>
+            <li><strong>Make:</strong> <?php echo $fitment['make']['Name']; ?></li>
+        </ul>
+        <ul>
+            <li><strong>Model:</strong> <?php echo $fitment['model']['Name']; ?></li>
+            <li><strong>Sub Model:</strong> <?php echo $fitment['submodel']['Name']; ?></li>
+        </ul>
+    </div>
+</div>

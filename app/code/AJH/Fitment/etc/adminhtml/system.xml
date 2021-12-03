@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ajhextensions" translate="label" sortOrder="10">
+            <label>AJH Extensions</label>
+        </tab>
+        <section id="fitment_api" translate="label" sortOrder="100" type="text" showInDefault="1" showInWebsite="1" showInStore="1">            
+            <label>Fitment API</label>
+            <tab>ajhextensions</tab>
+            <resource>AJH_Fitment::fitment_config</resource>
+            <group id="general" translate="label" sortOrder="10" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <comment></comment>                
+                <field id="soap_client_wsdl" translate="label" sortOrder="10" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>SOAP Client WSDL</label>   
+                </field>                         
+                <field id="soap_client_username" translate="label" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>SOAP Client Username</label>   
+                </field>                         
+                <field id="soap_client_password" translate="label" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>SOAP Client Password</label>   
+                </field>                         
+            </group>    
+            <group id="categories" translate="label" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Categories</label>
+                <comment></comment>                
+                <field id="exclude_categories" translate="label" sortOrder="10" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exclude Categories</label>                            
+                    <comment>Category IDs to exclude from the fitment result. Separate ids by comma (e.g. 1231, 1324, 535)</comment>                
+                </field>       
+            </group>         
+            <group id="caching" translate="label" sortOrder="30" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Fitment Cache</label>
+                <comment></comment>                
+                <field id="soap_client_clear_cache" translate="label" sortOrder="10" type="button" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Cache</label>                            
+                    <comment></comment>   
+                    <frontend_model>AJH\Fitment\Block\System\Config\Cache</frontend_model>             
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

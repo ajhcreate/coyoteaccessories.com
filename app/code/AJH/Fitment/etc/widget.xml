@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:fitment:Magento_Widget:etc/widget.xsd">
+    <widget class="AJH\Fitment\Block\Widget\Dropdown" id="ajh_fitment_dropdown">
+        <label>Fitment Dropdown</label>
+        <description>Fitment Dropdown Select</description>
+        <parameters>
+            <parameter name="fitment" sort_order="10" visible="true" xsi:type="text">
+                <label>Fitment Title</label>
+            </parameter>
+        </parameters>
+    </widget>
+    <widget class="AJH\Fitment\Block\Widget\Slider" id="ajh_fitment_slider">
+        <label>Fitment Slider</label>
+        <description>Fitment Selection Slider</description>
+        <parameters>
+            <parameter name="fitmentSlider" sort_order="10" visible="true" xsi:type="text">
+                <label>Fitment Slider Title</label>
+            </parameter>
+        </parameters>
+    </widget>
+    <widget class="AJH\Fitment\Block\Widget\Manufacturer" id="ajh_fitment_manufacturer">
+        <label>Fitment Manufacturer</label>
+        <description>Fitment Manufacturer</description>
+        <parameters>
+            <parameter name="fitmentManufacturer" sort_order="10" visible="true" xsi:type="text">
+                <label>Fitment Manufacturer</label>
+            </parameter>
+        </parameters>
+        <containers>
+            <container name="sidebar.main">
+                <template name="default" value="sidebar" />
+            </container>            
+            <container name="sidebar.additional">
+                <template name="default" value="sidebar" />
+            </container>
+        </containers>
+    </widget>
+</widgets>

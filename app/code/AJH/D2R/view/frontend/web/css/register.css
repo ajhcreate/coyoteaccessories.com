@@ -1,0 +1,22 @@
+.d2rRR {}
+.d2rRR h2 {
+	margin: 30px 0 10px;
+}
+.d2rRR-buttons {
+	text-align: center;
+}
+.d2rRR-submit {
+	font-size: 16px;
+	padding: 10px 30px;
+	border-radius: 5px;
+	border: none;
+	background-color: #E21E24;
+	color: #fff;
+	cursor: pointer;
+}
+.d2rRR-success {
+	margin: 40px 0 0;
+}
+.d2rRR-success h3 {
+	margin: 20px 0;
+}

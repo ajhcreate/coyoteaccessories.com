@@ -1,0 +1,21 @@
+<?php
+
+//$collection = $block->getCollection();
+
+$block->processQueue();
+
+die;
+foreach ($years as $item) {
+    print_r($item->getData());
+    echo "<br>";
+}
+
+$block->getYears();
+
+$urls = $block->getFitmetUrls(array());
+
+//foreach($urls as $url){
+//    print_r($url->getData());
+//    
+//}
+

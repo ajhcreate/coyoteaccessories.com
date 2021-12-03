@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="AJH_Fitment::css/fonts.css"/>
+        <css src="AJH_Fitment::css/custom.css"/>
+        <css src="AJH_Fitment::css/bootstrap.css"/>
+        <css src="AJH_Fitment::css/owl.carousel.css"/>
+        <css src="AJH_Fitment::css/owl.theme.css"/>
+    </head>
+    <body> 
+        <referenceContainer name="sidebar.additional">
+            <!--<block class="AJH\Fitment\Block\Categories" name="fitment_index_categories" template="AJH_Fitment::categories.phtml" />-->
+        </referenceContainer>
+    </body>
+</page>

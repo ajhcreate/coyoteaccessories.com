@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--    <virtualType name="AJH\Fitment\Model\ResourceModel\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ajh_fitment</argument>
+            <argument name="resourceModel" xsi:type="string">AJH\Fitment\Model\ResourceModel\Grid</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="admin_fitment_listing_data_source" xsi:type="string">AJH\Fitment\Model\ResourceModel\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>       -->
+    
+    <!--    <preference for="Magento\Catalog\Model\Layer\Category" type="AJH\Fitment\Model\Catalog\Layer" />
+    <type name="AJH\Fitment\Model\Catalog\Layer">
+        <arguments>
+            <argument name="context" xsi:type="object">Magento\Catalog\Model\Layer\Category\Context</argument>
+        </arguments>
+    </type>-->
+
+    <type name="Magento\Framework\View\Element\UiComponent\Argument\Interpreter\ConfigurableObject">
+        <arguments>
+            <argument name="classWhitelist" xsi:type="array">
+                <item name="option_source_interface" xsi:type="string">Magento\Framework\Data\OptionSourceInterface</item>
+                <item name="data_provider_interface" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface</item>
+                <item name="context_interface" xsi:type="string">Magento\Framework\View\Element\UiComponent\ContextInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <!--    <type name="AJH\Fitment\Ui\DataProvider\Grid\ListingDataProvider">
+        <plugin name="fitment_grid_attributes" type="AJH\Fitment\Plugin\AddAttributesToUiDataProvider"/>
+    </type>-->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="admin_fitment_listing_data_source" xsi:type="string">FitmentGridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <type name="AJH\Fitment\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="AJH\Fitment\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">customLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">AJH\Fitment\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <virtualType name="FitmentGridCollection" type="AJH\Fitment\Ui\DataProvider\Grid\Listing\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">vwvehiclestpms4</argument>
+            <argument name="resourceModel" xsi:type="string">AJH\Fitment\Model\ResourceModel\Grid</argument>
+        </arguments>
+    </virtualType>
+    
+    <!-- To prepare the filterlist for our custom collection which would be passed to the left navigation we need below virtual types for our custom page navigation -->
+<!--    <virtualType name="customFilterList" type="AJH\Fitment\Model\Catalog\Layer\FilterList">
+        <arguments>
+            <argument name="filterableAttributes" xsi:type="object">AJH\Fitment\Model\Catalog\Layer\FilterableAttributeList</argument>
+            <argument name="filters" xsi:type="array">
+                <item name="attribute" xsi:type="string">AJH\Fitment\Model\Catalog\Layer\Filter\Attribute</item>
+                <item name="category" xsi:type="string">AJH\Fitment\Model\Catalog\Layer\Filter\Category</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+     once the filter list virtual type is ready we can pass the same to our navigation , I have prepared the virtual type of the core navigation for my custom module and have passed the custom filter list to it 
+    <virtualType name="AJH\Fitment\Block\Navigation\Custnavigation" type="Magento\LayeredNavigation\Block\Navigation">
+        <arguments>
+            <argument name="filterList" xsi:type="object">customFilterList</argument>
+        </arguments>
+    </virtualType>
+
+     As we will be modifying the layer model collection we will need to extend the core model layer, Below virtual type will be required to extend the Catalog model layer else it will throw error for the context in construct method
+    <virtualType name="AJH\Fitment\Model\Catalog\Layer\Context" type="Magento\Catalog\Model\Layer\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">AJH\Fitment\Model\Catalog\Layer\ItemCollectionProvider</argument>
+            <argument name="stateKey" xsi:type="object">AJH\Fitment\Model\Catalog\Layer\StateKey</argument>
+            <argument name="collectionFilter" xsi:type="object">AJH\Fitment\Model\Catalog\Layer\CollectionFilter</argument>
+        </arguments>
+    </virtualType>
+    
+    <type name="AJH\Fitment\Model\Catalog\Layer">
+        <arguments>
+            <argument name="context" xsi:type="object">AJH\Fitment\Model\Catalog\Layer\Context</argument>
+        </arguments>
+    </type>-->
+    
+<!--    <type name="Magento\Catalog\Model\Layer">
+        <plugin name="ajh_fitment_model_catalog_layer" type="AJH\Fitment\Plugin\Layer" />
+    </type>
+    
+    <type name="Magento\Catalog\Block\Product\ProductList\Toolbar">
+        <plugin name="custom_product_toolbar" type="AJH\Fitment\Plugin\Toolbar" />
+    </type>
+
+    <virtualType name="categoryFilterList" type="Magento\Catalog\Model\Layer\FilterList">
+        <arguments>
+            <argument name="filters" xsi:type="array">
+                <item name="attribute" xsi:type="string">Magento\Catalog\Model\Layer\Filter\Attribute</item>
+                <item name="price" xsi:type="string">Magento\Catalog\Model\Layer\Filter\Price</item>
+                <item name="decimal" xsi:type="string">Magento\Catalog\Model\Layer\Filter\Decimal</item>
+                <item name="category" xsi:type="string">Magento\Catalog\Model\Layer\Filter\Category</item>
+            </argument>
+        </arguments>
+    </virtualType>-->
+    
+<!--    <preference for="Magento\Catalog\Model\Layer\ContextInterface" type="Magento\Catalog\Model\Layer\Context" />
+    <preference for="Magento\Catalog\Model\Layer\ItemCollectionProviderInterface" type="Magento\Catalog\Model\Layer\Category\ItemCollectionProvider" />
+    <preference for="Magento\Catalog\Model\Layer\StateKeyInterface" type="Magento\Catalog\Model\Layer\Category\StateKey" />
+    <preference for="Magento\Catalog\Model\Layer\CollectionFilterInterface" type="Magento\Catalog\Model\Layer\Category\CollectionFilter" />
+    <preference for="Magento\Catalog\Model\Layer\FilterableAttributeListInterface" type="Magento\Catalog\Model\Layer\Category\FilterableAttributeList" />
+    <preference for="Magento\Catalog\Model\Layer\AvailabilityFlagInterface" type="Magento\Catalog\Model\Layer\Category\AvailabilityFlag" />
+    <preference for="Magento\Catalog\Model\ResourceModel\Layer\Filter\Price" type="AJH\LayeredNavigation\Model\ResourceModel\Layer\Filter\Price" />-->
+    
+</config>

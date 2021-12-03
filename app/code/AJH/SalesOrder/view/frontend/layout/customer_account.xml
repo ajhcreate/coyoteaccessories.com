@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="salesorder-favorite-items">
+                <arguments>
+                    <argument name="path" xsi:type="string">salesorder/favorite/items</argument>
+                    <argument name="label" xsi:type="string">My Favorite Items</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

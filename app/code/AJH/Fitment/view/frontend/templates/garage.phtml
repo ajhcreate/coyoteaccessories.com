@@ -1,0 +1,131 @@
+<?php
+//$_vehicles = $block->getVehicles();
+$vehicles = $block->getVehiclesByMake();
+$makeID = array();
+?>
+<div class="modal-body">                    
+    <div class="garage-modal-title">
+        <?php if (count($vehicles)): ?>
+            <h1 class="header-title text-uppercase font-weight-bold text-center">Select a vehicle from your garage</h1>
+        <?php else: ?>
+            <h1 class="header-title text-uppercase font-weight-bold text-center">You don't have a vehicle in your garage</h1>
+        <?php endif; ?>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <?php if (count($vehicles)): ?>                                
+                <?php foreach ($vehicles as $_makeID => $vehicles_): ?>
+                    <?php foreach ($vehicles_ as $index => $vehicle): ?>
+
+                        <?php
+                        $make = $block->getVehicleMake($vehicle['year'], $vehicle['make']['ID']);
+
+                        // Creating a variable with an URL 
+                        // to be checked 
+                        $url = "http://{$make['Logo']}";
+
+                        // Initializing new session 
+                        $ch = curl_init($url);
+                        // Request method is set 
+                        curl_setopt($ch, CURLOPT_NOBODY, true);
+                        // Executing cURL session 
+                        curl_exec($ch);
+                        // Getting information about HTTP Code 
+                        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                        // Testing for 404 Error 
+                        if ($retcode != 200) {
+                            $url = '';
+                        }
+
+                        curl_close($ch);
+
+                        $vehicle_name = $vehicle['year'] . ' ' . $vehicle['make']['Name'] . ' ' . $vehicle['model']['Name'] . ' - ' . $vehicle['submodel']['Name'];
+                        $vehicle_image = $block->getVehicleImage($vehicle['year'], $vehicle['make']['Name'], $vehicle['model']['Name']);
+                        ?>
+                        <div class="col-12 col-sm-3 vehicle-item">
+                            <?php // if (!in_array($_makeID, $makeID)): ?>
+                                <div class="row justify-content-center">
+                                    <div class="garage-vehicle maker-logo">
+                                        <div class="garage-vehicle-image text-center">     
+                                            <?php if ($url !== ''): ?>
+                                                <img src="<?php echo $url; ?>" width="160" class="img-fluid" alt="<?php echo $vehicle['make']['Name']; ?>" title="<?php echo $vehicle['make']['Name']; ?>" />                                                                                         
+                                            <?php else: ?>
+                                                <h3 class="text-uppercase p-4 my-4 border border-dark"><?php echo $vehicle['make']['Name']; ?></h3>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>                        
+                                <?php // array_push($makeID, $_makeID); ?>
+                            <?php // endif; ?>
+
+                            <?php // if ($index == 0): ?>
+                                <div class="row justify-content-center garage-vehicle-list">
+                                <?php // endif; ?>
+
+                                <div class="col-12 vehicle-image-model">
+                                    <div class="garage-vehicle-make-model text-left">
+                                        <div class="garage-vehicle-image-wrap text-center position-relative">
+                                            <a href="<?php echo $block->getUrl('fitment/index/categories', ['_query' => $vehicle['params']]); ?>">
+                                                <img src="<?php echo $vehicle_image ? $vehicle_image : $block->getPlaceholderImage(); ?>" class="img-fluid2" width="auto" height="115" alt="" />
+                                            </a>
+                                            <div class="confirmation-wrapper d-none">
+                                                <div class="confirmation-content">
+                                                    <span class="confirmation-text">Remove this vehicle?</span>
+                                                    <a href="#" class="confirmation-yes" data-confirm="1">YES</a>                                                        
+                                                    <a href="#" class="confirmation-no" data-confirm="0">CANCEL</a>
+                                                </div>
+                                                <div class="confirmation-wrapper-bg"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="garage-vehicle-name text-uppercase font-weight-bold py-3 text-center">
+                                            <a href="<?php echo $block->getUrl('fitment/index/categories', ['_query' => $vehicle['params']]); ?>">
+                                                <?php echo $vehicle_name; ?>
+                                            </a>
+                                            <a href="#" title="Remove [ <?php echo $vehicle_name; ?> ] from Garage" data-vehiclename="<?php echo $vehicle_name; ?>" data-vehicle="<?php echo $vehicle['key']; ?>" class="remove-from-garage" onclick="garage.removeVehicle(this)">&times;</a>
+                                            <?php if ($block->isCurrentlySelected($vehicle['year'], $_makeID, $vehicle['model']['ID'], $vehicle['submodel']['ID'])): ?>
+                                                <div class="currently-selected-vehicle">Currently Selected</div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>                                            
+                                </div>
+
+                                <?php // if ($index >= (count($vehicles_) - 1)): ?>
+                                </div>      
+                            <?php // endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var garage = (function ($) {
+        return {
+            removeVehicle: function (el) {
+                $.ajax({
+                    url: "<?php echo $block->getUrl("fitment/garage/removevehicle"); ?>",
+                    data: {
+                        vehicle_id: $(el).data("vehicle")
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response.outputHtml.status);
+                        
+                        var vehicle_counts = $(".vehicle-item").length;
+                        
+                        $(el).parents(".vehicle-item").remove();
+                        
+                        if(vehicle_counts === 1){
+                            $(".garage-modal-title h1").text("You don't have a vehicle in your garage");
+                        }
+                    }
+                });
+            }
+        };
+    })(jQuery);
+
+</script>

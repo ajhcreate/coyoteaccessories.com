@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ajhextensions" translate="label" sortOrder="10">
+            <label>AJH Extensions</label>
+        </tab>
+        <section id="extendmagecontact" translate="label" sortOrder="1000" type="text" showInDefault="1" showInWebsite="1" showInStore="1">            
+            <label>Extend Mage Contact</label>
+            <tab>ajhextensions</tab>
+            <resource>AJH_ExtendMageContact::extendmagecontact_config</resource>
+            <group id="generalsettings" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <comment>General Settings</comment>                
+                <field id="enable" translate="label" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Module</label>                            
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                                               
+                </field>
+                <field id="cms_url_key" translate="label" sortOrder="30" type="text" showInDefault="1" showInWebsite="1" showInStore="1">                        
+                    <label>Contact Us CMS Page URL Key</label>                                            
+                    <depends>                            
+                        <field id="enable">1</field>                                
+                    </depends>                        
+                </field>
+                <field id="cc" translate="label" sortOrder="60" type="text" showInDefault="1" showInWebsite="1" showInStore="1">                        
+                    <label>CC Email</label>                           
+                    <validate>validate-email</validate>                            
+                    <depends>
+                        <field id="enable">1</field>                                
+                    </depends>                        
+                </field>                
+            </group>            
+        </section>
+    </system>
+</config>

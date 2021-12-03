@@ -1,0 +1,33 @@
+<?php
+$distributors = $block->getDistributors();
+$distributor_source = $block->getDistributorSource();
+?>
+<div class="d2rDS">
+    <div id="map" class="d2rDS-map"></div>
+    map goes here    
+</div>
+<script type="text/javascript">
+
+    function initMap() {
+        var dis = <?php echo json_encode($distributors) ?>;
+
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+//		zoom: 4,
+//        center: {lat: -25.363882, lng: 131.044922 }
+        });
+    }
+
+</script>
+<script async defer 
+src="https://maps.googleapis.com/maps/api/js?key=<?php echo $block->getAPIKey(); ?>&callback=initMap"></script>
+
+<style>
+
+    .d2rDS {}
+
+    .d2rDS-map {
+        height: 400px;
+    }
+
+</style>

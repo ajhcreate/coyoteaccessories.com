@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<!--    <event name="place_order_after">
+        <observer name="ajh_place_order_after" instance="AJH\ShippingBox\Observer\Orderplaceafter" />
+    </event>-->
+<!--    <event name="m2epro_observer_order_save_after_sendpickupstorenotifications">
+        <observer name="ajh_place_order_after2" instance="AJH\ShippingBox\Observer\Orderplaceafter" />
+    </event>
+    <event name="checkout_onepage_controller_success_action">
+        <observer name="ajh_place_order_after" instance="AJH\ShippingBox\Observer\Orderplaceafter" />
+    </event>-->
+    <event name="sales_order_save_after">
+        <observer name="ajh_place_order_after" instance="AJH\ShippingBox\Observer\Orderplaceafter" />
+    </event>
+</config>

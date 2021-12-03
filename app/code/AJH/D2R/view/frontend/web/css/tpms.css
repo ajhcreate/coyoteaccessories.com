@@ -1,0 +1,120 @@
+label {
+	cursor: pointer;
+}
+
+.tpms-form {
+	width: 900px;
+	margin: 0 auto;
+	background: #f7f7f7;
+	padding: 80px;
+}
+.tpms-step {
+	margin: 30px 0;
+}
+.tpms-step h2 {
+	color: #424242;
+	line-height: 50px;
+	margin: 30px 0;
+	border-bottom: 5px solid #c53c3c;
+}
+.tpms-step h2 strong {
+	font-weight: bold;
+}
+
+.tpms-tireSwitch {}
+.tpms-field {
+	margin: 10px 0;
+}
+.tpms-field > label,
+.tpms-fieldName {
+	display: inline-block;
+	width: 45%;
+	vertical-align: middle;
+}
+.tpms-field .field {
+	display: inline-block;
+	width: 50%;
+	line-height: 30px;
+	vertical-align: middle;
+}
+.tpms-field > .field input[type="text"],
+.tpms-field > .field select {
+	display: block;
+	width: 100%;
+	margin: 10px 0;
+	padding: 0 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	line-height: 20px;
+	vertical-align: middle;
+	/*color: #9fa5a8;*/
+}
+.tpms-fields {
+	display: inline-block;
+	width: 50%;
+	line-height: 30px;
+	vertical-align: middle;
+}
+.tpms-miniField {
+	display: inline-block;
+	margin: 2px 20px 2px 0;
+}
+.tpms-miniField label {
+	display: inline-block;
+	margin: 0 6px 0 0;
+	vertical-align: middle;
+}
+.tpms-miniField input[type="text"] {
+	display: inline-block;
+	width: 50px;
+	padding: 3px 10px;
+	border-radius: 5px;
+	padding: 8px 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	vertical-align: middle;
+}
+.tpms-miniField input[type="radio"] {
+	margin-right: 6px;
+	vertical-align: middle;
+}
+
+.tpms-wheels-4 .tpms-spare {
+	display: none;
+}
+.tpms-wheels-5 .tpms-spare {
+	display: initial;
+}
+
+.tpms-fieldName p {
+	margin: 0;
+	line-height: 20px;
+	font-size: 12px;
+}
+
+#vehicleYear-msg {
+	font-weight: bold;
+	color: red;
+}
+
+.tpms-loginRequired {}
+.tpms-loginRequired h1 {}
+.tpms-loginRequired p {}
+.tpms-loginRequired a {}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Success block */
+.tpms-result {}
+.tpms-success {
+	padding: 40px 0 0;
+}
+.tpms-success h1 {}
+.tpms-success p {}
+
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Recommended stuff */
+.tpms-form-recommendedSensors {}
+.tpms-form-relearnUrl {}
+.tpms-form-relearnUrl a {
+	color: blue;
+}

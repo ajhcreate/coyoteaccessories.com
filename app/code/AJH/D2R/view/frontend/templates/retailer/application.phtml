@@ -1,0 +1,83 @@
+<?php
+$_helper = \AJH\D2R\Helper\Data;
+$helper = $_helper->create();
+
+$app = $block->getApplication();
+$customer = $block->getCustomer();
+$address = $block->getAddress();
+$distributor = $block->getDistributor();
+?>
+<div class="wsdc-app d2r">
+    <h3><?php echo __('Application sent') ?></h3>
+    <div class="wsdc-tablecontainer">
+        <table cellspacing="2" class="box-left">
+            <tr>
+                <td><?php echo __('Sent at') ?></td>
+                <td><?php echo $helper->value($app->getData('date_sent')) ?></td>
+            </tr>
+
+            <tr>
+                <td class="ws-horseparator" colspan="2"><h4><?php echo __('Company') ?></h4></td>
+            </tr>
+            <tr>
+                <td><?php echo __('Company') ?></td>
+                <td><?php echo $helper->value($app->getCompany()) ?></td>
+            </tr>
+            <tr>
+                <td><?php echo __('Website') ?></td>
+                <td><?php echo $helper->value($app->getWebsite()) ?></td>
+            </tr>
+            <tr>
+                <td><?php echo __('Email') ?></td>
+                <td><?php echo $helper->value($app->getEmail()) ?></td>
+            </tr>
+            <tr>
+                <td><?php echo __('Company representative') ?></td>
+                <td><?php echo $helper->value($app->getFirstname() . ' ' . $app->getLastname()) ?></td>
+            </tr>
+            <tr>
+                <td><?php echo __('Job position / Title') ?></td>
+                <td><?php echo $helper->value($app->getPosition()) ?></td>
+            </tr>
+
+            <tr>
+                <td class="ws-horseparator" colspan="2"><h4><?php echo __('Address') ?></h4></td>
+            </tr>
+            <tr>
+                <td><?php echo __('Address') ?></td>
+                <td><?php echo $address->format('company') ?></td>
+            </tr>
+
+            <tr>
+                <td class="ws-horseparator" colspan="2"><h4><?php echo __('Survey data') ?></h4></td>
+            </tr>
+            <tr>
+                <td>Current Supplier</td>
+                <td><?php echo $helper->value($app->getData('currentSupplier')) ?></td>
+            </tr>
+            <tr>
+                <td>Business Type</td>
+                <td><?php echo $helper->value($app->getData('businessType')) ?></td>
+            </tr>
+            <tr>
+                <td>Annual Sales</td>
+                <td><?php echo $helper->value($app->getData('annualSales')) ?></td>
+            </tr>
+            <tr>
+                <td># of Employees</td>
+                <td><?php echo $helper->value($app->getData('employeeCount')) ?></td>
+            </tr>
+            <tr>
+                <td>Heard about our site from</td>
+                <td><?php echo $helper->value($app->getData('heardFrom')) ?></td>
+            </tr>
+
+            <tr>
+                <td class="ws-horseparator" colspan="2"><h4><?php echo __('Distributor chosen') ?></h4></td>
+            </tr>
+            <tr>
+                <td colspan="2"><?php echo $helper->value($distributor ? $distributor->format() : '', 'None') ?></td>
+            </tr>
+        </table>
+    </div>
+</div>

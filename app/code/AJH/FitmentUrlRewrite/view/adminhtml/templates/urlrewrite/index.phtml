@@ -1,0 +1,85 @@
+<?php
+/** @var \AJH\FitmentUrlRewrite\Block\Adminhtml\FitmentUrlRewrite $block * */
+$years = $block->getYearsCollection();
+
+$years_arr = [];
+?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 process-output-status">
+
+        </div>
+    </div>
+    <div class="row sef-row-actions">
+        <div class="col-6">
+            <select id="fitment-year">
+                <?php
+                foreach ($years as $year):
+                    $data = $year->getData();
+                    if (!in_array($data["year"], $years_arr)):
+                        $years_arr[$data["year"]] = $data["year"];
+                        ?>
+                        <option value="<?php echo $data["year"]; ?>"><?php echo $data["year"]; ?></option>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+            <button type="button" class="btn generate_url_rewrite" data-store="coyoteaccessories">Generate Coyote Accessories URL Rewrite</button>
+            <button type="button" class="btn generate_url_rewrite" data-store="pdqtpms">Generate PDQ TPMS URL Rewrite</button>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    .process-output-status .success,
+    .process-output-status .error{
+        text-align: left;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+
+    .sef-row-actions{
+        margin-top: 15px;
+    }
+</style>
+
+<script type="text/javascript">
+    require(['jquery', 'jquery/ui'], function ($) {
+        var fitment = (function ($) {
+
+            return {
+                urlrewrite: function () {
+                    console.log('fitment url rewrite');
+                }
+            };
+        });
+
+        $(".generate_url_rewrite").click(function () {
+            var request = $(this).data('store');
+            var year = $("#fitment-year").val();
+            $.ajax({
+                method: 'POST',
+                url: "<?php /* @escapeNotVerified */ echo $block->getAjaxUrl('AddToSitemap'); ?>" + "?isAjax=true", // <-- you need to add 'isAjax=true' to your URL
+                data: {
+                    request: request,
+                    year: year,
+                    form_key: window.FORM_KEY  // <-- you need to add the current form key to your POST data
+                },
+                dataType: "json",
+                beforeSend: function () {
+
+                    console.log("Store: " + request);
+                },
+                success: function (resp) {
+                    var output = "Added URL Rewrite: " + resp.count + " for year " + year;
+                    $(".process-output-status").append("<div class=\"success grid-severity-notice\">" + output + "</div>");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    $(".process-output-status").append("<div class=\"error grid-severity-critical\">" + textStatus + "." + errorThrown + "</div>");
+                }
+            });
+        });
+    });
+</script>

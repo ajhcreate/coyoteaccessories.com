@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>                
+        <add id="AJH_FitmentUrlRewrite::dashboard" title="SEO/SEF" module="AJH_FitmentUrlRewrite" sortOrder="10" action="fitmentseo/dashboard/index" parent="AJH_Fitment::fitment_menu" resource="AJH_FitmentUrlRewrite::dashboard" />
+        <add id="AJH_FitmentUrlRewrite::urlrewrite" title="SEF URL Rewrite" module="AJH_FitmentUrlRewrite" sortOrder="10" action="fitmentseo/urlrewrite/index" parent="AJH_Fitment::fitment_menu" resource="AJH_FitmentUrlRewrite::urlrewrite" />
+    </menu>
+</config>

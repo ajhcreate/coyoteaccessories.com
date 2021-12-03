@@ -1,0 +1,337 @@
+<?php
+$distributors = $block->getDistributors();
+
+$distributorsJSON = \AJH\D2R\Helper\Data::jsonArray($distributors);
+$distributor_source = $block->getDistributorSource();
+
+$isEmbed = $block->getEmbed();
+
+?>
+<div id="d2rDS" class="d2rDS">
+    <?php if (!$isEmbed): ?>
+        <h1>Find a <span class="d2DS-headerLogo"></span> Distributor</h1>
+        <div class="d2rDS-header">Click on a pin in your area to find one of our distributors. If there are no distributors
+            in your area please <a href="<?php echo $block->getUrl('contact_us') ?>">contact us</a>. If you wish to be one
+            of distributors please <a href="<?php echo $block->getUrl('contact_us') ?>">contact us</a>.</div>
+    <?php endif ?>
+    <div id="map" class="d2rDS-map"></div>
+    <div id="d2rDS-info" class="d2rDS-info"></div>
+</div>
+<script type="text/x-magento-init">
+    {
+    "*": {
+    "https://maps.googleapis.com/maps/api/js?key=<?php echo $block->getGMapsAPIKey(); ?>&callback=map.initMap": {}
+    }
+    }
+</script>
+<script>
+    require(["jquery"], function ($) {
+        Map = function () {
+            return function ($) {
+                return {
+                    config: {
+                        baseURL: '',
+                        logoURL: '',
+                        markers: [],
+                        selectors: {
+                            self: '#d2rDS',
+                            infoBlock: '#d2rDS-info'
+                        },
+                        templates: {
+                            marker: {
+                                title: '%NAME%\n\
+    %ADDRESS1%, %CITY%, %STATE%\n\
+    %PHONE%'
+                            },
+                            infoWindow: '<div class="d2rDS-map-infoWindow d2rDS-map-info">'
+                                    + '<div class="d2rDS-info-name">%NAME%</div>'
+                                    + '<div class="d2rDS-info-address">%ADDRESS2% %ADDRESS1%, %ZIP% %CITY%, %STATE%, %COUNTRY%</div>'
+                                    + '<div class="d2rDS-info-select"><button type="button" onclick="map.selectDistributor(%ID%); ">Select</button></div>'
+                                    + '</div>',
+                            infoBlock: '<div class="d2rDS-info">'
+                                    //+ '<img class="d2rDS-info-logo" src="%LOGO%" alt="Company logo"/>'
+                                    + '<div class="d2rDS-info-fields">'
+                                    + '<div class="d2rDS-info-name"><span>Name:</span> %NAME%</div>'
+                                    + '<div class="d2rDS-info-address"><span>Address:</span>%ADDRESS2% %ADDRESS1%, %ZIP% %CITY%, %STATE%, %COUNTRY%</div>'
+                                    + '<div class="d2rDS-info-phone"><span>Phone:</span> <a href="call:%PHONE%">%PHONE%</a></div>'
+                                    + '<div class="d2rDS-info-fax"><span>Fax:</span> %FAX%</div>'
+                                    + '<div class="d2rDS-info-email"><span>Email:</span> <a href="mailto:%EMAIL%">%EMAIL%</a></div>'
+                                    + '</div>'
+                                    + '</div>'
+                        }
+                    },
+                    infoWindows: [],
+                    selected: null,
+                    init: function (configValues) {
+                        $.extend(true, this.config, configValues);
+                    },
+                    inform: function (message, delayed) {
+                        if (window.hasOwnProperty('informer')) {
+                            if ('undefined' == typeof (delayed)) {
+                                delayed = true;
+                            }
+                            if (delayed)
+                                window.informer.appear(message, this.config.messageTimeoutInterval);
+                            else
+                                window.informer.show(message);
+                        } else
+                            alert(message);
+                    },
+                    closeInfoWindows: function () {
+                        for (var i = 0; i < this.infoWindows.length; i++) {
+                            this.infoWindows[i].close();
+                        }
+                    },
+                    initMap: function () {
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 4,
+                            center: {lat: 39.8283, lng: -98.5795}
+                        });
+                        for (var i = 0; i < this.config.markers.length; i++) {
+                            var coords = this.config.markers[i].LatLng;
+
+
+                            if (coords === "," || !coords)
+                                continue;
+
+                            var latLng = JSON.parse('{"lat":' + coords.replace(',', ',"lng":') + '}');
+                            var title = this.config.templates.marker.title
+                                    .replace('%NAME%', this.config.markers[i].Name)
+                                    .replace('%ADDRESS1%', this.config.markers[i].Address1)
+                                    .replace('%PHONE%', this.config.markers[i].Phone)
+                                    .replace('%STATE%', this.config.markers[i].State)
+                                    .replace('%CITY%', this.config.markers[i].City);
+                            var marker = new google.maps.Marker({
+                                position: latLng,
+                                title: title,
+                                map: map
+                            });
+                            marker.controlObject = this;
+                            marker.info = new google.maps.InfoWindow({
+                                content: this.config.templates.infoWindow
+                                        .replace(/%NAME%/g, this.config.markers[i].Name)
+                                        .replace(/%ADDRESS1%/g, this.config.markers[i].Address1)
+                                        .replace(/%ADDRESS2%/g, this.config.markers[i].Address2)
+                                        .replace(/%PHONE%/g, this.config.markers[i].Phone)
+                                        .replace(/%FAX%/g, this.config.markers[i].Fax)
+                                        .replace(/%COUNTRY%/g, this.config.markers[i].Country)
+                                        .replace(/%STATE%/g, this.config.markers[i].State)
+                                        .replace(/%CITY%/g, this.config.markers[i].City)
+                                        .replace(/%ZIP%/g, this.config.markers[i].Zip)
+                                        .replace(/%EMAIL%/g, this.config.markers[i].Email)
+                                        .replace(/%LOGO%/g, this.config.markers[i].Logo)
+                                        .replace(/%ID%/g, this.config.markers[i].ID)
+                            });
+                            google.maps.event.addListener(marker, 'click', this._markerClick);
+                            this.infoWindows.push(marker.info);
+                        }
+                        console.log('@initMap');
+                    },
+                    _markerClick: function (event) {
+                        $(this.controlObject.config.selectors.infoBlock).html('');
+
+
+                        this.controlObject.closeInfoWindows();
+                        this.info.open(this.getMap(), this);
+                    },
+                    selectDistributor: function (id) {
+                        if ($("select#reset_tool_use").length && $("select#reset_tool_use").val() !== 'pdq') {
+                            $("button.d2rRR-submit-register").css({display: 'inline'});
+                        } else {
+                            $("button.d2rRR-submit-register-tool").css({display: 'inline'});
+                        }
+
+                        for (var i = 0; i < this.config.markers.length; i++) {
+                            if (this.config.markers[i].ID == id) {
+                                this.selected = this.config.markers[i];
+                                var d = this.config.markers[i];
+                                var html = this.config.templates.infoBlock
+                                        .replace(/%NAME%/g, d.Name)
+                                        .replace(/%ADDRESS1%/g, d.Address1)
+                                        .replace(/%ADDRESS2%/g, d.Address2)
+                                        .replace(/%PHONE%/g, d.Phone)
+                                        .replace(/%FAX%/g, d.Fax)
+                                        .replace(/%COUNTRY%/g, d.Country)
+                                        .replace(/%STATE%/g, d.State)
+                                        .replace(/%CITY%/g, d.City)
+                                        .replace(/%ZIP%/g, d.Zip)
+                                        .replace(/%EMAIL%/g, d.Email)
+                                        .replace(/%LOGO%/g, this.config.logoURL + '/' + d.Logo)
+                                        .replace(/%ID%/g, d.ID);
+                                $(this.config.selectors.infoBlock).html(html);
+                                return;
+                            }
+                        }
+                        this.selected = null;
+                        $(this.config.selectors.infoBlock).html('');
+                    }
+                };
+            }($);
+        };
+        map = new Map();
+
+        map.init({
+            baseURL: '<?php echo $block->getUrl('d2r/retailer/selectDistributor') ?>',
+            logoURL: '<?php echo $block->getBaseUrl('media') ?>distributorLogo/',
+            markers: <?php echo $distributorsJSON ?>
+        });
+
+    });
+</script>
+<script type="text/javascript">
+//    Map = function () {
+//        return function ($) {
+//            return {
+//                config: {
+//                    baseURL: '<?php echo $block->getUrl('d2r/retailer/selectDistributor') ?>',
+//                    logoURL: '<?php echo $block->getBaseUrl('media') ?>distributorLogo/',
+//                    markers: <?php echo $distributorsJSON ?>,
+//                    selectors: {
+//                        self: '#d2rDS',
+//                        infoBlock: '#d2rDS-info'
+//                    },
+//                    templates: {
+//                        marker: {
+//                            title: '%NAME%\n\
+//    %ADDRESS1%, %CITY%, %STATE%\n\
+//    %PHONE%'
+//                        },
+//                        infoWindow: '<div class="d2rDS-map-infoWindow d2rDS-map-info">'
+//                                + '<div class="d2rDS-info-name">%NAME%</div>'
+//                                + '<div class="d2rDS-info-address">%ADDRESS2% %ADDRESS1%, %ZIP% %CITY%, %STATE%, %COUNTRY%</div>'
+//                                + '<div class="d2rDS-info-select"><button type="button" onclick="map.selectDistributor(%ID%); ">Select</button></div>'
+//                                + '</div>',
+//                        infoBlock: '<div class="d2rDS-info">'
+//                                //+ '<img class="d2rDS-info-logo" src="%LOGO%" alt="Company logo"/>'
+//                                + '<div class="d2rDS-info-fields">'
+//                                + '<div class="d2rDS-info-name"><span>Name:</span> %NAME%</div>'
+//                                + '<div class="d2rDS-info-address"><span>Address:</span>%ADDRESS2% %ADDRESS1%, %ZIP% %CITY%, %STATE%, %COUNTRY%</div>'
+//                                + '<div class="d2rDS-info-phone"><span>Phone:</span> <a href="call:%PHONE%">%PHONE%</a></div>'
+//                                + '<div class="d2rDS-info-fax"><span>Fax:</span> %FAX%</div>'
+//                                + '<div class="d2rDS-info-email"><span>Email:</span> <a href="mailto:%EMAIL%">%EMAIL%</a></div>'
+//                                + '</div>'
+//                                + '</div>'
+//                    }
+//                },
+//                infoWindows: [],
+//                selected: null,
+//                init: function (configValues) {
+//                    //                    $.extend(true, this.config, configValues);
+//                },
+//                inform: function (message, delayed) {
+//                    if (window.hasOwnProperty('informer')) {
+//                        if ('undefined' == typeof (delayed)) {
+//                            delayed = true;
+//                        }
+//                        if (delayed)
+//                            window.informer.appear(message, this.config.messageTimeoutInterval);
+//                        else
+//                            window.informer.show(message);
+//                    } else
+//                        alert(message);
+//                },
+//                closeInfoWindows: function () {
+//                    for (var i = 0; i < this.infoWindows.length; i++) {
+//                        this.infoWindows[i].close();
+//                    }
+//                },
+//                initMap: function () {
+//                    var map = new google.maps.Map(document.getElementById('map'), {
+//                        zoom: 4,
+//                        center: {lat: 39.8283, lng: -98.5795}
+//                    });
+//                    for (var i = 0; i < this.config.markers.length; i++) {
+//                        var coords = this.config.markers[i].LatLng;
+//
+//
+//                        if (coords === "," || !coords)
+//                            continue;
+//
+//                        var latLng = JSON.parse('{"lat":' + coords.replace(',', ',"lng":') + '}');
+//                        var title = this.config.templates.marker.title
+//                                .replace('%NAME%', this.config.markers[i].Name)
+//                                .replace('%ADDRESS1%', this.config.markers[i].Address1)
+//                                .replace('%PHONE%', this.config.markers[i].Phone)
+//                                .replace('%STATE%', this.config.markers[i].State)
+//                                .replace('%CITY%', this.config.markers[i].City);
+//                        var marker = new google.maps.Marker({
+//                            position: latLng,
+//                            title: title,
+//                            map: map
+//                        });
+//                        marker.controlObject = this;
+//                        marker.info = new google.maps.InfoWindow({
+//                            content: this.config.templates.infoWindow
+//                                    .replace(/%NAME%/g, this.config.markers[i].Name)
+//                                    .replace(/%ADDRESS1%/g, this.config.markers[i].Address1)
+//                                    .replace(/%ADDRESS2%/g, this.config.markers[i].Address2)
+//                                    .replace(/%PHONE%/g, this.config.markers[i].Phone)
+//                                    .replace(/%FAX%/g, this.config.markers[i].Fax)
+//                                    .replace(/%COUNTRY%/g, this.config.markers[i].Country)
+//                                    .replace(/%STATE%/g, this.config.markers[i].State)
+//                                    .replace(/%CITY%/g, this.config.markers[i].City)
+//                                    .replace(/%ZIP%/g, this.config.markers[i].Zip)
+//                                    .replace(/%EMAIL%/g, this.config.markers[i].Email)
+//                                    .replace(/%LOGO%/g, this.config.markers[i].Logo)
+//                                    .replace(/%ID%/g, this.config.markers[i].ID)
+//                        });
+//                        google.maps.event.addListener(marker, 'click', this._markerClick);
+//                        this.infoWindows.push(marker.info);
+//                    }
+//                    console.log('@initMap');
+//                },
+//                _markerClick: function (event) {
+//
+//                    console.log(this.controlObject.config.selectors.infoBlock);
+//
+//                    $(this.controlObject.config.selectors.infoBlock).html('');
+//
+//
+//                    this.controlObject.closeInfoWindows();
+//                    this.info.open(this.getMap(), this);
+//                },
+//                selectDistributor: function (id) {
+//                    if ($("select#reset_tool_use").length && $("select#reset_tool_use").val() !== 'pdq') {
+//                        $("button.d2rRR-submit-register").css({display: 'inline'});
+//                    } else {
+//                        $("button.d2rRR-submit-register-tool").css({display: 'inline'});
+//                    }
+//
+//                    for (var i = 0; i < this.config.markers.length; i++) {
+//                        if (this.config.markers[i].ID == id) {
+//                            this.selected = this.config.markers[i];
+//                            var d = this.config.markers[i];
+//                            var html = this.config.templates.infoBlock
+//                                    .replace(/%NAME%/g, d.Name)
+//                                    .replace(/%ADDRESS1%/g, d.Address1)
+//                                    .replace(/%ADDRESS2%/g, d.Address2)
+//                                    .replace(/%PHONE%/g, d.Phone)
+//                                    .replace(/%FAX%/g, d.Fax)
+//                                    .replace(/%COUNTRY%/g, d.Country)
+//                                    .replace(/%STATE%/g, d.State)
+//                                    .replace(/%CITY%/g, d.City)
+//                                    .replace(/%ZIP%/g, d.Zip)
+//                                    .replace(/%EMAIL%/g, d.Email)
+//                                    .replace(/%LOGO%/g, this.config.logoURL + '/' + d.Logo)
+//                                    .replace(/%ID%/g, d.ID);
+//                            $(this.config.selectors.infoBlock).html(html);
+//                            return;
+//                        }
+//                    }
+//                    this.selected = null;
+//                    $(this.config.selectors.infoBlock).html('');
+//                }
+//            };
+//        }(jQuery);
+//    };
+//    map = new Map();
+
+//    map.init({
+//        baseURL: '<?php echo $block->getUrl('d2r/retailer/selectDistributor') ?>',
+//        logoURL: '<?php echo $block->getBaseUrl('media') ?>distributorLogo/',
+//        markers: <?php echo $distributorsJSON ?>
+//    });
+
+
+</script>
+<?php /* <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $block->getGMapsAPIKey(); ?>&callback=map.initMap"></script> */ ?>

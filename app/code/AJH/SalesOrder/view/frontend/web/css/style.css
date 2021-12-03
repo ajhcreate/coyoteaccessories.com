@@ -1,0 +1,57 @@
+table.dataTable td{
+    padding: 3px 10px;
+}
+
+table#my-orders-table tbody tr:first-child {
+    border-top: solid 1px #000;
+}
+
+.td-final-row {
+    border-bottom: 1px solid #9c9c9c;
+}
+
+.odr-img-w {
+    position: absolute;
+    border: 1px solid #cccccc;
+    background-color: #fff;
+    margin-left: 2%;
+}
+
+.odr-img-w img{
+    max-width: 200px;
+}
+
+.input-text.qty.fabqty {
+    width: 80px;
+    text-align: center;
+}
+
+button.button.btn-cart.reorder {
+    background: #d12329;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.actions.addtocart {
+    text-align: right;
+    margin: 20px 0;
+}
+
+div#my-orders-table_filter {
+    display: inline-block;
+    width: 50%;
+}
+
+input#favorite-filter-box {
+    width: calc(100% - 55px);
+    line-height: 37px;    
+    height: 37px;
+}
+
+div#my-orders-table_filter label{
+    font-weight: bold;
+}
+
+table#my-orders-table {
+    border-top: solid 2px #c2c2c2;
+}

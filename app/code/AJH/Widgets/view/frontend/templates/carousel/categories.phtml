@@ -1,0 +1,74 @@
+<div class="owl-carousel owl-theme owl-loaded owl-drag">
+    <div class="owl-stage-outer">
+        <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2376px;">
+            <div class="owl-item active" style="width: 178px; margin-right: 20px;">
+                <div class="item">
+                    <h4>1</h4>
+                </div></div><div class="owl-item active" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>2</h4>
+                </div></div><div class="owl-item active" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>3</h4>
+                </div></div><div class="owl-item active" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>4</h4>
+                </div></div><div class="owl-item active" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>5</h4>
+                </div></div><div class="owl-item" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>6</h4>
+                </div></div><div class="owl-item" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>7</h4>
+                </div></div><div class="owl-item" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>8</h4>
+                </div></div><div class="owl-item" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>9</h4>
+                </div></div><div class="owl-item" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>10</h4>
+                </div></div><div class="owl-item" style="width: 178px; margin-right: 20px;"><div class="item">
+                    <h4>11</h4>
+                </div></div><div class="owl-item" style="width: 178px; margin-right: 20px;">
+                <div class="item">
+                    <h4>12</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="owl-nav">
+        <button type="button" role="presentation" class="owl-prev disabled"><span aria-label="Previous"><</span></button>
+        <button type="button" role="presentation" class="owl-next"><span aria-label="Next">></span></button>
+    </div>
+    <div class="owl-dots">
+        <button role="button" class="owl-dot active"><span></span></button>
+        <button role="button" class="owl-dot"><span></span></button>
+        <button role="button" class="owl-dot"><span></span></button>
+    </div>
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+//        carousel();
+
+
+        $(window).load(function () {
+            $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: true
+                    },
+                    600: {
+                        items: 3,
+                        nav: false
+                    },
+                    1000: {
+                        items: 5,
+                        nav: true,
+                        loop: false
+                    }
+                }
+            })
+        });
+
+    });
+</script>

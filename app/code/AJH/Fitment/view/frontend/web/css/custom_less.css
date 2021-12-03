@@ -1,0 +1,88 @@
+.proInfoCol.product-blocks{
+    height: 250px;
+}
+
+.fitment-main-wrap {
+    display: flex;
+}
+
+.fitment_wrapper.container h3{
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.fitment_wrapper.container {
+    display: flex;
+    margin-top: 5px;
+}
+
+.yemamosu-wrap {
+    display: flex;
+    max-height: 50px;
+}
+
+.yemamosu-wrap span, #qualifier_wrap {
+    padding-right: 2px;
+}
+
+.clearer{
+    float: none;
+    display: block;
+    height: 0;
+}
+
+.fitment-action button {
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+
+#fitmentSlider.owl-carousel .owl-item img {    
+    width: 100%;
+    max-width: 220px !important;
+    margin: auto;
+}
+
+span.addl-criteria-question {
+    line-height: 38px;
+    display: inline-block;
+    padding: 0 8px;
+    font-weight: bold;
+}
+
+/*@media only screen and (min-width: 1200px) {
+    .fitment-slider{
+        max-width: 1200px;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .fitment-slider{
+        max-width: 566px;
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 414px) {
+    .fitment-slider{
+        max-width: 404px;
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 320px) {
+    .fitment-slider{
+        max-width: 310px;
+        width: 100%;
+    }
+}*/
+
+
+
+/*#fitmentSlider .owl-item, #fitmentSlider .owl-item.active {
+    width: 220px !important;
+    height: 220px;
+}
+
+.carousel-main-wrapper{
+    width: 100%;
+    max-width: 62.5rem;
+}*/

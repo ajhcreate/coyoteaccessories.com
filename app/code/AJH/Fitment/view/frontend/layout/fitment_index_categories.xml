@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body> 
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceContainer name="sidebar.additional">
+            <block class="AJH\Fitment\Block\Widget\Manufacturer" name="manufacturerBlock" before="-" template="AJH_Fitment::categories/sidebar.phtml">
+                <action method="setData">
+                    <argument name="fitmentManufacturer" xsi:type="string">None</argument>                    
+                </action>
+            </block>
+        </referenceContainer>     
+        <referenceContainer name="content">
+            <block class="AJH\Fitment\Block\Categories" name="fitment_index_categories" template="AJH_Fitment::categories.phtml">
+                <block class="AJH\Fitment\Block\Widget\Manufacturer" name="manufacturerBlock" before="-" template="AJH_Fitment::categories/sidebar.phtml">
+                    <action method="setData">
+                        <argument name="fitmentManufacturer" xsi:type="string">None</argument>                    
+                    </action>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

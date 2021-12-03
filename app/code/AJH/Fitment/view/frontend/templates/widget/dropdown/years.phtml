@@ -1,0 +1,14 @@
+<?php
+
+$years = $block->getYears();
+
+$options = $block->toSelectOptionHtml(['label' => 'Year', 'value' => '']);
+
+if ($years->count() > 0) {
+    foreach ($years as $key => $year) {
+        $data = $year->getData();
+        $options .= $block->toSelectOptionHtml(['label' => $data['YearID'], 'value' => $data['YearID']]);
+    }
+}
+
+echo $options;

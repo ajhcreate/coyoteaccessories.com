@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="content">
+        <block class="AJH\Search\Block\Result" name="ajhsearch_result_indexer" template="AJH_Search::indexer.phtml" >
+            <arguments> 
+                <argument name="block_id" xsi:type="string">ajhsearch_result_indexer</argument> 
+            </arguments>
+        </block>
+    </referenceContainer>
+</page>

@@ -1,0 +1,14 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!--        <referenceBlock name="order_additional_info">
+            <block class="AJH\ShippingBox\Block\Adminhtml\Order\View\Tab\Info" name="sales_order_custom_view" />
+        </referenceBlock>-->
+        <referenceBlock name="order_shipping_view">            
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">AJH_ShippingBox::order/view/tab/info.phtml</argument>
+            </action>
+        </referenceBlock>
+        <block class="AJH\ShippingBox\Block\Adminhtml\Order\View\Info" name="custom_block" template="AJH_ShippingBox::order/view/info.phtml" />
+    </body>
+</page>

@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @var
+ * $block AJH\ProductVehicle\Block\Fitment\Items
+ */
+$items = $block->getFitmentData();
+
+$options = [];
+
+if (count($items) && is_array($items) && isset($items['items'])) {
+    foreach ($items['items'] as $key => $item) {
+        $options[$item] = "<option value=\"{$key}\">{$item}</option>";
+    }
+
+    if (strtolower($items['label']) === 'year') {
+        rsort($options);
+    } else {
+        ksort($options);
+    }
+}
+
+$html = "<option value=\"\">{$items['label']}</option>";
+foreach ($options as $option) {
+    $html .= $option;
+}
+
+echo $html;

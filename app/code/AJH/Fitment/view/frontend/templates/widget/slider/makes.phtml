@@ -1,0 +1,68 @@
+<?php
+$fitment_makes = $block->getFitmentMakes();
+?>
+
+<div class="fitment-slider-container container">
+    <div class="homepage-slider-loading-wrapper"></div>
+    <div class="fitment-title">
+        <h1 class="text-uppercase text-center">Choose Your Vehicle</h1>
+        <div class="fitment-subtitle text-uppercase text-center">Select Your Vehicle <span class="fitment-to-select">Make</span></div>                                
+    </div>
+    <div class="main-content">
+        <div id="fitmentSlider" class="owl-carousel owl-theme makes-count<?php echo count($makes); ?>">
+            <?php $makes = $fitment_makes; ?>                                                                
+            <?php foreach ($makes as $key => $make): ?>
+                <?php
+                array_shift($fitment_makes);
+                $url = $block->getImage($make['LOGO_URL']);
+                ?>
+                <div class="item">
+                    <div class="product-item-info">
+                        <div class="product-img">
+                            <a href="#" class="fitment-slider-make fitment-slider-item"  data-url="<?php echo $block->getUrl("fitment/slider/years"); ?>" data-makeid="<?php echo $make['MakeID']; ?>">
+                                <img class="img-fuid fitment-make-img" src="<?php echo '//' . $make['LOGO_URL']; ?>" title="<?php echo $make['MakeName']; ?>" width="220" height="auto" alt="<?php echo $make['MakeName']; ?>" />
+                            </a>
+                        </div>
+                        <div class="fitment-selection-title text-uppercase text-center">
+                            <a href="#" class="fitment-slider-make fitment-slider-item" data-url="<?php echo $block->getUrl("fitment/slider/years"); ?>" data-makeid="<?php echo $make['MakeID']; ?>"><?php echo $make['MakeName']; ?></a>
+                            <i class="fa fa-caret-right"></i>
+                        </div>
+                    </div>
+                </div>  
+            <?php endforeach; ?>
+        </div>
+        <div class="owl-theme">
+            <div class="owl-controls">
+                <div class="custom-nav owl-nav"></div>
+            </div>
+        </div>
+    </div>
+    <div class="filtment-back-btn-wrapper">
+        <button type="button" class="fitment-back-btn" onclick="fitmentSlider.prev(this)">Back</button>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {"*":{
+        "AJH_Fitment/js/fitmentsliderajax": {
+            "AjaxUrl": "<?php echo $block->getBaseUrl(); ?>",
+            "StoreUrl": "<?php echo $block->getBaseUrl(); ?>",
+            "YearsUrl": "<?php echo $block->getUrl("fitment/slider/years"); ?>",
+            "MakesUrl": "<?php echo $block->getUrl("fitment/slider/makes"); ?>",
+            "ModelUrl": "<?php echo $block->getUrl("fitment/slider/model"); ?>",
+            "SubModelUrl": "<?php echo $block->getUrl("fitment/slider/submodel"); ?>",
+            "carousel": "#fitmentSlider"
+        }
+    }
+    }
+</script>
+
+<script>
+    require(['jquery', 'loader'], function ($) {
+        'use strict';
+
+        $('#fitmentSlider').loader({
+            icon: '<?php echo $this->getViewFileUrl('images/tire.gif'); ?>'
+        });
+    });
+</script>

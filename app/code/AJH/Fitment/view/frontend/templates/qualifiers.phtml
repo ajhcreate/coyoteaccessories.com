@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * AJH\Fitment\Block\Qualifiers $block
+ * 
+ */
+$qualifiers = $block->getQualifiers();
+$groups = $block->qualifierGroups;
+
+if (is_array($groups) && count($groups) > 0) {
+    foreach ($groups as $key => $group) {
+        $options = $block->getQualifiersOptions($group['ID']);
+        $html = "<select name=\"qualifiers[{$group['ID']}]\" class=\"fitment_qualifiers\">";
+        $html .= $options;
+        $html .= "</select>";
+        
+        echo $html;
+    }
+}

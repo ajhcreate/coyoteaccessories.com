@@ -1,0 +1,69 @@
+<?php
+/**
+ * Copyright © 2016 MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+?>
+<?php /* @var $block \AJH\Fitment\Block\Cache */ ?>
+
+<script>
+    require([
+        'jquery',
+        'prototype'
+    ], function (jQuery) {
+
+        var processSpan = jQuery('#process_span');
+
+        jQuery('#clear_cache_button').click(function () {
+            var params = {};
+            new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
+                parameters: params,
+                loaderArea: false,
+                asynchronous: true,
+                onCreate: function () {
+                    processSpan.find('.cleared').hide();
+                    processSpan.find('.processing').show();
+                    jQuery('#clear_cache_button').hide();
+                    jQuery('#process_message_span').text('');
+                },
+                onSuccess: function (response) {
+                    var json = response.responseJSON;
+                    processSpan.find('.processing').hide();
+
+                    var resultText = '';
+                    if (response.status > 200) {
+                        resultText = response.statusText;
+                    } else {
+                        resultText = 'Success!';
+
+                        if (typeof json.fitment != 'undefined') {
+                            if (parseInt(json.fitment.uncleared) > 0) {
+                                resultText = 'Failed!';
+                                processSpan.find('.cleared').text('Fitment cache tables were not all cleared!');
+                                console.log("Fitment caches are not all cleared!");
+                            }
+                        }
+                    }
+
+                    processSpan.find('.cleared').show();
+                    jQuery('#process_message_span').text(resultText);
+                    jQuery('#clear_cache_button').show();
+                },
+                onComplete: function (response) {
+                    console.log(response.status);
+                }
+
+            });
+        });
+
+    });
+</script>
+
+<?php echo $block->getButtonHtml() ?>
+<p class="note">
+    <span class="process-indicator" id="process_span">
+        <span class="processing" style="display: none;">Clearing Fitment cache...</span>
+        <span id="process_message_span"></span>
+        <span class="cleared" style="display: none;">Fitment cache cleared!</span>
+    </span>
+</p>

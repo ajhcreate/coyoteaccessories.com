@@ -1,0 +1,123 @@
+/* = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = Distributor search */
+.d2rDS {}
+.d2rDS h1 {}
+.d2DS-headerLogo {
+	display: inline-block;
+	width: 107px;
+	height: 49px;
+	vertical-align: middle;
+	background: url('../images/logo1.png') 50% 50% no-repeat scroll transparent;
+}
+.d2rDS-header {
+	margin: 20px 0;
+}
+.d2rDS-footer {
+	margin: 20px 0;
+}
+.d2rDS-map {
+	height: 500px;
+}
+.d2rDS-info {
+	margin: 30px 0;
+}
+.d2rDS-info-logo {
+	float: left;
+	display: block;
+	margin: 0 20px 20px 0;
+}
+.d2rDS-info-fields {
+	float: left;
+}
+.d2rDS-info-fields > div {}
+.d2rDS-info-fields > div span {
+	font-weight: bold;
+}
+.d2rDS-info-name {}
+.d2rDS-info-address {}
+.d2rDS-info-phone {}
+.d2rDS-info-fax {}
+.d2rDS-info-email {}
+.d2rDS-info-select {
+	margin: 20px 0 0;
+}
+.d2rDS-info-select button {
+	padding: 5px 20px;
+	border: none;
+	border-radius: 5px;
+	font-size: 13px;
+	font-weight: bold;
+	background-color: #E21E24;
+	color: #fff;
+	cursor: pointer;
+}
+.d2rDS-map-infoWindow {}
+
+
+
+
+/* = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = Retailer search */
+
+.d2rRS {}
+.d2rRS h1 {}
+.d2DS-headerLogo {
+	display: inline-block;
+	width: 107px;
+	height: 49px;
+	vertical-align: middle;
+	background: url('../images/logo1.png') 50% 50% no-repeat scroll transparent;
+}
+.d2rRS-header {
+	margin: 20px 0;
+}
+.d2rRS-footer {
+	margin: 20px 0;
+}
+.d2rRS-map {
+	height: 500px;
+}
+.d2rRS-info {
+	margin: 30px 0;
+}
+.d2rRS-info-logo {
+	float: left;
+	display: block;
+	margin: 0 20px 20px 0;
+}
+.d2rRS-info-fields {
+	float: left;
+}
+.d2rRS-info-fields > div {}
+.d2rRS-info-fields > div span {
+	font-weight: bold;
+}
+.d2rRS-info-name {
+	margin: 5px 0 10px;
+	font-weight: bold;
+}
+.d2rRS-info-address {
+	margin: 5px 0;
+}
+.d2rRS-info-phone {}
+.d2rRS-info-fax {}
+.d2rRS-info-email {}
+.d2rRS-info-select {
+	margin: 20px 0 0;
+}
+.d2rRS-info-select button {
+	padding: 5px 20px;
+	border: none;
+	border-radius: 5px;
+	font-size: 13px;
+	font-weight: bold;
+	background-color: #E21E24;
+	color: #fff;
+	cursor: pointer;
+}
+.d2rRS-map-infoWindow {}
+.d2rRS-info > div {
+	margin: 10px 0px;
+}
+.d2rRS-info > div > span:first-child {
+	display: inline-block;
+	min-width: 90px;
+}

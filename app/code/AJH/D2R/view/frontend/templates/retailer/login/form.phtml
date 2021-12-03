@@ -1,0 +1,45 @@
+<?php
+$formData = new \Magento\Framework\DataObject(Mage::app()->getRequest()->getPost());
+?>
+<div class="d2rRet">
+
+    <h1><?php echo __('Retailer page') ?></h1>
+
+    <div class="d2rRet-form-container clearer">
+        <div class="d2rRet-form-registered">
+            <h2 class="d2rRet-registered-customers"><?php echo __('Registered Customers') ?></h2>
+            <p><?php echo __('If you have an account with us log in using your email address') ?></p>
+            <form id="d2rRet_form_login" action="<?php echo $block->getUrl('customer/account/loginPost') ?>" method="post" >
+<?php echo $block->getBlockHtml('formkey'); ?>
+                <div>
+                    <input name="login[username]" value="<?php echo htmlspecialchars($formData->getEmail()) ?>"
+                           class="d2rRet-form-input required-entry" placeholder="* Your Email Address" />
+                </div>
+                <div>
+                    <input name="login[password]" type="password" value="<?php echo htmlspecialchars($formData->getPassword()) ?>"
+                           class="d2rRet-form-input required-entry" placeholder="* Your Password" />
+                </div>
+                <div>
+                    <button class="d2rRet-button"><span><?php echo __('Login') ?></span></button>
+                </div>
+                <p><?php echo __('* Required fields') ?> / <a class="d2rRet-forgotpassword" 
+                                                              href="<?php echo $block->getUrl('customer/account/forgotpassword') ?>"><?php echo __('Forgot your password?') ?></a></p>
+            </form>
+            <script type="text/javascript">
+                var dataForm = new VarienForm('login-form', true);
+            </script>
+        </div>
+        <div class="d2rRet-form-new">
+            <h2 class="d2rRet-new-customers"><?php echo __('New Customers') ?></h2>
+            <div>
+                <button class="d2rRet-button" onclick="location.href = '<?php echo $block->getUrl('d2r/retailer/application') ?>'"
+                        ><span><?php echo __('Apply to become a retailer') ?></span></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="d2rRet-pros">Benefits for being a retailer are to be described here</div>
+
+    <div class="d2rRet-callus">If you have any questions, call us</div>
+
+</div>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="AJH_Fitment::base_menu" title="Public Ad Agency" module="AJH_Fitment" sortOrder="20" resource="Magento_Backend::content" />
+        
+        <add id="AJH_Fitment::fitment_menu" title="Fitment" module="AJH_Fitment" parent="AJH_Fitment::base_menu" sortOrder="10" resource="Magento_Backend::content" />
+        <add id="AJH_Fitment::fitment_dashboard" title="Dashboard" module="AJH_Fitment" sortOrder="5" action="fitment/dashboard/index" parent="AJH_Fitment::fitment_menu" resource="Magento_Backend::content" />
+        <add id="AJH_Fitment::fitment_settings" title="Settings" module="AJH_Fitment" sortOrder="10" action="fitment/settings/index" parent="AJH_Fitment::fitment_menu" resource="Magento_Backend::content" />        
+        
+        <add id="AJH_Fitment::sitemap_menu" title="Sitemap" module="AJH_Fitment" sortOrder="20" parent="AJH_Fitment::base_menu" resource="Magento_Backend::content" />
+        <add id="AJH_Fitment::sitemap_dashboard" title="Dashboard" module="AJH_Fitment" sortOrder="10" action="fitment/dashboard/index" parent="AJH_Fitment::sitemap_menu" resource="Magento_Backend::content" />
+                
+    </menu>
+</config>

@@ -1,0 +1,10 @@
+.form-check.type-field-radio label {
+    display: inline-block;
+    margin-left: 20px;
+    top: -5px;
+    position: relative;
+}
+
+.form-group > label {
+    font-weight: bold;
+}

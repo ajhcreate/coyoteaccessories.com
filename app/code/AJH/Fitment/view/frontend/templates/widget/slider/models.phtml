@@ -1,0 +1,21 @@
+<?php
+$models = $block->getFitmentModels();
+
+?>
+<?php foreach ($models as $key => $model): ?>    
+    <?php $model_image = $block->getModelImage(intval($model['ID'])); ?>
+    <div class="fitment-selection">
+        <div class="product-item-info">
+            <div class="product-img">                
+                <a href="#" class="fitment-slider-model fitment-slider-item" data-url="<?php echo $block->getUrl("fitment/slider/submodels"); ?>" data-year="<?php echo $block->year; ?>" data-makeid="<?php echo $block->make; ?>" data-modelid="<?php echo $model['ID']; ?>">
+                    <img class="fitment-model-img-thumb img-fluid" src="<?php echo $model_image; ?>" alt="<?php echo $model['Name']; ?>" />                                                
+                </a>
+            </div>
+            <div class="fitment-selection-title text-uppercase text-center">
+                <a href="#" class="fitment-slider-model fitment-slider-item" data-url="<?php echo $block->getUrl("fitment/slider/submodels"); ?>" data-year="<?php echo $block->year; ?>" data-makeid="<?php echo $block->make; ?>" data-modelid="<?php echo $model['ID']; ?>"><?php echo $model['Name']; ?></a>
+                <i class="fa fa-caret-right"></i>
+            </div>
+        </div>
+    </div>
+    <?php
+endforeach;

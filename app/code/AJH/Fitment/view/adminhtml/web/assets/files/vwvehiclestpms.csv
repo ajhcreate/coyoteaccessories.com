@@ -1,0 +1,31 @@
+BaseVehicleID;Vehicleid;MakeID;MakeName;ModelID;ModelName;SubModelID;SubModelName;YearID;RegionID;RegionName;Source;PartMasterID;AdditionalCriteria_PartMasterID;YearlyVolume;TPMSResetProcedureID;AdditionalCriteria_ResetProcedureID;AdditionalCriteria_YearlyVolume;AdditionalCriteria_Question;PartMasterActive;ApplicationGuideID;DateAdded
+1;1;1;Suzuki;1;Aerio;1;S;2002;1;United States;OEM+;2333;0;0;0;0;0;;0;8591;2010-09-01 20:15:42
+1;2;1;Suzuki;1;Aerio;2;GS;2002;1;United States;OEM+;2333;0;0;0;0;0;;0;8585;2010-09-01 20:15:42
+1;3;1;Suzuki;1;Aerio;3;SX;2002;1;United States;OEM+;2333;0;0;0;0;0;;0;8595;2010-09-01 20:15:42
+2;4;1;Suzuki;1;Aerio;1;S;2003;1;United States;OEM+;2333;0;0;0;0;0;;0;8592;2010-09-01 20:15:42
+2;5;1;Suzuki;1;Aerio;2;GS;2003;1;United States;OEM+;2333;0;0;0;0;0;;0;8586;2010-09-01 20:15:42
+2;6;1;Suzuki;1;Aerio;3;SX;2003;1;United States;OEM+;2333;0;0;0;0;0;;0;8596;2010-09-01 20:15:42
+3;7;1;Suzuki;2;Esteem;4;GL;1995;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+3;8;1;Suzuki;2;Esteem;5;GLX;1995;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+3;9;1;Suzuki;2;Esteem;6;GLX Plus;1995;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+4;10;1;Suzuki;2;Esteem;4;GL;1996;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+4;11;1;Suzuki;2;Esteem;5;GLX;1996;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+4;12;1;Suzuki;2;Esteem;6;GLX Plus;1996;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+5;13;1;Suzuki;2;Esteem;4;GL;1997;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+5;14;1;Suzuki;2;Esteem;5;GLX;1997;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+5;15;1;Suzuki;2;Esteem;6;GLX Plus;1997;1;United States;OEM+;0;0;0;0;0;0;;0;0;2016-10-16 15:40:33
+6;16;1;Suzuki;2;Esteem;4;GL;1998;1;United States;OEM+;2333;0;0;0;0;0;;0;20049;2016-10-16 15:40:33
+6;17;1;Suzuki;2;Esteem;5;GLX;1998;1;United States;OEM+;2333;0;0;0;0;0;;0;20050;2016-10-16 15:40:33
+6;18;1;Suzuki;2;Esteem;6;GLX Plus;1998;1;United States;OEM+;2333;0;0;0;0;0;;0;20051;2016-10-16 15:40:33
+7;19;1;Suzuki;2;Esteem;4;GL;1999;1;United States;OEM+;2333;0;0;0;0;0;;0;8609;2010-09-01 20:15:42
+7;20;1;Suzuki;2;Esteem;5;GLX;1999;1;United States;OEM+;2333;0;0;0;0;0;;0;8613;2010-09-01 20:15:42
+7;21;1;Suzuki;2;Esteem;6;GLX Plus;1999;1;United States;OEM+;2333;0;0;0;0;0;;0;8617;2010-09-01 20:15:42
+8;22;1;Suzuki;2;Esteem;4;GL;2000;1;United States;OEM+;2333;0;0;0;0;0;;0;8610;2010-09-01 20:15:42
+8;23;1;Suzuki;2;Esteem;5;GLX;2000;1;United States;OEM+;2333;0;0;0;0;0;;0;8614;2010-09-01 20:15:42
+8;24;1;Suzuki;2;Esteem;6;GLX Plus;2000;1;United States;OEM+;2333;0;0;0;0;0;;0;8618;2010-09-01 20:15:42
+9;25;1;Suzuki;2;Esteem;4;GL;2001;1;United States;OEM+;2333;0;0;0;0;0;;0;8611;2010-09-01 20:15:42
+9;26;1;Suzuki;2;Esteem;5;GLX;2001;1;United States;OEM+;2333;0;0;0;0;0;;0;8615;2010-09-01 20:15:42
+9;27;1;Suzuki;2;Esteem;6;GLX Plus;2001;1;United States;OEM+;2333;0;0;0;0;0;;0;8619;2010-09-01 20:15:42
+10;28;1;Suzuki;2;Esteem;4;GL;2002;1;United States;OEM+;2333;0;0;0;0;0;;0;8612;2010-09-01 20:15:42
+10;29;1;Suzuki;2;Esteem;5;GLX;2002;1;United States;OEM+;2333;0;0;0;0;0;;0;8616;2010-09-01 20:15:42
+10;30;1;Suzuki;2;Esteem;6;GLX Plus;2002;1;United States;OEM+;2333;0;0;0;0;0;;0;8620;2010-09-01 20:15:42

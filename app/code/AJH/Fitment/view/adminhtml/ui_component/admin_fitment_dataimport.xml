@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+
+            <!-- main part of the grid -->
+                <argument name="data" xsi:type="array">
+                   <!-- define  date source -->
+                <item name="js_config" xsi:type="array">
+                    <item name="provider" xsi:type="string">locator_record_locator_list.locator_record_locator_list_data_source</item>
+                    <item name="deps" xsi:type="string">locator_record_locator_list.locator_record_locator_list_data_source</item>
+                </item>
+                <!-- for columns -->
+                <item name="spinner" xsi:type="string">locator_records_columns</item>
+                <!--  for Add new record button  -->
+                <item name="buttons" xsi:type="array">
+                    <item name="add" xsi:type="array">
+                        <item name="name" xsi:type="string">add</item>
+                        <item name="label" xsi:type="string" translate="true">Add New Location</item>
+                        <item name="class" xsi:type="string">primary</item>
+                        <item name="url" xsi:type="string">*/*/addlocation</item>
+                        <item name="sortOrder" xsi:type="number">10</item>
+                    </item>
+                    <item name="import" xsi:type="array">
+                        <item name="name" xsi:type="string">import</item>
+                        <item name="label" xsi:type="string" translate="true">Import Locatore</item>
+                        <item name="class" xsi:type="string">secondary</item>
+                        <item name="url" xsi:type="string">*/dataimport/importdata</item>
+                        <item name="sortOrder" xsi:type="number">20</item>
+                    </item>
+                    <item name="export" xsi:type="array">
+                        <item name="name" xsi:type="string">export</item>
+                        <item name="label" xsi:type="string" translate="true">Export locatore</item>
+                        <item name="class" xsi:type="string">secondary</item>
+                        <item name="url" xsi:type="string">*/*/exportdata</item>
+                        <item name="sortOrder" xsi:type="number">30</item>
+                    </item>
+                </item>
+                </argument>
+</listing>

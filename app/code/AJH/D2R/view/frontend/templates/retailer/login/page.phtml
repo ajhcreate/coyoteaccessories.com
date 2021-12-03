@@ -1,0 +1,28 @@
+
+<?php //Note: seems that this file is not meant to be added on this directory ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $block->getLang() ?>" lang="<?php echo $block->getLang() ?>">
+<head>
+<?php echo $block->getChildHtml('head') ?>
+</head>
+<body<?php echo $block->getBodyClass()?' class="'.$block->getBodyClass().'"':'' ?>>
+	<?php // echo $block->getChildHtml('after_body_start') ?>
+	<div class="wrapper">
+		<?php echo $block->getChildHtml('global_notices') ?>
+		<div class="page site-width">
+			<?php // echo $block->getChildHtml('header') ?>
+			<div class="main-container col1-layout">
+				<div class="main">
+					<div class="col-main">
+						<?php echo $block->getChildHtml('global_messages') ?>
+						<?php echo $block->getChildHtml('content') ?>
+					</div>
+				</div>
+			</div>
+			<?php // echo $block->getChildHtml('footer') ?>
+			<?php // echo $block->getChildHtml('before_body_end') ?>
+		</div>
+	</div>
+	<?php // echo $block->getAbsoluteFooter() ?>
+</body>
+</html>

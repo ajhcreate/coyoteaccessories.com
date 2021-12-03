@@ -1,0 +1,22 @@
+<?php
+$sensors = $block->getSensors();
+$relearnUrl = $block->getRelearnUrl();
+?>
+<div class="tpms-form-recommendedSensors">
+    <?php if (count($sensors)): ?>    
+        <ul>
+            <?php foreach ($sensors as $id => $sku): ?>
+                <li class="tpms-sensor"><?php echo htmlspecialchars($sku) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <div class="">No recommended sensors found</div>
+    <?php endif ?>
+</div>
+
+<?php if ($relearnUrl): ?>
+    <div class="tpms-form-relearnUrl">
+        <a class="" href="<?php echo $relearnUrl ?>" target="_blank">Click here for Relearn procedure</a>
+    </div>
+    <?php
+ endif;

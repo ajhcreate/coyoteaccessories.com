@@ -1,0 +1,36 @@
+#product_cyosrhbtn {
+    border-radius: 3px !important;
+    padding: 0 20px !important;
+    height: 35px !important;
+    line-height: 10px !important;
+    margin: 3px !important;
+}
+#resetVehicle {
+    background: #353535 !important;
+    height: 35px !important;
+    padding: 10px 20px !important;
+    line-height: 10px !important;
+    font-size: 12px !important;
+    border-radius: 3px !important;
+}
+#product-vehicle-table thead th {
+    background: #ecedf0 !important;
+    border: thin solid #ccc !important;
+    padding: 10px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.pager .pages {
+    float: right;
+    margin-top: 5px;
+}
+
+form#filter-product-vehicle select {
+    display: inline-block;
+    width: 18%;
+}
+
+#product-vehicle, #reviews{
+    display: none;
+}

@@ -1,0 +1,100 @@
+<!--@subject {{trans "TPMS Challenge Sheet: # %trackingNumber" trackingNumber=$trackingNumber}} @-->
+
+{{template config_path="design/email/header_template"}}
+
+
+A new TPMS Challenge Worksheet has been sent:
+
+<table>
+    <thead>
+        <tr>
+            <td style="padding:10px 0;">
+                
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">TPMS Challenge Data Submitted</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Tracking #</th>
+            <td>{{var trackingNumber}}</td>
+        </tr>
+        <tr>
+            <th>Customer</th>
+            <td>{{var customerName}} {{var customerEmail}} Tel: {{var customerPhone}}</td>
+        </tr>
+        <tr>
+            <th>Distributor</th>
+            <td>{{var distributorName}}</td>
+        </tr>
+        <tr>
+            <th>Installer</th>
+            <td>{{var installerName}} at {{var installerShop}}<br/>
+                {{var installerPhone}} {{var installerFax}}<br/>
+                {{var installerEmail}}
+            </td>
+        </tr>
+        <tr>
+            <th>Tire System</th>
+            <td>{{var tireSystem}}-wheel</td>
+        </tr>
+        <tr>
+            <th>Tire Placard</th>
+            <td>Front: {{var placardFront}}<br/>
+                Rear: {{var placardRear}}<br/>
+                Spare: {{var placardSpare}}
+            </td>
+        </tr>
+        <tr>
+            <th>Tire Pressure</th>
+            <td>LF: {{var tireLF}} RF: {{var tireRF}} <br/>
+                LR: {{var tireLR}} RR: {{var tireRR}} <br/>
+                Spare: {{var tireSpare}}
+            </td>
+        </tr>
+        <tr>
+            <th>VIN</th>
+            <td>{{var vin}}</td>
+        </tr>
+        <tr>
+            <th>Vehicle</th>
+            <td>{{var vehicleYear}} {{var vehicleMake}} {{var vehicleModel}} {{var vehicleSubmodel}}</td>
+        </tr>
+        <tr>
+            <th>Re-Learn procedure</th>
+            <td>{{var relearnProc}}{{var relearnProcOther}}</td>
+        </tr>
+        <tr>
+            <th>Sensor Part No</th>
+            <td>{{var sensorPartNo}}</td>
+        </tr>
+        <tr>
+            <th>Reset tool used</th>
+            <td>{{var resetToolUsed}}</td>
+        </tr>
+        <tr>
+            <th>Software Version</th>
+            <td>{{var softwareVersion}}</td>
+        </tr>
+        <tr>
+            <th>Wheel Type</th>
+            <td>{{var wheelType}}</td>
+        </tr>
+        <tr>
+            <th>Sensor Proximity</th>
+            <td>{{var sensorProximity}}</td>
+        </tr>      
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </tbody>
+</table>
+
+{{template config_path="design/email/footer_template"}}

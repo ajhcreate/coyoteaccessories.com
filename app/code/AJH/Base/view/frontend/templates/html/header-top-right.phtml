@@ -1,0 +1,28 @@
+<?php ?>
+
+<ul class="header links">
+    <li>
+        <i class="fa  fa-car top-right-header-links"><a href="#garage" id="header-my-garage">My Garage</a></i>        
+    </li>
+    <li>
+        <i class="fa fa-th-large top-right-header-links"><a href="<?php echo $block->getUrl("about-us"); ?>">About Us</a></i>
+    </li>
+    <li>
+        <i class="fa fa-heart top-right-header-links"><a href="<?php echo $block->getUrl("keyregistration"); ?>">Wheel Lock Registration</a></i>
+    </li>
+    <li>
+        <i class="fa fa-barcode top-right-header-links"><a href="<?php echo $block->getUrl("orderbysku/index"); ?>" class="orderbysku">Order by SKU</a></i>
+    </li>
+    <?php if ($block->isCustomerLoggedIn()): ?>
+        <li>
+            <i class="fa fa-user top-right-header-links"><a href="<?php echo $block->getUrl("customer/account"); ?>">My Account</a></i>        
+        </li>
+        <li class="login-main">
+            <i class="fa fa-key top-right-header-links"><a href="<?php echo $block->getUrl("customer/account/logout"); ?>">Log Out</a></i>        
+        </li>		
+    <?php else: ?>
+        <li class="login-main">
+            <i class="fa fa-key top-right-header-links"><a href="<?php echo $block->getUrl("customer/account/login"); ?>">Log In</a></i>        
+        </li>		
+    <?php endif; ?>    
+</ul>

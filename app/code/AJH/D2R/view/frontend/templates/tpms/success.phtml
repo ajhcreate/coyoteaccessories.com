@@ -1,0 +1,13 @@
+<?php
+
+$trackingNumber = $block->getTrackingNumber();
+$email = $block->getEmail();
+
+?>
+<div class="tpms-success">
+	<h1>Success!</h1>
+	<p>We have received your information.</p>
+	<p>A confirmation of your request has been sent to <strong><?php echo htmlspecialchars($email) ?></strong></p>
+	<p>After processing the details one of our technicians will contact you.</p>
+	<p>Your TPMS Challenge Tracking Number is <?php echo htmlspecialchars($trackingNumber) ?></p>
+</div>

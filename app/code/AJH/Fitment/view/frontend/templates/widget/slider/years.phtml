@@ -1,0 +1,24 @@
+<?php
+$fitment_years = $block->getMakeYears();
+$years = $fitment_years;
+
+foreach ($years as $key => $year):
+    array_shift($fitment_years);
+    ?>
+
+    <div class="item">
+        <div class="product-item-info">
+            <div class="product-img">
+                <a href="#" class="fitment-slider-year fitment-slider-item" data-url="<?php echo $block->getUrl("fitment/slider/models"); ?>" data-year="<?php echo $year['year']; ?>" data-makeid="<?php echo intval($year['make']); ?>">
+                    <img class="img-fuid" src="<?php echo 'https://'.$year['image']; ?>" title="<?php echo $year['image']; ?>" alt="<?php echo $year['image']; ?>" />
+                </a>
+            </div>
+        </div>
+        <div class="fitment-selection-title text-uppercase text-center">
+            <a href="#" class="fitment-slider-year fitment-slider-item" data-url="<?php echo $block->getUrl("fitment/slider/models"); ?>" data-year="<?php echo $year['year']; ?>" data-makeid="<?php echo intval($year['make']); ?>"><?php echo $year['year']; ?></a>
+            <i class="fa fa-caret-right"></i>
+        </div>
+    </div>
+
+    <?php
+endforeach;

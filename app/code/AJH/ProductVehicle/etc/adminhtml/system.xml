@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ajhextensions" translate="label" sortOrder="10">
+            <label>AJH Extensions</label>
+        </tab>
+        <section id="vehicle" translate="label" sortOrder="1000" type="text" showInDefault="1" showInWebsite="1" showInStore="1">            
+            <label>Product Vehicle</label>
+            <tab>ajhextensions</tab>
+            <resource>AJH_ProductVehicle::productvehicle_config</resource>
+            <group id="general" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <comment>General Settings</comment>                
+                <field id="enable" translate="label" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Module</label>                            
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                                               
+                </field> 
+                <field id="enable_search" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Search By Part</label>                            
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                                               
+                </field>              
+                <field id="login_only" translate="label" sortOrder="15" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Search By Parts to Login Users Only</label>                            
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                                               
+                </field> 
+                <field id="min_query_length" translate="label" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Minimal Query Length</label> 
+                    <validate>validate-digits</validate>                            
+                    <depends><field id="vehicle/general/enable_search">1</field></depends>                           
+                </field>    
+                <field id="max_query_length" translate="label" sortOrder="30" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Maximum Query Length</label> 
+                    <validate>validate-digits</validate>                            
+                    <depends><field id="vehicle/general/enable_search">1</field></depends>                           
+                </field>                    
+                <field id="no_result_text" translate="label" sortOrder="30" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>No Result Text</label> 
+                    <validate>validate-digits</validate>                            
+                    <depends><field id="vehicle/general/enable_search">1</field></depends>                           
+                </field>                    
+            </group>    
+            <group id="protocol" translate="label" sortOrder="2" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Protocol Settings</label>
+                <comment>Protocol Settings</comment>                
+                <field id="enable" translate="label" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Is Protocol Dates Enabled?</label> 
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                                                                          
+                </field>
+                <field id="product_class_user_def" translate="label" sortOrder="10" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Class</label>                                                
+                    <depends>
+                        <field id="vehicle/general/enable">1</field>
+                    </depends>
+                </field>        
+            </group>         
+        </section>
+    </system>
+</config>

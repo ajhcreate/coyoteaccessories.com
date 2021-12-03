@@ -1,0 +1,48 @@
+<?php
+$order = $block->getOrder();
+
+$customerAddress = [];
+
+
+if ($order->getCustomerId()) {
+    $customerId = $order->getCustomerId();
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $customerObj = $objectManager->create('Magento\Customer\Model\Customer')->load($customerId);
+    $customerAddress = array();
+
+    foreach ($customerObj->getAddresses() as $address) {
+        $customerAddress[] = $address->toArray();
+    }
+}
+?>
+<div class="admin__page-section-item order-shipping-address">
+    <h3 class="fulfillment-info" style="margin-top: 20px;">
+        <strong>                        
+            <?php
+            $flag = FALSE;
+            if (count($customerAddress)) {
+                foreach ($customerAddress as $customerAddres) {
+                    if (isset($customerAddres['customer_address_fulfillment']) && !$flag) {
+                        echo "FulFillment: " . $customerAddres['customer_address_fulfillment'];
+                        $flag = TRUE;
+                    }
+                }
+                
+                if(!$flag){
+                    echo 'Fulfillment: SWKC';
+                }
+            } else {
+                echo 'Fulfillment: SWKC';
+            }
+            ?>                        
+        </strong>
+    </h3>
+</div>
+
+<script>
+    require([
+        "jquery"
+    ], function ($) {
+        $(".order-shipping-address address").append($(".fulfillment-info"));
+    });
+</script>

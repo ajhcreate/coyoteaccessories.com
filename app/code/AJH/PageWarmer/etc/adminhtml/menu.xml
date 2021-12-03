@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <!--    <menu>
+        <add id="AJH_PageWarmer::pagewarmer_menu" title="Page Warmer" module="AJH_PageWarmer" sortOrder="20" parent="AJH_Fitment::base_menu" resource="Magento_Backend::content" />
+        <add id="AJH_PageWarmer::pagewarmer_dashboard" title="Dashboard" module="AJH_PageWarmer" sortOrder="10" action="ajhpagewarmer/dashboard/index" parent="AJH_PageWarmer::pagewarmer_menu" resource="AJH_PageWarmer::dashboard" />
+        <add id="AJH_PageWarmer::pagewarmer_index" title="Fitment Page Cache" module="AJH_PageWarmer" sortOrder="10" action="ajhpagewarmer/index/warming" parent="AJH_PageWarmer::pagewarmer_menu" resource="AJH_PageWarmer::fpc" />
+    </menu>-->
+    <menu>
+        <add id="AJH_PageWarmer::ajhpagewarmer" title="Page Warmer" module="AJH_PageWarmer" sortOrder="20" parent="AJH_Fitment::base_menu" resource="Magento_Backend::content" />      
+        <add id="AJH_PageWarmer::pagewarmer_dashboard" title="Dashboard" translate="title" module="AJH_PageWarmer" parent="AJH_PageWarmer::ajhpagewarmer" sortOrder="10" dependsOnModule="AJH_PageWarmer" action="pagewarmer/dashboard" resource="AJH_PageWarmer::ajhpagewarmer"/>
+        <add id="AJH_PageWarmer::pagewarmer_queue" title="Queue" translate="title" module="AJH_PageWarmer" parent="AJH_PageWarmer::ajhpagewarmer" sortOrder="10" dependsOnModule="AJH_PageWarmer" action="pagewarmer/queue" resource="AJH_PageWarmer::ajhpagewarmer"/>
+    </menu>
+</config>

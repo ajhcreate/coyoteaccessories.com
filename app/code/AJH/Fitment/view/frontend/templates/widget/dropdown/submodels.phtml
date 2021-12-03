@@ -1,0 +1,19 @@
+<?php
+
+$submodels = $block->getSubmodels();
+$options = ['' => 'SubModel'];
+
+if (is_array($submodels)) {
+    foreach ($submodels as $key => $value) {
+        $options[$value['ID']] = $value['Name'];
+    }
+}
+
+$title = "";
+$res = "";
+
+foreach ($options as $key => $value) {
+    $res .= sprintf('<option value="%s" data-title="' . $title . '">%s</option>', htmlspecialchars($key), htmlspecialchars($value));
+}
+
+echo $res;

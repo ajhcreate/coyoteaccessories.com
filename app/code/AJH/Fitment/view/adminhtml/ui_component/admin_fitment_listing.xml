@@ -1,0 +1,475 @@
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="context" xsi:type="configurableObject">
+        <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\Context</argument>
+        <argument name="namespace" xsi:type="string">admin_fitment_listing</argument>
+    </argument>
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing_data_source</item>
+            <item name="deps" xsi:type="string">admin_fitment_listing.admin_fitment_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">admin_fitment_columns</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">dataimport</item>
+                <item name="label" xsi:type="string" translate="true">Data Import</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/dataimport/importdata</item>
+            </item>                    
+            <item name="sync" xsi:type="array">
+                <item name="name" xsi:type="string">dataimport</item>
+                <item name="label" xsi:type="string" translate="true">Sync with Revo</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/dataimport/syncdata</item>
+            </item>            
+        </item>        
+    </argument>
+    <dataSource name="admin_fitment_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">AJH\Fitment\Ui\DataProvider\Grid\ListingDataProvider</argument>
+            <argument name="name" xsi:type="string">admin_fitment_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+            </item>
+        </argument>
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/bookmarks/bookmarks</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="saveUrl" xsi:type="url" path="mui/bookmark/save"/>
+                        <item name="deleteUrl" xsi:type="url" path="mui/bookmark/delete"/>
+                        <item name="namespace" xsi:type="string">admin_fitment_listing</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <columnsControls name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.admin_fitment_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </columnsControls>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="displayArea" xsi:type="string">dataGridFilters</item>
+                    <item name="dataScope" xsi:type="string">filters</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.bookmarks:current.columns.${ $.index }.visible</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+<!--            <filterSelect name="fitment_year" provider="${ $.parentName }">
+                <argument name="optionsProvider" xsi:type="configurableObject">
+                    <argument name="class" xsi:type="string">AJH\Fitment\Model\Grid\Filter\Year</argument>
+                </argument>
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                                                <item name="dataScope" xsi:type="string">fitment_id</item>
+                        <item name="label" xsi:type="string" translate="true">ID</item>
+                        <item name="childDefaults" xsi:type="array">
+                            <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.listing_filters</item>
+                        </item>
+                        
+                        <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                        <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                        <item name="dataScope" xsi:type="string">year</item>
+                        <item name="label" xsi:type="string" translate="true">Year</item>
+                    </item>
+                </argument>
+            </filterSelect>
+            <filterSelect name="fitment_make" provider="${ $.parentName }">
+                <argument name="optionsProvider" xsi:type="configurableObject">
+                    <argument name="class" xsi:type="string">AJH\Fitment\Model\Grid\Filter\Year</argument>
+                </argument>
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                        <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                        <item name="dataScope" xsi:type="string">make</item>
+                        <item name="label" xsi:type="string" translate="true">Make</item>
+                    </item>
+                </argument>
+            </filterSelect>
+            <filterSelect name="fitment_year" provider="${ $.parentName }">
+                <argument name="optionsProvider" xsi:type="configurableObject">
+                    <argument name="class" xsi:type="string">AJH\Fitment\Model\Grid\Filter\Year</argument>
+                </argument>
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                                                <item name="dataScope" xsi:type="string">fitment_id</item>
+                        <item name="label" xsi:type="string" translate="true">ID</item>
+                        <item name="childDefaults" xsi:type="array">
+                            <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.listing_filters</item>
+                        </item>
+                        
+                        <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                        <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                        <item name="dataScope" xsi:type="string">year</item>
+                        <item name="label" xsi:type="string" translate="true">Year</item>
+                    </item>
+                </argument>
+            </filterSelect>-->
+        </filters>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.admin_fitment_columns.ids</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                    <item name="indexField" xsi:type="string">fitment_id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">delete</item>
+                        <item name="url" xsi:type="url" path="admin_offer/index/massDel"/>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.admin_fitment_columns.ids</item>
+                    <item name="displayArea" xsi:type="string">bottom</item>
+                </item>
+            </argument>
+        </paging>
+        <button name="my_new_button">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="actions" xsi:type="array">
+                    <!-- Add your button's actions here -->
+                    <item name="0" xsi:type="array">
+                        <item name="targetName" xsi:type="string">TARGET_NAME</item>
+                        <item name="actionName" xsi:type="string">ACTION_NAME</item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <settings>
+            <displayAsLink>false</displayAsLink>
+            <title><![CDATA[Test Button]]></title>
+        </settings>
+    </button>
+    </listingToolbar>
+    <columns name="admin_fitment_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.admin_fitment_columns.actions</item>
+                        <item name="target" xsi:type="string">applyAction</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">edit</item>
+                            <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">admin_fitment_listing.admin_fitment_listing.listing_top.bookmarks</item>
+                        <item name="root" xsi:type="string">columns.${ $.index }</item>
+                        <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <selectionsColumn name="ids" sortOrder="0">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">Vehicleid</item>
+                </item>
+            </argument>
+
+        </selectionsColumn>              
+        <column name="YearID">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Year</item>
+                </item>
+            </argument>
+            
+            <settings>
+                <label translate="true">Year</label>                
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <visible>true</visible>
+                <options class="AJH\Fitment\Model\Grid\Filter\Year"/>                
+            </settings>
+        </column>        
+        <column name="MakeName">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <!--<item name="filter" xsi:type="string">select</item>-->
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Make</item>
+                </item>
+            </argument>
+            
+        </column>        
+        <column name="MakeID">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">40</item>
+                    <!--<item name="filter" xsi:type="string">select</item>-->
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">MakeID</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Make</label>                
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <visible>true</visible>
+                <options class="AJH\Fitment\Model\Grid\Filter\Make"/>
+            </settings>
+        </column>        
+        <column name="ModelName">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">50</item>
+                    <!--<item name="filter" xsi:type="string">textRange</item>-->
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Model</item>
+                </item>
+            </argument>
+        </column>        
+        <column name="ModelID">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">60</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">ModelID</item>
+                </item>
+            </argument>
+            
+            <settings>
+                <label translate="true">Model</label>                
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <visible>true</visible>
+                <options class="AJH\Fitment\Model\Grid\Filter\Model"/>
+            </settings>
+        </column>        
+        <column name="SubModelName">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">70</item>
+                    <!--<item name="filter" xsi:type="string">textRange</item>-->
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">SubModel</item>
+                </item>
+            </argument>
+        </column>        
+        <column name="SubModelID">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">80</item>
+                    <!--<item name="filter" xsi:type="string">textRange</item>-->
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">SubModelID</item>
+                </item>
+            </argument>
+            
+            <settings>
+                <label translate="true">SubModel</label>                
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <visible>true</visible>
+                <options class="AJH\Fitment\Model\Grid\Filter\SubModel"/>
+            </settings>
+        </column> 
+        <column name="Vehicleid">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">100</item>
+                    <!--<item name="filter" xsi:type="string">textRange</item>-->
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Vehicle ID</item>
+                </item>
+            </argument>
+        </column>
+<!--        <column name="YearID" component="Magento_Ui/js/grid/columns/select" >
+            <argument name="optionsProvider" xsi:type="configurableObject">
+                <argument name="class" xsi:type="string">AJH\Fitment\Model\Grid\Filter\Year</argument>
+            </argument>
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">AJH\Fitment\Model\Grid\Filter\Year</item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Year</item>
+                    <item name="add_field" xsi:type="boolean">true</item>
+                    
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                    <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="dataScope" xsi:type="string">year</item>
+                    
+                </item>
+                
+            </argument> 
+            
+            <settings>
+                <label translate="true">Year</label>                
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <visible>true</visible>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="number">2020</item>
+                        <item name="label" xsi:type="string" translate="true">2020</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="number">2</item>
+                        <item name="label" xsi:type="string" translate="true">Option #2</item>
+                    </option>
+                    <option name="2" xsi:type="array">
+                        <item name="value" xsi:type="number">3</item>
+                        <item name="label" xsi:type="string" translate="true">Option #3</item>
+                    </option>
+                </options>
+            </settings>
+        </column>-->
+<!--        <column name="makeID">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Make ID</item>
+                </item>
+            </argument>
+        </column>    
+        <column name="make" class="AJH\Fitment\Ui\Component\Listing\Column\Make" component="Magento_Ui/js/grid/columns/select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">35</item>
+                    
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    
+                    <item name="label" xsi:type="string" translate="true">Make</item>                    
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                </item>
+            </argument>
+            
+            <settings>
+                <label translate="true">Make</label>
+                <options class="AJH\Fitment\Model\Grid\Filter\Make"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+            </settings>    
+        </column>     
+        <column name="modelID">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">40</item>
+                    <item name="filter" xsi:type="string">int</item>                    
+                    <item name="label" xsi:type="string" translate="true">Model ID</item>
+                </item>
+            </argument>
+        </column>        
+        <column name="model" component="Magento_Ui/js/grid/columns/select">
+                        <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">45</item>
+                    <item name="filter" xsi:type="string">text</item>                    
+                    <item name="label" xsi:type="string" translate="true">Models</item>
+                </item>
+            </argument>
+            
+            <settings>
+                <label translate="true">Model</label>
+                <options class="AJH\Fitment\Model\Grid\Filter\Model"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+            </settings> 
+        </column>        
+        <column name="submodelID">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">50</item>
+                    <item name="filter" xsi:type="string">textRange</item>                    
+                    <item name="label" xsi:type="string" translate="true">SubModel ID</item>
+                </item>
+            </argument>
+        </column>        
+        <column name="submodel" component="Magento_Ui/js/grid/columns/select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">55</item>
+                    <item name="filter" xsi:type="string">textRange</item>                    
+                    <item name="label" xsi:type="string" translate="true">SubModels</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Submodel</label>
+                <options class="AJH\Fitment\Model\Grid\Filter\SubModel"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+            </settings> 
+        </column>        -->
+        <!--        <actionsColumn name="actions" class="AJH\Fitment\Ui\Component\Listing\Column\GridList">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">fitment_id</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+        </actionsColumn>-->
+    </columns>
+</listing>

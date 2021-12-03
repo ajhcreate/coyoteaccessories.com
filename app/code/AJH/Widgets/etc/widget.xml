@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:fitment:Magento_Widget:etc/widget.xsd">    
+    <widget class="AJH\Widgets\Block\Carousel\Categories" id="ajh_widgets_carousel">
+        <label>AJH Catalog Categories Carousel</label>
+        <description>Featured Catalog Categories Carousel</description>
+        <parameters>
+            <parameter name="catalog_categories_carousel" sort_order="10" visible="true" xsi:type="text">
+                <label>Catalog Categories</label>
+            </parameter>
+        </parameters>
+    </widget>    
+</widgets>

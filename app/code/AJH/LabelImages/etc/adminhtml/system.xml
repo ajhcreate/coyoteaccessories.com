@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ajhextensions" translate="label" sortOrder="10">
+            <label>AJH Extensions</label>
+        </tab>
+        <section id="labelimages" translate="label" sortOrder="1000" type="text" showInDefault="1" showInWebsite="1" showInStore="1">            
+            <label>Label Images</label>
+            <tab>ajhextensions</tab>
+            <resource>AJH_LabelImages::labelimages_config</resource>
+            <group id="generalsettings" translate="label" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <comment>General Settings</comment>                
+                <field id="enable" translate="label" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Module</label> 
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>  
+                </field>                         
+                <field id="image_mapping" translate="label" sortOrder="10" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Image Mapping</label>                         
+                    <frontend_model>AJH\LabelImages\Block\Adminhtml\System\Config\Frontend\Imagemapping</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>   
+                    <depends>
+                        <field id="labelimages/generalsettings/enable">1</field>                        
+                    </depends>
+                </field>                               
+                <field id="image_directory" translate="label" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Image Directory</label> 
+                    <comment><![CDATA[Image directory after the base url]]></comment>                           
+                </field>       
+            </group>         
+        </section>
+    </system>
+</config>

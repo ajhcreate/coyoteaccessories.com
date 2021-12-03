@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="add_to_garage">
+        <observer name="addToGarage" instance="AJH\Fitment\Observer\AddToGarage" />
+    </event>
+    <event name="fitment_caching">
+        <observer name="cacheFitment" instance="AJH\Fitment\Observer\Caching" />
+    </event>
+    <event name="generate_sef_url">
+        <observer name="generate_sef" instance="AJH\Fitment\Observer\GenerateSEFUrl" />
+    </event>
+</config>

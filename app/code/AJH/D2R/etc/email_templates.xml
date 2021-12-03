@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">    
+    <template id="d2r_tpms_email_admin_notification_admin_notify_template"
+              type="html"
+              file="d2r_tpms_email_admin_notification_admin_notify_template.html"
+              module="AJH_D2R"
+              label="TPMS Challenge - Admin notification"
+              area="frontend" />    
+    
+    <template id="d2r_tpms_email_customer_notification_customer_notify_template"
+              type="html"
+              file="d2r_tpms_email_customer_notification_customer_notify_template.html"
+              module="AJH_D2R"
+              label="TPMS Challenge - Customer notification"
+              area="frontend" />        
+    
+    <template id="d2r_email_sales_notify_template"
+              type="html"
+              file="d2r_retailerapp_sales_appsent.html"
+              module="AJH_D2R"
+              label="Retailer application - Sales notification"
+              area="frontend" />            
+    
+    <template id="d2r_email_distributor_notify_template"
+              type="html"
+              file="d2r_retailerapp_distributor_appsent.html"
+              module="AJH_D2R"
+              label="Retailer application - Distributor notification"
+              area="frontend" />                
+    
+    <template id="d2r_email_customer_appsent_template" type="html" file="d2r_retailerapp_customer_submitted.html" module="AJH_D2R" label="Retailer application - App submitted notification" area="frontend" />                
+    <template id="d2r_email_customer_confirm_template" type="html" file="d2r_retailerapp_customer_approved.html" module="AJH_D2R" label="Retailer application - Approved" area="frontend" />                
+    <template id="d2r_email_customer_decline_template" type="html" file="d2r_retailerapp_customer_declined.html" module="AJH_D2R" label="Retailer application - Declined" area="frontend" />                
+    <template id="d2r_retailer_reg_emails_notif_sales_department_sales_notify_template" type="html" file="d2r_retailer_reg_emails_sales_notify_template.html" module="AJH_D2R" label="Retailer application - Declined" area="frontend" />                
+    <template id="d2r_retailer_reg_emails_notif_to_distributor_distributor_notify_template" type="html" file="d2r_retailer_reg_emails_distributor_notify_template.html" module="AJH_D2R" label="Retailer application - Declined" area="frontend" />                
+    <template id="d2r_retailer_reg_emails_retailer_notif_templates_retailer_appsent_template" type="html" file="d2r_retailer_reg_emails_retailer_appsent_template.html" module="AJH_D2R" label="Retailer application - Declined" area="frontend" />                
+    <template id="d2r_retailer_reg_emails_retailer_notif_templates_retailer_approved_template" type="html" file="d2r_retailer_reg_emails_retailer_approved_template.html" module="AJH_D2R" label="Retailer application - Declined" area="frontend" />                
+    <template id="d2r_retailer_reg_emails_retailer_notif_templates_retailer_declined_template" type="html" file="d2r_retailer_reg_emails_retailer_declined_template.html" module="AJH_D2R" label="Retailer application - Declined" area="frontend" />                            
+</config>

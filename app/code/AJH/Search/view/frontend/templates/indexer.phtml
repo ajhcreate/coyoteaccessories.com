@@ -1,0 +1,39 @@
+<?php
+/**
+ * \AJH\Search\Block\Result $block
+ */
+$products = $block->getProducts();
+
+$counter = 1;
+foreach ($products as $key => $product) {
+    echo '<div class="prsku">' . $counter . ". <span class=\"sku\">" . $product->getSku() . '</span></div>';
+    echo '<div class="prskuby3">' . $counter . ". <span class=\"sku\">" . substr($product->getSku(), 0, 3) . '</span></div>';
+    $counter++;
+}
+?>
+
+<style type="text/css">
+    .prsku{
+        border-top: solid 1px #ccc;
+    }
+    
+    .prsku.done{
+        background: greenyellow;
+    }
+</style>
+
+<script>
+    require(['jquery'], function ($) {
+        setInterval(function () {
+            var el = $(".prsku").not(".done").first();
+            $("#search").trigger("focus");
+            console.log(el.find(".sku").text());
+            $("#search").val(el.find(".sku").text());
+            $("#search").trigger("keyup");
+            $("#search").trigger("click");
+            $("#search").trigger("change");
+
+            el.addClass("done");
+        }, 15000);
+    });
+</script>

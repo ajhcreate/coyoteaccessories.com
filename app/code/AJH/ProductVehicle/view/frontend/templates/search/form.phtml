@@ -1,0 +1,224 @@
+<?php
+/**
+ * @var object $block Ajh_ProductVehicle_Block_Header_Search_Form
+ */
+?>
+
+
+<?php if (!$block->getRequest()->getParam('filter') || $block->getRequest()->getParam('filter') !== 'ajax') { ?>
+
+    <?php $years = $block->getYears(); ?>
+
+    <div class="filter-product-vehicle-container">
+        <form name="filter-product-vehicle" id="filter-product-vehicle" action="<?php echo $block->getUrl('vehicle/search/index/') ?>" method="get">
+            <h3>Select Your Vehicle</h3>
+            <select name="year" id="product_year">
+                <option value="">Year</option>
+                <?php foreach ($years as $year): ?>
+                    <option value="<?php echo $year ?>"><?php echo $year ?></option>
+                <?php endforeach ?>
+            </select>
+            <select id="product_make" name="make">
+                <option value="">Make</option>
+            </select>
+            <select id="product_model" name="model">
+                <option value="">Model</option>
+            </select>
+            <select id="product_submodel" name="submodel">
+                <option value="">Sub Model</option>
+            </select>            
+            <button type="button" class="button action primary" id="resetVehicle2"><span></span>Clear</button>
+        </form>
+    </div>
+    <?php /*
+      <div class="show-all-container">
+      <a id="show-all" href="javascript:void(0)" onclick="showAll('<?php echo $block->getUrl('vehicle/search/all/') ?>'); return false;">[show all compatible vehicles]</a>
+      </div> */ ?>
+
+    <script type="text/javascript">
+        requirejs(['jquery'], function ($) {
+            'use strict';
+
+            var filter = (function ($) {
+                return {
+                    init: function () {
+                        filter.loadData("-");
+                    },
+                    loadYears: function () {
+                        $.ajax({
+                            showLoader: true,
+                            type: 'get',
+                            url: '<?php echo $block->getUrl('vehicle/fitment/filter/'); ?>',
+                            dataType: 'html',
+                            data: {
+                                pid: '<?php echo $block->getProduct()->getId(); ?>',                                
+                                fitment: 'years'
+                            },
+                            beforeSend: function () {                                
+                            },
+                            success: function (data) {
+                                $("#product_year").html(data);
+                            },
+                            error: function (data, error, status) {
+                                console.log('An error occurred.');
+                                console.log(status);
+                            }
+                        });
+                    },
+                    loadMakes: function () {
+                        var year;
+                        year = $("#product_year").val();
+
+                        $.ajax({
+                            showLoader: true,
+                            type: 'get',
+                            url: '<?php echo $block->getUrl('vehicle/fitment/filter/'); ?>',
+                            dataType: 'html',
+                            data: {
+                                pid: '<?php echo $block->getProduct()->getId(); ?>',
+                                year: year,
+                                fitment: 'makes'
+                            },
+                            beforeSend: function () {  
+                                
+                            },
+                            success: function (data) {
+                                $("#product_make").html(data);
+                            },
+                            error: function (data, error, status) {
+                                console.log('An error occurred.');
+                                console.log(status);
+                            }
+                        });
+                    },
+                    loadModels: function () {
+                        var year, make;
+                        year = $("#product_year").val();
+                        make = $("#product_make").val();
+
+                        $.ajax({
+                            showLoader: true,
+                            type: 'get',
+                            url: '<?php echo $block->getUrl('vehicle/fitment/filter/'); ?>',
+                            dataType: 'html',
+                            data: {
+                                pid: '<?php echo $block->getProduct()->getId(); ?>',
+                                year: year,
+                                make: make,
+                                fitment: 'models'
+                            },
+                            beforeSend: function () {                                
+                            },
+                            success: function (data) {
+                                $("#product_model").html(data);
+                            },
+                            error: function (data, error, status) {
+                                console.log('An error occurred.');
+                                console.log(status);
+                            }
+                        });
+                    },
+                    loadSubModels: function () {
+                        var year, make, model;
+                        year = $("#product_year").val();
+                        make = $("#product_make").val();
+                        model = $("#product_model").val();
+
+                        $.ajax({
+                            showLoader: true,
+                            type: 'get',
+                            url: '<?php echo $block->getUrl('vehicle/fitment/filter/'); ?>',
+                            dataType: 'html',
+                            data: {
+                                pid: '<?php echo $block->getProduct()->getId(); ?>',
+                                year: year,
+                                make: make,
+                                model: model,
+                                fitment: 'submodels'
+                            },
+                            beforeSend: function () {                                
+                            },
+                            success: function (data) {
+                                $("#product_submodel").html(data);
+                            },
+                            error: function (data, error, status) {
+                                console.log('An error occurred.');
+                                console.log(status);
+                            }
+                        });
+                    },
+                    loadData: function (param) {
+                        if (param === '-') {
+                            filter.loadYears();
+                        }
+                        if (param === 'year') {
+                            filter.loadMakes();
+                        }
+                        if (param === 'make') {
+                            filter.loadModels();
+                        }
+                        if (param === 'model') {
+                            filter.loadSubModels();
+                        }
+                    },
+                    loadfitment: function () {
+                        var year, make, model, submodel;
+                        year = $("#product_year").val();
+                        make = $("#product_make").val();
+                        model = $("#product_model").val();
+                        submodel = $("#product_submodel").val();
+
+                        $.ajax({
+                            showLoader: true,
+                            type: 'get',
+                            url: '<?php echo $block->getUrl('vehicle/search/all/'); ?>',
+                            dataType: 'html',
+                            data: {
+                                pid: '<?php echo $block->getProduct()->getId(); ?>',
+                                year: year,
+                                make: make,
+                                model: model,
+                                submodel: submodel,
+                                filter: 'ajax'
+                            },
+                            beforeSend: function () {
+                            },
+                            success: function (data) {
+                                $('.product-vehicle-container').html(data);
+
+                                if ($('.filter-product-vehicle-container').length > 1) {
+
+                                }
+                            },
+                            error: function (data, error, status) {
+                                console.log('An error occurred.');
+                                console.log(status);
+                            }
+                        });
+                    }
+                };
+            })($);
+
+
+            $("#filter-product-vehicle select").on("change", function () {
+                filter.loadfitment();
+                filter.loadData($(this).attr("name"));
+                
+                $(this).nextAll().val("");
+                $(this).nextAll().attr("disabled", "disabled");
+                $(this).nextAll().attr("disabled", "disabled");
+                $(this).next().removeAttr("disabled")
+            });
+            
+            $("#resetVehicle2").on("click", function(){
+                $("#filter-product-vehicle select").each(function(indx){
+                    $(this).val("");
+                });
+                filter.loadfitment();
+            });
+
+            filter.init();
+
+        });
+    </script>
+<?php } ?>

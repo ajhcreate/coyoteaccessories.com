@@ -1,0 +1,22 @@
+<?php
+$res = $block->getResult();
+$retailerStatusName = $block->getRetailerStatusName();
+$customer = $block->getCustomer();
+$address = $block->getAddress();
+?>
+<div class="d2rRA-success">
+    <h1><?php echo $block->__('Retailer Application') ?></h1>
+    <?php if ($res): ?>
+        <h2><?php echo __('Retailer application has been '. $retailerStatusName) ?></h2>
+        <p><?php echo __('Company: ' . $address ? $address->getCompany() : '' . ' <' . $customer->getEmail() . '>') ?></p>
+        <p>
+            <a href="<?php echo \Magento\Backend\Model\UrlInterface::getUrl('adminhtml') ?>"><?php echo $block->__('Go to admin section') ?></a>
+        </p>
+    <?php else: ?>
+        <?php $_address = $address ? $address->getCompany() : ''; ?>
+        <p><?php echo __('Error setting retailer ' . $retailerStatusName . ' status to ' . $_address . ' company'); ?></p>
+    <?php endif ?>
+</div>
+
+<?php
+echo $block->getLayout()->getMessagesBlock()->toHtml();
